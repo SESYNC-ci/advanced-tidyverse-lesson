@@ -82,7 +82,7 @@ egg_dates <- str_remove_all(string = pg_df$filename,
 
 Can these be automatically converted to date format?
 
-```{r}
+```{r, eval=FALSE}
 as.Date(egg_dates)
 ```
 

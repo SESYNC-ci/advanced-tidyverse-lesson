@@ -16,7 +16,7 @@ The data in the package is organized into 2 data frames but for teaching purpose
 There are separate CSV files for each sampling date with the same format and file naming convention. Our goal is to have the data from all 50 files into the same data frame, and add the date metadata from the filename into the table (is not currently).
 
 ```{r}
-list.files('data')
+list.files('data/penguins')
 ```
 
 ===
@@ -25,7 +25,7 @@ Load the `fs` package to work with the file system. Create a vector of files wit
 
 ```{r fs, title = '{{ site.handouts[0] }}'}
 library(fs)
-penguin_files <- dir_ls('data')
+penguin_files <- dir_ls('data/penguins')
 ```
 
 ===
@@ -125,7 +125,7 @@ Some note about how readability is one of the core tenets of the tidyverse and t
 Combine previous steps together without creating intermediate objects:
 
 ```{r}
-pg_df <- dir_ls("data") %>%
+pg_df <- dir_ls("data/penguins") %>%
   map_df(~read_csv(.x), .id = "filename")
 ```
 
