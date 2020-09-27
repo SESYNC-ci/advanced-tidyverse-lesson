@@ -1,0 +1,17 @@
+title: Advanced Tidyverse
+handouts:
+ - worksheet.R
+ - data/penguins
+tag: v0.1
+lesson: 9999
+instructor: Kelly Hondula
+authors:
+  - Kelly Hondula
+sorter:
+  - intro
+  - tidyverse
+  - files
+  - stringr
+  - ggtext
+  - forcats
+  - summary
