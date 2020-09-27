@@ -1,0 +1,141 @@
+---
+---
+
+## Sample Data
+
+We'll be using the data from the `palmerpenguins` package. 
+
+Put image and credits in here. 
+
+Some brief info. 
+
+The data in the package is organized into 2 data frames but for teaching purposes it is modified. 
+
+===
+
+There are separate CSV files for each sampling date with the same format and file naming convention. Our goal is to have the data from all 50 files into the same data frame, and add the date metadata from the filename into the table (is not currently).
+
+```{r}
+list.files('data')
+```
+
+===
+
+Load the `fs` package to work with the file system. Create a vector of files with `dir_ls()`
+
+```{r fs, title = '{{ site.handouts[0] }}'}
+library(fs)
+penguin_files <- dir_ls('data')
+```
+
+===
+
+`fs` path objects are character vectors but a little smarter. Specialized functions can extract or retrieve parts of path.  
+
+```{r}
+penguin_files[1] %>% path_dir()
+penguin_files[1] %>% path_ext_remove()
+penguin_files[1] %>% path_ext()
+```
+
+See [here](https://fs.r-lib.org/articles/function-comparisons.html) for comparisons of fs, base, UNIX
+
+===
+
+We want to read in each file using the `read_csv` function in the `readr` package. 
+
+Readr is the tidyverse package for reading in rectangular data like CSV or TSV into tidy formats. There are other tidyverse packages specifically for reading in data from Excel files (`readxl`), Google Drive files (`googledrive` and `googlesheets4`), databases (`DBI`), SPSS/Stata/SAS data (`haven`), and various web data formats (`httr`, `xml2`, `jsonlite`).
+{:.notes}
+
+The syntax for reading in one file would be 
+
+```{r}
+read_csv(penguin_files[1])
+```
+
+===
+
+The approach to iteration in the tidyverse is by using `map` functions in the `purrr` package. 
+
+Compared to the apply family of functions, map functions offer 1) predictable structure of return objects, and 2) consistent syntax for piped workflows.
+
+The arguments to map are: 
+
+* `.x`: the object to iterate over
+* `.f`: the function to apply to each item in `.x`
+
+===
+
+Read all `penguin_files` into a list of dataframes called `pg_list` using:
+
+```{r}
+pg_list <- map(.x = penguin_files, .f = read_csv)
+```
+
+Or use `~` to specify the function and arguments:
+
+```{r}
+pg_files <- map(.x = penguin_files, ~read_csv(.x))
+```
+
+===
+
+Whereas `map` always returns a list, there are `map_*` functions for returning specific types of vectors (e.g. `map_chr` or `map_int`). Use `map_df` for returning *one* dataframe:
+
+```{r}
+pg_df <- map_df(penguin_files, ~read_csv(.x))
+```
+
+===
+
+Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using: c, i, n, d, l, f, D, T, t, ?, _, -
+
+```{r}
+pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = "cdcccccddddcddccc"))
+```
+
+
+===
+
+Or use `spec_csv` to generate a column specification that can be passed to the col_types argument.
+
+```{r}
+my_col_types <- spec_csv(penguin_files[1])
+pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
+```
+
+===
+
+Another handy argument for `map_df` is `.id` for putting the names of each item of `.x` into a column. 
+
+```{r}
+pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
+```
+
+===
+
+Remember the `%>%` ? 
+
+![]({{ site.baseurl }}/images/pipe.jpg){: width="40%"}  
+Some note about how readability is one of the core tenets of the tidyverse and this is accomplished with piped workflows. The functions are designed to work together based on the first argument and the type of output returned. 
+{:.notes}
+
+===
+
+Combine previous steps together without creating intermediate objects:
+
+```{r}
+pg_df <- dir_ls("data") %>%
+  map_df(~read_csv(.x), .id = "filename")
+```
+
+===
+
+# Exercise 1
+
+Use purrr's `walk2` function to save a separate csv file for penguins from each island using a list of data frames and a vector of filenames. 
+
+Hint: Check out the `split` or (experimental) `group_split` function for creating the list. 
+
+[View solution](#solution-1)
+{:.notes}

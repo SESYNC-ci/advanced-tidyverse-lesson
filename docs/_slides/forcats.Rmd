@@ -1,0 +1,108 @@
+---
+---
+
+
+```{r}
+default.stringsAsFactors()
+```
+
+😲 this is new in R version 4 !!
+
+we used read_csv so it was that way anyway, but there are situations where you may want to use factors, especially for MODELING and PLOTS. essentially when you want character vectors to not be alphabetical. The `forcats` package is intended to make this easier.
+
+===
+
+The column with the species common names is a character vector
+
+```{r}
+str(pg_df$common)
+```
+
+Plots will be sorted alphabetically, like the default ordering for factor levels in base R.
+
+```{r}
+as.factor(pg_df$common) %>% levels()
+```
+
+```{r}
+pg_df %>% 
+  ggplot(aes(x = common)) +
+  geom_bar()
+```
+
+===
+
+Forcats `as_factor` uses the order in which the levels appear in your data
+
+```{r}
+as_factor(pg_df$common) %>% levels()
+```
+
+Use this to make common into a factor. Does this change the barplot?
+
+```{r}
+pg_df <- pg_df %>% 
+  mutate(common = as_factor(common))
+
+pg_df %>% 
+  ggplot(aes(x = common)) +
+  geom_bar()
+```
+
+{:.fragment} Instead of alphabetical, the levels are now in the order they appeared in the dataset. 
+
+===
+
+Use `fct_infreq` to instead order the levels by how frequently they appear in the dataset.
+
+```{r}
+pg_df %>% 
+  mutate(common = fct_infreq(common)) %>%
+  ggplot(aes(x = common)) +
+  geom_bar()
+```
+
+===
+
+Or more generally, `fct_reorder` to use a different variable. In this case let's order **common** by each level's median `flipper_length_mm`.
+
+```{r}
+pg_df %>% 
+  mutate(common = fct_reorder(common, 
+    flipper_length_mm, median, na.rm = TRUE)) %>%
+  ggplot(aes(x = common, y = flipper_length_mm)) +
+  geom_boxplot()
+```
+
+===
+
+To create a table with combinations of variables, use `expand` from the tidyr package. For example:
+
+```{r}
+pg_df %>% expand(island, sex, common)
+```
+
+To only include the combinations of variables that do appear in your data, put the column names inside of the `nesting` helper function.
+
+```{r}
+pars <- pg_df %>% expand(nesting(island, sex, common))
+```
+
+
+## Exercise 5
+
+Convert all character columns except for "comment" to factors using one mutate function. 
+
+Hint: Check out the [across](https://dplyr.tidyverse.org/articles/programming.html) function
+
+[View solution](#solution-5)
+{:.notes}
+
+## Exericse 6
+
+Expand the `pars` data frame with a column of 10 model names for each of the unique combinations of island, sex, and species that appear in the data set. (should result in a 4 x 130 data frame)
+
+[View solution](#solution-6)
+{:.notes}
+
+

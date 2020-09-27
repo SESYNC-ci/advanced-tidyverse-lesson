@@ -1,0 +1,127 @@
+---
+---
+
+## Tidy evaluation
+
+Another core tenet of the tidyverse is tidy evaluation via data masking, which facilitates:
+
+- using variable/column names without having to refer to data frame name
+- tidy selection to identify variables based on their position, name, or type
+
+In base R there is similar functionality using attach(pg_df) or `data =` arguments in functions like `lm`. Tidyverse functions take those ideas and make them consistent and therefore operational in a reliable manner beyond interactive programming.
+{:.notes}
+
+===
+
+We will rename the columns of our data frame to remove spaces and punctuation.
+
+```{r}
+names(pg_df)
+```
+
+We could rename each individually using `dplyr`'s `rename`...
+
+===
+
+Or use `rename_with` to do the same thing to every column name:
+
+```
+rename_with(.data = pg_df, .fn = )
+```
+
+We will use functions in the core tidyverse `stringr` package to manipulate character vectors
+
+===
+
+Remove spaces either with exact pattern or [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html). Test out function on one column name:
+
+```{r}
+str_replace_all("Body Mass (g)", pattern = " ", replacement = "_")
+str_replace_all("Body Mass (g)", pattern = "[:space:]", replacement = "_")
+
+```
+
+===
+
+Similarly, can remove punctuation using regex pattern
+
+```{r}
+str_replace_all("Delta 15 N (o/oo)", pattern = "[:punct:]", replacement = "")
+```
+
+Combine both and convert to lower case using pipes:
+
+```{r}
+pg_df <- pg_df %>%
+  rename_with(~str_replace_all(.x, "[:punct:]", "")) %>%
+  rename_with(~str_replace_all(.x, "[:space:]", "_")) %>%
+  rename_with(~str_to_lower(.x))
+```
+```{r}
+names(pg_df)
+```
+
+===
+
+Now let's work on putting the date information from the filenames into a properly formatted column of dates. Is there a systematic way to extract the necessary information?
+
+```{r}
+sample(pg_df$filename, 5)
+```
+
+===
+
+Every file name is the same besides the date, so we can remove those exact characters. Save to a vector. 
+
+```{r}
+egg_dates <- str_remove_all(string = pg_df$filename, 
+                            pattern =  "(data/penguins_nesting-)|(.csv)")
+```
+
+===
+
+Can these be automatically converted to date format?
+
+```{r}
+as.Date(egg_dates)
+```
+
+
+===
+
+Lubridate can make some smart guesses about date formats with a little bit of help: the order **m**onth, **d**ay, **y*ear. 
+
+```{r}
+library(lubridate)
+mdy(egg_dates)
+```
+
+===
+
+The POSIX date standard specifies codes for various components of dates and times, which can be used for the `format` argument in `as_date`
+
+```{r}
+guess_formats("December-1-2009", orders = "mdy")
+as_date(egg_dates, format = "%B-%d-%Y")
+```
+
+===
+
+Combine the string manipulation and date conversion: 
+
+```{r}
+pg_df <- pg_df %>%
+  mutate(egg_date = str_remove_all(filename,
+          "(data/penguins_nesting-)|(.csv)")) %>%
+  mutate(egg_date = mdy(egg_date))
+```
+
+
+## Exericse 2
+
+Remove "data/" and  ".csv" from the filename strings using only functions in the fs package.
+
+[View solution](#solution-2)
+{:.notes}
+
+
