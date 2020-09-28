@@ -105,7 +105,7 @@ penguin_files <- dir_ls('data/penguins')
 
 
 ~~~
-[1] "data"
+[1] "data/penguins"
 ~~~
 {:.output}
 
@@ -117,7 +117,7 @@ penguin_files <- dir_ls('data/penguins')
 
 
 ~~~
-data/ACS
+data/penguins/penguins_nesting-December-1-2009
 ~~~
 {:.output}
 
@@ -129,7 +129,7 @@ data/ACS
 
 
 ~~~
-[1] ""
+[1] "csv"
 ~~~
 {:.output}
 

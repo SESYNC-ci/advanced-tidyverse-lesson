@@ -24,7 +24,7 @@ list.files('data/penguins')
 
 Load the `fs` package (non-core tidyverse) to work with the file system. Create a vector of filepaths with `dir_ls()`
 
-```{r fs, handout = 0}
+```{r, handout = 0}
 library(fs)
 penguin_files <- dir_ls('data/penguins')
 ```
