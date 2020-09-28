@@ -149,20 +149,4 @@ pg_df %>%
   theme(axis.text.y = element_markdown())
 ```
 
-### Exericse 3
 
-Also use the different colors for each species within the plot geometry layer. 
-
-Hint: You will need a `scale_` function
-
-[View solution](#solution-3)
-{:.notes}
-
-### Exercise 4
-
-*Bonus fun!* 
-
-Use the proper notation for the isotope ratio in the X axis label. 
-
-[View solution](#solution-4)
-{:.notes}

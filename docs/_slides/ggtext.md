@@ -228,20 +228,4 @@ pg_df %>%
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-15-1.png" %})
 {:.captioned}
 
-### Exericse 3
 
-Also use the different colors for each species within the plot geometry layer. 
-
-Hint: You will need a `scale_` function
-
-[View solution](#solution-3)
-{:.notes}
-
-### Exercise 4
-
-*Bonus fun!* 
-
-Use the proper notation for the isotope ratio in the X axis label. 
-
-[View solution](#solution-4)
-{:.notes}

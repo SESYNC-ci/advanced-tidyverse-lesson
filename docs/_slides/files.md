@@ -184,16 +184,19 @@ cols(
 
 The approach to iteration in the tidyverse is by using `map` functions in the `purrr` package. 
 
-Compared to the apply family of functions, map functions offer 1) predictable structure of return objects, and 2) consistent syntax for piped workflows.
+Compared to the apply family of functions, map functions offer 
+
+* predictable structure of return objects, and
+* consistent syntax for piped workflows.
 
 The arguments to map are: 
 
-* `.x`: the object to iterate over
-* `.f`: the function to apply to each item in `.x`
+* `.x` - the object to iterate over
+* `.f` - the thing to do for each item in `.x`
 
 ===
 
-Read all `penguin_files` into a list of dataframes called `pg_list` using:
+Read all `penguin_files` into a list using:
 
 
 
@@ -227,7 +230,21 @@ pg_df <- map_df(penguin_files, ~read_csv(.x))
 
 ===
 
-Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using: c, i, n, d, l, f, D, T, t, ?, _, -
+Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using these codes
+
+| character   | data type       |
+|-------------+------------------|
+| `c`    |  character/string    |
+| `i`    |  integer             |
+| `n`    |  numeric             |
+| `d`    |  double              |
+| `l`    | logical              |
+| `f`    | factor/categorical   |
+| `D`    | date             |
+| `T`    | date time        |
+| `t`    | time       |
+| `?`    | guess      |
+| `_` or `-` | skip this column |
 
 
 
@@ -246,36 +263,6 @@ Or use `spec_csv` to generate a column specification that can be passed to the c
 
 ~~~r
 my_col_types <- spec_csv(penguin_files[1])
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-Parsed with column specification:
-cols(
-  studyName = col_character(),
-  `Sample Number` = col_double(),
-  Region = col_character(),
-  Island = col_character(),
-  Stage = col_character(),
-  `Individual ID` = col_character(),
-  `Clutch Completion` = col_character(),
-  `Culmen Length (mm)` = col_double(),
-  `Culmen Depth (mm)` = col_double(),
-  `Flipper Length (mm)` = col_double(),
-  `Body Mass (g)` = col_double(),
-  Sex = col_character(),
-  `Delta 15 N (o/oo)` = col_double(),
-  `Delta 13 C (o/oo)` = col_double(),
-  Comments = col_character(),
-  common = col_character(),
-  latin = col_character()
-)
-~~~
-{:.output}
-
-
-~~~r
 pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
@@ -295,15 +282,17 @@ pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 
 ===
 
+## The pipe
+
 Remember the `%>%` ? 
 
-![pipe]({{ site.baseurl }}/images/pipe.jpg){: width="40%"}
+![pipe]({% include asset.html path="images/pipe.jpg" %}){: width="50%"}
 Readability is one of the core tenets of the tidyverse and this is accomplished with piped workflows. The functions are designed to work together based on the first argument and the type of output returned. 
 {:.notes}
 
 ===
 
-Combine previous steps together without creating intermediate objects:
+Combine our previous steps together without creating intermediate objects:
 
 
 
@@ -316,11 +305,3 @@ pg_df <- dir_ls("data/penguins") %>%
 
 ===
 
-### Exercise 1
-
-Use purrr's `walk2` function to save a separate csv file for penguins from each island using a list of data frames and a vector of filenames. 
-
-Hint: Check out the base `split` or (experimental) dplyr `group_split` function for creating the list. 
-
-[View solution](#solution-1)
-{:.notes}

@@ -3,12 +3,12 @@
 
 ## Tidy evaluation
 
-Another core tenet of the tidyverse is tidy evaluation via data masking, which facilitates:
+Another core tenet of the tidyverse is *tidy evaluation* via data masking, which facilitates:
 
 - using variable/column names without having to refer to data frame name
-- tidy selection to identify variables based on their position, name, or type
+- identifying variables based on their position, name, or type
 
-In base R there is similar functionality using attach(pg_df) or `data =` arguments in functions like `lm`. Tidyverse functions take those ideas and make them consistent and therefore operational in a reliable manner beyond interactive programming.
+In base R there is similar functionality using `attach(pg_df)` or `data = pg_df` arguments in functions like `lm`. Tidyverse functions take those ideas and make them consistent and operational in a reliable manner beyond usage in interactive programming.
 {:.notes}
 
 ===
@@ -39,13 +39,9 @@ We will rename the columns of our data frame to remove spaces and punctuation.
 
 We could rename each individually using `dplyr`'s `rename`, but `rename_with` is a handy shortcut if you want to do the same thing to every column name:
 
-
-
-~~~r
-> rename_with(.data = pg_df, .fn = ...)
-~~~
-{:title="Console" .no-eval .input}
-
+```
+rename_with(.data = pg_df, .fn = ...)
+```
 
 We will use functions in the core tidyverse `stringr` package to manipulate the column name strings. 
 
@@ -59,26 +55,9 @@ Replaces spaces with underscore characters ("_") either with exact pattern or [r
 
 ~~~r
 > str_replace_all("Body Mass (g)", pattern = " ", replacement = "_")
-~~~
-{:title="Console" .input}
-
-
-~~~
-[1] "Body_Mass_(g)"
-~~~
-{:.output}
-
-
-~~~r
 > str_replace_all("Body Mass (g)", pattern = "[:space:]", replacement = "_")
 ~~~
-{:title="Console" .input}
-
-
-~~~
-[1] "Body_Mass_(g)"
-~~~
-{:.output}
+{:title="Console" .no-eval .input}
 
 
 ===
@@ -90,16 +69,10 @@ Similarly, can remove all punctuation using the regex pattern `[:punct:]`
 ~~~r
 > str_replace_all("Delta 15 N (o/oo)", pattern = "[:punct:]", replacement = "")
 ~~~
-{:title="Console" .input}
+{:title="Console" .no-eval .input}
 
 
-~~~
-[1] "Delta 15 N ooo"
-~~~
-{:.output}
-
-
-Combine both and convert to lower case using pipes:
+Combine both transformations and add a new one (convert to lower case) in one fell swoop:
 
 
 
@@ -112,7 +85,7 @@ pg_df <- pg_df %>%
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-And see the result:
+Check out the new column names:
 
 
 
@@ -132,6 +105,8 @@ And see the result:
 ~~~
 {:.output}
 
+
+Much improved!!
 
 ===
 
@@ -278,40 +253,9 @@ The POSIX date standard specifies codes for various components of dates and time
 
 ~~~r
 > guess_formats("December-1-2009", orders = "mdy")
-~~~
-{:title="Console" .input}
-
-
-~~~
-       Omdy         mdy 
-"%Om-%d-%Y"  "%B-%d-%Y" 
-~~~
-{:.output}
-
-
-~~~r
 > as_date(egg_dates, format = "%B-%d-%Y")
 ~~~
 {:title="Console" .input}
-
-
-~~~
-  [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
- [26] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
- [51] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
- [76] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[101] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[126] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[151] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[176] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[201] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[226] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[251] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[276] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[301] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-[326] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-~~~
-{:.output}
 
 
 ===
@@ -329,12 +273,5 @@ pg_df <- pg_df %>%
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-
-### Exericse 2
-
-Remove `"data/penguins"` and  `".csv"` from the filename strings using only functions in the fs package.
-
-[View solution](#solution-2)
-{:.notes}
 
 

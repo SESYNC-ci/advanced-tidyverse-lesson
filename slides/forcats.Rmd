@@ -92,20 +92,5 @@ str(pars)
 ```
 
 
-### Exercise 5
-
-Convert all character columns except for "comment" to factors using one mutate function. 
-
-Hint: Check out the [across](https://dplyr.tidyverse.org/articles/programming.html) function
-
-[View solution](#solution-5)
-{:.notes}
-
-### Exericse 6
-
-Expand the `pars` data frame with a column of 10 model names for each of the unique combinations of island, sex, and species that appear in the data set. (should result in a 4 x 130 data frame)
-
-[View solution](#solution-6)
-{:.notes}
 
 
