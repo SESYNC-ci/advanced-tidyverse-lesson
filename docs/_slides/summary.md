@@ -30,5 +30,5 @@ Mention some other topics about the tidyverse that are worth looking into but we
 * **list columns** for nesting and unnesting things within data frames
 * **tidymodels** especially the broom package
 * Interval and duration objects in lubridate
-* 
+* Functions for modifying lists and parts of lists in purrr
 

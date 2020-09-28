@@ -22,16 +22,16 @@ library(tidyverse)
 
 These are the 8 packages now loaded into your environment:
 
-| Package    | Purpose                       |
-|------------+-------------------------------|
-| `readr`    |  read flat files              |
-| `tidyr`    |  reshaping                    |
-| `dplyr`    |  wrangling                    |
-| `ggplot2`  |  visualization                |
-| `stringr`  | control character vectors     |
-| `tibble`   | opinionated data frames       |
-| `forcats`  | control categorical data      |
-| `purrr`    | functional programming        |
+| Package    | Purpose                       |  Prominent functions | 
+|------------+-------------------------------+----------------------|
+| `readr`    |  read flat files              | `read_csv`, `write_csv` |
+| `tidyr`    |  reshaping                    | `pivot_longer`, `pivot_wider` |
+| `dplyr`    |  wrangling                    | `filter`, `select`, `summarise` |
+| `ggplot2`  |  visualization                | `ggplot`, `aes` |
+| `stringr`  |  control character vectors    | `str_sub`, `str_pad` |
+| `tibble`   |  opinionated data frames      | `glimpse`, `rownames_to_column`|
+| `forcats`  |  control categorical data     | `fct_relevel`, `fct_anon` |
+| `purrr`    |  functional programming       | `map`, `walk`, `pmap` |
 
 ===
 
