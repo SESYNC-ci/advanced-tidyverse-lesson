@@ -71,13 +71,13 @@ The arguments to map are:
 
 Read all `penguin_files` into a list of dataframes called `pg_list` using:
 
-```{r map, results='hide'}
+```{r map, results='hide', message=FALSE}
 map(.x = penguin_files, .f = read_csv)
 ```
 
 Or use `~` to specify the function and arguments:
 
-```{r mapother, results='hide'}
+```{r mapother, results='hide', message=FALSE}
  map(.x = penguin_files, ~read_csv(.x))
 ```
 
@@ -85,7 +85,7 @@ Or use `~` to specify the function and arguments:
 
 Whereas `map` always returns a list, there are `map_*` functions for returning specific types of vectors (e.g. `map_chr` or `map_int`). Use `map_df` for returning *one* dataframe:
 
-```{r, message = FALSE, handout = 0}
+```{r, message=FALSE, handout = 0}
 pg_df <- map_df(penguin_files, ~read_csv(.x))
 ```
 
@@ -111,7 +111,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
 
 Another handy argument for `map_df` is `.id` for putting the names of each item of `.x` into a column. 
 
-```{r, handout = 0}
+```{r, handout = 0, message=FALSE, results='hide'}
 pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 ```
 
@@ -119,8 +119,8 @@ pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 
 Remember the `%>%` ? 
 
-![]({{ site.baseurl }}/images/pipe.jpg){: width="40%"}  
-Some note about how readability is one of the core tenets of the tidyverse and this is accomplished with piped workflows. The functions are designed to work together based on the first argument and the type of output returned. 
+![pipe]({{ site.baseurl }}/images/pipe.jpg){: width="40%"}
+Readability is one of the core tenets of the tidyverse and this is accomplished with piped workflows. The functions are designed to work together based on the first argument and the type of output returned. 
 {:.notes}
 
 ===

@@ -73,12 +73,6 @@ pg_df %>%
   coord_flip()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-Warning: Removed 13 rows containing non-finite values (stat_boxplot).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-5-1.png" %})
 {:.captioned}
 
@@ -109,12 +103,6 @@ pg_df %>%
   coord_flip()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-Warning: Removed 13 rows containing non-finite values (stat_boxplot).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-7-1.png" %})
 {:.captioned}
 
@@ -132,12 +120,6 @@ pg_df %>%
   theme(axis.text.y = element_markdown()) 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-Warning: Removed 13 rows containing non-finite values (stat_boxplot).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-8-1.png" %})
 {:.captioned}
 
@@ -155,12 +137,6 @@ pg_df %>%
   theme(axis.text.y = element_markdown()) 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-Warning: Removed 13 rows containing non-finite values (stat_boxplot).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-9-1.png" %})
 {:.captioned}
 
@@ -178,12 +154,6 @@ pg_df %>%
   theme(axis.text.y = element_markdown())
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-Warning: Removed 13 rows containing non-finite values (stat_boxplot).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-10-1.png" %})
 {:.captioned}
 
@@ -255,12 +225,6 @@ pg_df %>%
   theme(axis.text.y = element_markdown())
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-Warning: Removed 13 rows containing non-finite values (stat_boxplot).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-15-1.png" %})
 {:.captioned}
 

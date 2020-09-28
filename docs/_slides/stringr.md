@@ -321,18 +321,18 @@ Combine the string manipulation and date conversion:
 
 
 ~~~r
-> pg_df <- pg_df %>%
-+   mutate(egg_date = str_remove_all(filename,
-+           "(data/penguins_nesting-)|(.csv)")) %>%
-+   mutate(egg_date = mdy(egg_date))
+pg_df <- pg_df %>%
+  mutate(egg_date = str_remove_all(filename,
+          "(data/penguins_nesting-)|(.csv)")) %>%
+  mutate(egg_date = mdy(egg_date))
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 
 ### Exericse 2
 
-Remove "data/penguins" and  ".csv" from the filename strings using only functions in the fs package.
+Remove `"data/penguins"` and  `".csv"` from the filename strings using only functions in the fs package.
 
 [View solution](#solution-2)
 {:.notes}

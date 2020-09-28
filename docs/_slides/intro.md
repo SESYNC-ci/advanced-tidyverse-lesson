@@ -5,7 +5,7 @@
 
 - Meet the core tidyverse
 - Learn functions that ease data cleaning
-- Level up exploratory data visualizations
+- Level up in exploratory data viz
 
 ===
 
@@ -13,7 +13,7 @@
 
 - Read a folder of tabular files into one data frame
 - Efficiently manipulate string and date vectors
-- Format text in ggplot labels
+- Format parts of text in ggplot labels
 - Rearrange factor levels
 
 ===
