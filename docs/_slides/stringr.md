@@ -160,7 +160,7 @@ Can these be automatically converted to date format?
 
 ===
 
-Lubridate can make some smart guesses about date formats with a little bit of help: the order **m**onth, **d**ay, **y*ear. 
+Lubridate can make some smart guesses about date formats with a little bit of help: the order **m**onth, **d**ay, **y**ear. 
 
 
 

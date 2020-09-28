@@ -3,7 +3,14 @@
 
 ## Summary
 
-There should be some kind of summary slide. These are some of the cool functions we learned about
+There should be some kind of summary slide. First, here are some core principles of the tidyverse
+
+* Packages are united by common design structures so they work together (e.g. tidy evaluation)
+* Functions emphasize *modularity* so you can break complex problems into small parts
+* Functions emphasize *consistency* so you can easily expect what they will return
+* Designed to write code that is **easy to read** and interpret
+
+These are some of the cool functions we learned about
 
 | Function    | Package |  Usage    | Base R version |
 |-------------+---------+--------+----------------|
