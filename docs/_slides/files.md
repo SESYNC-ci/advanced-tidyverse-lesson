@@ -1,15 +1,14 @@
 ---
 ---
 
-## Sample Data
+## Penguin Data
 
-We'll be using the data from the `palmerpenguins` package. 
+We'll be using the data modified from the [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/index.html) package. 
 
-Put image and credits in here. 
+![]({% include asset.html path="images/lter_penguins.png" %}){: width="50%"}  
+*Credit: [Artwork by @allison_horst](https://www.allisonhorst.com/)*
+{:.captioned}
 
-Some brief info. 
-
-The data in the package is organized into 2 data frames but for teaching purposes it is modified. 
 
 ===
 
@@ -143,41 +142,6 @@ We want to read in each file using the `read_csv` function in the `readr` packag
 Readr is the tidyverse package for reading in rectangular data like CSV or TSV into tidy formats. There are other tidyverse packages specifically for reading in data from Excel files (`readxl`), Google Drive files (`googledrive` and `googlesheets4`), databases (`DBI`), SPSS/Stata/SAS data (`haven`), and various web data formats (`httr`, `xml2`, `jsonlite`).
 {:.notes}
 
-The syntax for reading in one file would be 
-
-
-
-~~~r
-> read_csv(penguin_files[1])
-~~~
-{:title="Console" .input}
-
-
-~~~
-Parsed with column specification:
-cols(
-  studyName = col_character(),
-  `Sample Number` = col_double(),
-  Region = col_character(),
-  Island = col_character(),
-  Stage = col_character(),
-  `Individual ID` = col_character(),
-  `Clutch Completion` = col_character(),
-  `Culmen Length (mm)` = col_double(),
-  `Culmen Depth (mm)` = col_double(),
-  `Flipper Length (mm)` = col_double(),
-  `Body Mass (g)` = col_double(),
-  Sex = col_character(),
-  `Delta 15 N (o/oo)` = col_double(),
-  `Delta 13 C (o/oo)` = col_double(),
-  Comments = col_character(),
-  common = col_character(),
-  latin = col_character()
-)
-~~~
-{:.output}
-
-
 ===
 
 ## Map functions
@@ -230,7 +194,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x))
 
 ===
 
-Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using these codes
+Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using these codes:
 
 | character   | data type       |
 |-------------+------------------|
@@ -257,7 +221,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = "cdcccccddddcddccc"))
 
 ===
 
-Or use `spec_csv` to generate a column specification that can be passed to the col_types argument.
+Or use `spec_csv` to generate a column specification from the first file that can be passed to the col_types argument. 
 
 
 
@@ -282,17 +246,18 @@ pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 
 ===
 
-## The pipe
+## Combine with pipes
+
+![pipe]({% include asset.html path="images/pipe.jpg" %}){: width="50%"}
 
 Remember the `%>%` ? 
 
-![pipe]({% include asset.html path="images/pipe.jpg" %}){: width="50%"}
 Readability is one of the core tenets of the tidyverse and this is accomplished with piped workflows. The functions are designed to work together based on the first argument and the type of output returned. 
 {:.notes}
 
 ===
 
-Combine our previous steps together without creating intermediate objects:
+Let's combine our previous steps together without creating intermediate objects:
 
 
 

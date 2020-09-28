@@ -1,15 +1,14 @@
 ---
 ---
 
-## Sample Data
+## Penguin Data
 
-We'll be using the data from the `palmerpenguins` package. 
+We'll be using the data modified from the [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/index.html) package. 
 
-Put image and credits in here. 
+![]({% include asset.html path="images/lter_penguins.png" %}){: width="50%"}  
+*Credit: [Artwork by @allison_horst](https://www.allisonhorst.com/)*
+{:.captioned}
 
-Some brief info. 
-
-The data in the package is organized into 2 data frames but for teaching purposes it is modified. 
 
 ===
 
@@ -47,12 +46,6 @@ We want to read in each file using the `read_csv` function in the `readr` packag
 
 Readr is the tidyverse package for reading in rectangular data like CSV or TSV into tidy formats. There are other tidyverse packages specifically for reading in data from Excel files (`readxl`), Google Drive files (`googledrive` and `googlesheets4`), databases (`DBI`), SPSS/Stata/SAS data (`haven`), and various web data formats (`httr`, `xml2`, `jsonlite`).
 {:.notes}
-
-The syntax for reading in one file would be 
-
-```{r, results='hide'}
-read_csv(penguin_files[1])
-```
 
 ===
 
@@ -94,7 +87,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x))
 
 ===
 
-Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using these codes
+Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using these codes:
 
 | character   | data type       |
 |-------------+------------------|
@@ -117,7 +110,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = "cdcccccddddcddccc"))
 
 ===
 
-Or use `spec_csv` to generate a column specification that can be passed to the col_types argument.
+Or use `spec_csv` to generate a column specification from the first file that can be passed to the col_types argument. 
 
 ```{r, handout = 0, message=FALSE}
 my_col_types <- spec_csv(penguin_files[1])
@@ -134,17 +127,18 @@ pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 
 ===
 
-## The pipe
+## Combine with pipes
+
+![pipe]({% include asset.html path="images/pipe.jpg" %}){: width="50%"}
 
 Remember the `%>%` ? 
 
-![pipe]({% include asset.html path="images/pipe.jpg" %}){: width="50%"}
 Readability is one of the core tenets of the tidyverse and this is accomplished with piped workflows. The functions are designed to work together based on the first argument and the type of output returned. 
 {:.notes}
 
 ===
 
-Combine our previous steps together without creating intermediate objects:
+Let's combine our previous steps together without creating intermediate objects:
 
 ```{r, message = FALSE, handout = 0}
 pg_df <- dir_ls("data/penguins") %>%

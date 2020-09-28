@@ -1,6 +1,7 @@
 ---
 ---
 
+## Categorical data
 
 
 
@@ -16,9 +17,9 @@
 {:.output}
 
 
-😲 this is new in R version 4 !!
+😲 this setting is new in R version 4 !!
 
-we used read_csv so it was that way anyway, but there are situations where you may want to use factors, especially for MODELING and PLOTS. essentially when you want character vectors to not be alphabetical. The `forcats` package is intended to make this easier.
+We used read_csv so it was that way anyway, but there are situations where you may want to use factors, especially for MODELING and PLOTS. essentially when you want character vectors to not be alphabetical. The `forcats` package is intended to make this easier.
 
 ===
 
@@ -99,7 +100,6 @@ Use this to make common into a factor. Does this change the barplot?
 ![ ]({% include asset.html path="images/forcats/unnamed-chunk-6-1.png" %})
 {:.captioned}
 
-{:.fragment}Instead of alphabetical, the levels are now in the order they appeared in the dataset. 
 
 ===
 
@@ -131,16 +131,12 @@ Or more generally, `fct_reorder` to use a different variable. In this case let's
 +   geom_boxplot()
 ~~~
 {:title="Console" .input}
-
-
-~~~
-Warning: Removed 2 rows containing non-finite values (stat_boxplot).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/forcats/unnamed-chunk-8-1.png" %})
 {:.captioned}
 
 ===
+
+## All combinations of variables
 
 To create a table with combinations of variables, use `expand` from the tidyr package. For example:
 

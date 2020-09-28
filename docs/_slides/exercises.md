@@ -68,6 +68,13 @@ Expand the `pars` data frame with a column of 10 model names for each of the uni
 
 ===
 
+### Exercise 7
+
+Use different images (such as from [phylopic.org](http://phylopic.org/)) to include in the labels representing each penguin species.
+
+[View solution](#solution-7)
+{:.notes}
+
 ## Solutions
 
 ===
@@ -167,4 +174,11 @@ Expand the `pars` data frame with a column of 10 model names for each of the uni
 
 
 [Return](#exercise-6)
+{:.notes}
+
+### Solution 7
+
+You're on your own so far!
+
+[Return](#exercise-7)
 {:.notes}

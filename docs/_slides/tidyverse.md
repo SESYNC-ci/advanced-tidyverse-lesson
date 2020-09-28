@@ -10,7 +10,11 @@ set of packages that share a high-level design philosophy and low-level grammar 
 
 alternatives: base R, which prioritizes stability, and data.table which prioritizes concision and performance
 
-Load the tidyverse meta-package using
+===
+
+## Core Tidyverse
+
+Load the tidyverse meta-package using:
 
 
 
@@ -20,12 +24,7 @@ library(tidyverse)
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-
-===
-
-## Core Tidyverse
-
-These are the 8 packages that are loaded with `library(tidyverse)`
+These are the 8 packages now loaded into your environment:
 
 | Package    | Purpose                       |
 |------------+-------------------------------|
@@ -42,13 +41,27 @@ These are the 8 packages that are loaded with `library(tidyverse)`
 
 ## Expanded tidyverse
 
-`install.packages("tidyverse")` also installs 15 other packages
+What took so long to install then? `install.packages("tidyverse")` also installs these 15 other packages:
 
-- `broom`, `dbplyr`, `haven`, `hms`, `httr`, `jsonlite`, `lubridate`, `magrittr`, `modelr`, `pillar`, `readxl`, `reprex`, `rlang`, `rvest`, `xml2`
+| Package    | Purpose                       |
+|------------+-------------------------------|
+| `broom`     |                |
+| `dbplyr`    |                      |
+| `haven`     |                      |
+| `hms`       |                  |
+| `httr`      |      |
+| `jsonlite`  |        |
+| `lubridate` |       |
+| `magrittr`  |         |
+| `modelr`    | |
+| `pillar`    | |
+| `readxl`    | |
+| `reprex`    | |
+| `rlang`     | |
+| `rvest`     | |
+| `xml2`      | |
 
-and their 66 dependencies
-
-- including `fs`, `glue`, `scales`, `RColorBrewer`
+and their 66 dependencies including `fs`, `glue`, and `scales` which we will use in this lesson.
 
 ===
 

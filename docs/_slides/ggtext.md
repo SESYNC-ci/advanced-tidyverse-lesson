@@ -3,7 +3,7 @@
 
 ## Glue
 
-Our data contain both the common and Latin names for the 3 penguin species. We will combine them into one column to use for labeling in a plot.
+Our data contain both the common and Latin names for the 3 penguin species, in separate column. We want to combine them into one column to use for labeling in a plot. 
 
 
 
@@ -27,7 +27,7 @@ Our data contain both the common and Latin names for the 3 penguin species. We w
 
 ===
 
-**glue** is the tidyverse package for pasting strings together. Expressions in `{ }` are evaluated as R code. 
+**glue** is the tidyverse package for pasting data and strings together. Expressions in `{ }` are evaluated as R code. 
 
 
 
@@ -61,7 +61,7 @@ pg_df <- pg_df %>%
 
 ===
 
-Make a sideways boxplot comparing δ^{13}C ‰ carbon isotope values by species. Rotate the graph to better display the labels
+Make a sideways boxplot comparing δ^13^C ‰ carbon isotope values by species. Rotate the graph to better display the labels
 
 
 
@@ -78,7 +78,7 @@ pg_df %>%
 
 ===
 
-We will now use markdown syntax within the plot labels to italicize *only* the Latin name part of the label. This functionality will soon be in `ggplot2` but for now install from ggtext
+We will now use markdown syntax within the plot labels to italicize *only* the Latin name part of the label. This functionality will soon be in `ggplot2` but for now install/load from the ggtext package.
 
 
 
@@ -108,7 +108,7 @@ pg_df %>%
 
 ===
 
-Specify that this theme element should be interpreted as markdown. Recall that we flipped the X and Y axes! 
+We will also need to specify that this theme element should be interpreted as markdown. Recall that we flipped the X and Y axes! 
 
 
 
@@ -125,7 +125,7 @@ pg_df %>%
 
 ===
 
-Can also use some more html tags: line break, italics, bold, colors, fonts, super/subscript, images
+The other tags and formatting that can be interpreted are: line break, italics, bold, colors, fonts, super/subscript, and images.
 
 
 
@@ -198,7 +198,7 @@ This will create a new vector of Right Hand Side values based on whether cases e
 
 ===
 
-Add in the colors from the Dark2 palette
+Add in the colors we identified from the Dark2 palette in a new column called color. The LHS is the conditional statement to filer rows and the RHS is the replacement value, in this case the color hex code.
 
 
 
@@ -210,6 +210,9 @@ pg_df <- pg_df %>%
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
+
+If there were rows with other or NA values for the common name, we could designate what goes in the color column for those rows by adding another conditional such as `TRUE ~ "#000000`.
+{:.notes}
 
 ===
 

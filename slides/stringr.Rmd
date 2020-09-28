@@ -98,7 +98,7 @@ as.Date(egg_dates)
 
 Lubridate can make some smart guesses about date formats with a little bit of help: the order **m**onth, **d**ay, **y*ear. 
 
-```{r, handout = 0}
+```{r, handout = 0, results='hide'}
 library(lubridate)
 mdy(egg_dates)
 ```
