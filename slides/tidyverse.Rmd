@@ -12,7 +12,7 @@ alternatives: base R, which prioritizes stability, and data.table which prioriti
 
 Load the tidyverse meta-package using
 
-```{r}
+```{r library, handout = 0}
 library(tidyverse)
 ```
 

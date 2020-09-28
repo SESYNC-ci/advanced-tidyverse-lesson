@@ -13,24 +13,25 @@ The data in the package is organized into 2 data frames but for teaching purpose
 
 ===
 
-There are separate CSV files for each sampling date with the same format and file naming convention. Our goal is to have the data from all 50 files into the same data frame, and add the date metadata from the filename into the table (is not currently).
+There are separate CSV files for each sampling date with the same format and file naming convention. Our goal is to have the data from all 50 files into the same data frame, and add the date metadata from the filename into the table (which it is not currently).
 
 ```{r}
 list.files('data/penguins')
 ```
 
+
 ===
 
-Load the `fs` package to work with the file system. Create a vector of files with `dir_ls()`
+Load the `fs` package (non-core tidyverse) to work with the file system. Create a vector of filepaths with `dir_ls()`
 
-```{r fs, title = '{{ site.handouts[0] }}'}
+```{r fs, handout = 0}
 library(fs)
 penguin_files <- dir_ls('data/penguins')
 ```
 
 ===
 
-`fs` path objects are character vectors but a little smarter. Specialized functions can extract or retrieve parts of path.  
+`fs` path objects are character vectors but a little smarter. Check out some specialized functions can extract or retrieve parts of path.  
 
 ```{r}
 penguin_files[1] %>% path_dir()
@@ -49,11 +50,13 @@ Readr is the tidyverse package for reading in rectangular data like CSV or TSV i
 
 The syntax for reading in one file would be 
 
-```{r}
+```{r, results='hide'}
 read_csv(penguin_files[1])
 ```
 
 ===
+
+## Map functions
 
 The approach to iteration in the tidyverse is by using `map` functions in the `purrr` package. 
 
@@ -68,21 +71,21 @@ The arguments to map are:
 
 Read all `penguin_files` into a list of dataframes called `pg_list` using:
 
-```{r}
-pg_list <- map(.x = penguin_files, .f = read_csv)
+```{r map, results='hide'}
+map(.x = penguin_files, .f = read_csv)
 ```
 
 Or use `~` to specify the function and arguments:
 
-```{r}
-pg_files <- map(.x = penguin_files, ~read_csv(.x))
+```{r mapother, results='hide'}
+ map(.x = penguin_files, ~read_csv(.x))
 ```
 
 ===
 
 Whereas `map` always returns a list, there are `map_*` functions for returning specific types of vectors (e.g. `map_chr` or `map_int`). Use `map_df` for returning *one* dataframe:
 
-```{r}
+```{r, message = FALSE, handout = 0}
 pg_df <- map_df(penguin_files, ~read_csv(.x))
 ```
 
@@ -90,7 +93,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x))
 
 Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using: c, i, n, d, l, f, D, T, t, ?, _, -
 
-```{r}
+```{r, handout = 0}
 pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = "cdcccccddddcddccc"))
 ```
 
@@ -99,7 +102,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = "cdcccccddddcddccc"))
 
 Or use `spec_csv` to generate a column specification that can be passed to the col_types argument.
 
-```{r}
+```{r, handout = 0}
 my_col_types <- spec_csv(penguin_files[1])
 pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
 ```
@@ -108,7 +111,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
 
 Another handy argument for `map_df` is `.id` for putting the names of each item of `.x` into a column. 
 
-```{r}
+```{r, handout = 0}
 pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 ```
 
@@ -124,18 +127,18 @@ Some note about how readability is one of the core tenets of the tidyverse and t
 
 Combine previous steps together without creating intermediate objects:
 
-```{r}
+```{r, message = FALSE, handout = 0}
 pg_df <- dir_ls("data/penguins") %>%
   map_df(~read_csv(.x), .id = "filename")
 ```
 
 ===
 
-# Exercise 1
+### Exercise 1
 
 Use purrr's `walk2` function to save a separate csv file for penguins from each island using a list of data frames and a vector of filenames. 
 
-Hint: Check out the `split` or (experimental) `group_split` function for creating the list. 
+Hint: Check out the base `split` or (experimental) dplyr `group_split` function for creating the list. 
 
 [View solution](#solution-1)
 {:.notes}

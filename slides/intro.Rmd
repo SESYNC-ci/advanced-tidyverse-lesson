@@ -4,17 +4,17 @@
 ## Lesson Objectives
 
 - Meet the core tidyverse
-- Pipe some workflows
-- something else
+- Learn functions that ease data cleaning
+- Level up exploratory data visualizations
 
 ===
 
 ## Specific Achievements
 
-- Read a folder of CSV files into a data frame
-- Manipulate strings and dates with ease
+- Read a folder of tabular files into one data frame
+- Efficiently manipulate string and date vectors
 - Format text in ggplot labels
-- Take charge of factors
+- Rearrange factor levels
 
 ===
 

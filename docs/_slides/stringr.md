@@ -34,21 +34,26 @@ We will rename the columns of our data frame to remove spaces and punctuation.
 {:.output}
 
 
-We could rename each individually using `dplyr`'s `rename`...
 
 ===
 
-Or use `rename_with` to do the same thing to every column name:
+We could rename each individually using `dplyr`'s `rename`, but `rename_with` is a handy shortcut if you want to do the same thing to every column name:
 
-```
-rename_with(.data = pg_df, .fn = )
-```
 
-We will use functions in the core tidyverse `stringr` package to manipulate character vectors
+
+~~~r
+> rename_with(.data = pg_df, .fn = ...)
+~~~
+{:title="Console" .no-eval .input}
+
+
+We will use functions in the core tidyverse `stringr` package to manipulate the column name strings. 
 
 ===
 
-Remove spaces either with exact pattern or [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html). Test out function on one column name:
+## Pattern replacement 
+
+Replaces spaces with underscore characters ("_") either with exact pattern or [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html). Test out function on one column name:
 
 
 
@@ -78,7 +83,7 @@ Remove spaces either with exact pattern or [regular expressions](https://stringr
 
 ===
 
-Similarly, can remove punctuation using regex pattern
+Similarly, can remove all punctuation using the regex pattern `[:punct:]`
 
 
 
@@ -99,12 +104,15 @@ Combine both and convert to lower case using pipes:
 
 
 ~~~r
-> pg_df <- pg_df %>%
-+   rename_with(~str_replace_all(.x, "[:punct:]", "")) %>%
-+   rename_with(~str_replace_all(.x, "[:space:]", "_")) %>%
-+   rename_with(~str_to_lower(.x))
+pg_df <- pg_df %>%
+  rename_with(~str_replace_all(.x, "[:punct:]", "")) %>%
+  rename_with(~str_replace_all(.x, "[:space:]", "_")) %>%
+  rename_with(~str_to_lower(.x))
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+And see the result:
 
 
 
@@ -127,7 +135,9 @@ Combine both and convert to lower case using pipes:
 
 ===
 
-Now let's work on putting the date information from the filenames into a properly formatted column of dates. Is there a systematic way to extract the necessary information?
+## Format dates
+
+Now let's work on putting the date information from the filenames into a properly formatted column of dates. Look at a sample of the data to evaluate: Is there a systematic way to extract the necessary information?
 
 
 
@@ -154,10 +164,10 @@ Every file name is the same besides the date, so we can remove those exact chara
 
 
 ~~~r
-> egg_dates <- str_remove_all(string = pg_df$filename, 
-+                             pattern =  "(data/penguins_nesting-)|(.csv)")
+egg_dates <- str_remove_all(string = pg_df$filename, 
+    pattern =  "(data/penguins_nesting-)|(.csv)")
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ===
@@ -180,30 +190,10 @@ Lubridate can make some smart guesses about date formats with a little bit of he
 
 
 ~~~r
-> library(lubridate)
+library(lubridate)
+mdy(egg_dates)
 ~~~
-{:title="Console" .input}
-
-
-~~~
-
-Attaching package: 'lubridate'
-~~~
-{:.output}
-
-
-~~~
-The following objects are masked from 'package:base':
-
-    date, intersect, setdiff, union
-~~~
-{:.output}
-
-
-~~~r
-> mdy(egg_dates)
-~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -340,9 +330,9 @@ Combine the string manipulation and date conversion:
 
 
 
-## Exericse 2
+### Exericse 2
 
-Remove "data/" and  ".csv" from the filename strings using only functions in the fs package.
+Remove "data/penguins" and  ".csv" from the filename strings using only functions in the fs package.
 
 [View solution](#solution-2)
 {:.notes}

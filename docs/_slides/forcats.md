@@ -99,7 +99,7 @@ Use this to make common into a factor. Does this change the barplot?
 ![ ]({% include asset.html path="images/forcats/unnamed-chunk-6-1.png" %})
 {:.captioned}
 
-{:.fragment} Instead of alphabetical, the levels are now in the order they appeared in the dataset. 
+{:.fragment}Instead of alphabetical, the levels are now in the order they appeared in the dataset. 
 
 ===
 
@@ -176,13 +176,29 @@ To only include the combinations of variables that do appear in your data, put t
 
 
 ~~~r
-> pars <- pg_df %>% expand(nesting(island, sex, common))
+pars <- pg_df %>% expand(nesting(island, sex, common))
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+
+~~~r
+> str(pars)
 ~~~
 {:title="Console" .input}
 
 
+~~~
+tibble [13 × 3] (S3: tbl_df/tbl/data.frame)
+ $ island: chr [1:13] "Biscoe" "Biscoe" "Biscoe" "Biscoe" ...
+ $ sex   : chr [1:13] "FEMALE" "FEMALE" "MALE" "MALE" ...
+ $ common: Factor w/ 3 levels "Gentoo penguin",..: 1 3 1 3 1 2 3 2 3 3 ...
+~~~
+{:.output}
 
-## Exercise 5
+
+
+### Exercise 5
 
 Convert all character columns except for "comment" to factors using one mutate function. 
 
@@ -191,7 +207,7 @@ Hint: Check out the [across](https://dplyr.tidyverse.org/articles/programming.ht
 [View solution](#solution-5)
 {:.notes}
 
-## Exericse 6
+### Exericse 6
 
 Expand the `pars` data frame with a column of 10 model names for each of the unique combinations of island, sex, and species that appear in the data set. (should result in a 4 x 130 data frame)
 

@@ -19,21 +19,22 @@ We will rename the columns of our data frame to remove spaces and punctuation.
 names(pg_df)
 ```
 
-We could rename each individually using `dplyr`'s `rename`...
 
 ===
 
-Or use `rename_with` to do the same thing to every column name:
+We could rename each individually using `dplyr`'s `rename`, but `rename_with` is a handy shortcut if you want to do the same thing to every column name:
 
-```
-rename_with(.data = pg_df, .fn = )
+```{r, eval=FALSE}
+rename_with(.data = pg_df, .fn = ...)
 ```
 
-We will use functions in the core tidyverse `stringr` package to manipulate character vectors
+We will use functions in the core tidyverse `stringr` package to manipulate the column name strings. 
 
 ===
 
-Remove spaces either with exact pattern or [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html). Test out function on one column name:
+## Pattern replacement 
+
+Replaces spaces with underscore characters ("_") either with exact pattern or [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html). Test out function on one column name:
 
 ```{r}
 str_replace_all("Body Mass (g)", pattern = " ", replacement = "_")
@@ -43,7 +44,7 @@ str_replace_all("Body Mass (g)", pattern = "[:space:]", replacement = "_")
 
 ===
 
-Similarly, can remove punctuation using regex pattern
+Similarly, can remove all punctuation using the regex pattern `[:punct:]`
 
 ```{r}
 str_replace_all("Delta 15 N (o/oo)", pattern = "[:punct:]", replacement = "")
@@ -51,19 +52,24 @@ str_replace_all("Delta 15 N (o/oo)", pattern = "[:punct:]", replacement = "")
 
 Combine both and convert to lower case using pipes:
 
-```{r}
+```{r, handout = 0}
 pg_df <- pg_df %>%
   rename_with(~str_replace_all(.x, "[:punct:]", "")) %>%
   rename_with(~str_replace_all(.x, "[:space:]", "_")) %>%
   rename_with(~str_to_lower(.x))
 ```
+
+And see the result:
+
 ```{r}
 names(pg_df)
 ```
 
 ===
 
-Now let's work on putting the date information from the filenames into a properly formatted column of dates. Is there a systematic way to extract the necessary information?
+## Format dates
+
+Now let's work on putting the date information from the filenames into a properly formatted column of dates. Look at a sample of the data to evaluate: Is there a systematic way to extract the necessary information?
 
 ```{r}
 sample(pg_df$filename, 5)
@@ -73,9 +79,9 @@ sample(pg_df$filename, 5)
 
 Every file name is the same besides the date, so we can remove those exact characters. Save to a vector. 
 
-```{r}
+```{r, handout = 0}
 egg_dates <- str_remove_all(string = pg_df$filename, 
-                            pattern =  "(data/penguins_nesting-)|(.csv)")
+    pattern =  "(data/penguins_nesting-)|(.csv)")
 ```
 
 ===
@@ -91,7 +97,7 @@ as.Date(egg_dates)
 
 Lubridate can make some smart guesses about date formats with a little bit of help: the order **m**onth, **d**ay, **y*ear. 
 
-```{r}
+```{r, handout = 0}
 library(lubridate)
 mdy(egg_dates)
 ```
@@ -117,9 +123,9 @@ pg_df <- pg_df %>%
 ```
 
 
-## Exericse 2
+### Exericse 2
 
-Remove "data/" and  ".csv" from the filename strings using only functions in the fs package.
+Remove "data/penguins" and  ".csv" from the filename strings using only functions in the fs package.
 
 [View solution](#solution-2)
 {:.notes}

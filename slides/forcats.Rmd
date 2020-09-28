@@ -49,7 +49,7 @@ pg_df %>%
   geom_bar()
 ```
 
-{:.fragment} Instead of alphabetical, the levels are now in the order they appeared in the dataset. 
+{:.fragment}Instead of alphabetical, the levels are now in the order they appeared in the dataset. 
 
 ===
 
@@ -84,12 +84,15 @@ pg_df %>% expand(island, sex, common)
 
 To only include the combinations of variables that do appear in your data, put the column names inside of the `nesting` helper function.
 
-```{r}
+```{r, handout = 0}
 pars <- pg_df %>% expand(nesting(island, sex, common))
+```
+```{r}
+str(pars)
 ```
 
 
-## Exercise 5
+### Exercise 5
 
 Convert all character columns except for "comment" to factors using one mutate function. 
 
@@ -98,7 +101,7 @@ Hint: Check out the [across](https://dplyr.tidyverse.org/articles/programming.ht
 [View solution](#solution-5)
 {:.notes}
 
-## Exericse 6
+### Exericse 6
 
 Expand the `pars` data frame with a column of 10 model names for each of the unique combinations of island, sex, and species that appear in the data set. (should result in a 4 x 130 data frame)
 

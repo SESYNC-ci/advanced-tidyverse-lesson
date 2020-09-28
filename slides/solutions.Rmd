@@ -6,7 +6,7 @@
 
 ===
 
-## Solution 1
+### Solution 1
 
 ```{r}
 filenames <- glue::glue("{unique(pg_df$Island)}.csv")
@@ -18,7 +18,7 @@ pg_df %>%
 [Return](#exercise-1)
 {:.notes}
 
-## Solution 2
+### Solution 2
 
 ```{r}
 pg_df$filename %>% 
@@ -30,7 +30,7 @@ pg_df$filename %>%
 [Return](#exercise-2)
 {:.notes}
 
-## Solution 3
+### Solution 3
 
 ```{r}
 pg_df %>%
@@ -45,7 +45,7 @@ pg_df %>%
 [Return](#exercise-3)
 {:.notes}
 
-## Solution 4
+### Solution 4
 
 ```{r}
 pg_df %>% 
@@ -58,7 +58,7 @@ pg_df %>%
 [Return](#exercise-4)
 {:.notes}
 
-## Solution 5
+### Solution 5
 
 ```{r}
 pg_df %>% 
@@ -68,7 +68,7 @@ pg_df %>%
 [Return](#exercise-4)
 {:.notes}
 
-## Solution 6
+### Solution 6
 
 ```{r}
 library(magrittr)

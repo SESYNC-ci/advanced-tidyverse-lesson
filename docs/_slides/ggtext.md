@@ -1,6 +1,8 @@
 ---
 ---
 
+## Glue
+
 Our data contain both the common and Latin names for the 3 penguin species. We will combine them into one column to use for labeling in a plot.
 
 
@@ -30,24 +32,9 @@ Our data contain both the common and Latin names for the 3 penguin species. We w
 
 
 ~~~r
-> library(glue)
+library(glue)
 ~~~
-{:title="Console" .input}
-
-
-~~~
-
-Attaching package: 'glue'
-~~~
-{:.output}
-
-
-~~~
-The following object is masked from 'package:dplyr':
-
-    collapse
-~~~
-{:.output}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 
@@ -59,355 +46,6 @@ The following object is masked from 'package:dplyr':
 {:title="Console" .input}
 
 
-~~~
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Chinstrap penguin (Pygoscelis antarctica)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-Adelie Penguin (Pygoscelis adeliae)
-Adelie Penguin (Pygoscelis adeliae)
-Gentoo penguin (Pygoscelis papua)
-Gentoo penguin (Pygoscelis papua)
-~~~
-{:.output}
-
-
 ===
 
 Make species a new column in the data frame using `mutate`
@@ -415,26 +53,26 @@ Make species a new column in the data frame using `mutate`
 
 
 ~~~r
-> pg_df <- pg_df %>% 
-+   mutate(species = glue("{common} ({latin})"))
+pg_df <- pg_df %>% 
+  mutate(species = glue("{common} ({latin})"))
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ===
 
-Make a sideways boxplot comparing $\delta^{13} C$ ‰ carbon isotope values by species. Rotate the graph to better display the labels
+Make a sideways boxplot comparing δ^{13}C ‰ carbon isotope values by species. Rotate the graph to better display the labels
 
 
 
 
 ~~~r
-> pg_df %>% 
-+   ggplot(aes(x = species, y = delta_13_c_ooo)) +
-+   geom_boxplot() +
-+   coord_flip()
+pg_df %>% 
+  ggplot(aes(x = species, y = delta_13_c_ooo)) +
+  geom_boxplot() +
+  coord_flip()
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -451,22 +89,10 @@ We will now use markdown syntax within the plot labels to italicize *only* the L
 
 
 ~~~r
-> devtools::install_github("wilkelab/ggtext")
+# devtools::install_github("wilkelab/ggtext")
+library(ggtext)
 ~~~
-{:title="Console" .input}
-
-
-~~~
-Skipping install of 'ggtext' from a github remote, the SHA1 (dfb02af7) has not changed since last install.
-  Use `force = TRUE` to force installation
-~~~
-{:.output}
-
-
-~~~r
-> library(ggtext)
-~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ===
@@ -476,13 +102,13 @@ Remember markdown syntax?
 
 
 ~~~r
-> pg_df %>% 
-+   mutate(species = glue("{common} (*{latin}*)")) %>%
-+   ggplot(aes(x = species, y = delta_13_c_ooo)) +
-+   geom_boxplot() +
-+   coord_flip()
+pg_df %>% 
+  mutate(species = glue("{common} (*{latin}*)")) %>%
+  ggplot(aes(x = species, y = delta_13_c_ooo)) +
+  geom_boxplot() +
+  coord_flip()
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -499,13 +125,13 @@ Specify that this theme element should be interpreted as markdown. Recall that w
 
 
 ~~~r
-> pg_df %>% 
-+   mutate(species = glue("{common} (*{latin}*)")) %>%
-+   ggplot(aes(x = species, y = delta_13_c_ooo)) +
-+   geom_boxplot() + coord_flip() +
-+   theme(axis.text.y = element_markdown()) 
+pg_df %>% 
+  mutate(species = glue("{common} (*{latin}*)")) %>%
+  ggplot(aes(x = species, y = delta_13_c_ooo)) +
+  geom_boxplot() + coord_flip() +
+  theme(axis.text.y = element_markdown()) 
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -522,13 +148,13 @@ Can also use some more html tags: line break, italics, bold, colors, fonts, supe
 
 
 ~~~r
-> pg_df %>% 
-+   mutate(species = glue("{common}<br>(*{latin}*)")) %>%
-+   ggplot(aes(x = species, y = delta_13_c_ooo)) +
-+   geom_boxplot() + coord_flip() +
-+   theme(axis.text.y = element_markdown()) 
+pg_df %>% 
+  mutate(species = glue("{common}<br>(*{latin}*)")) %>%
+  ggplot(aes(x = species, y = delta_13_c_ooo)) +
+  geom_boxplot() + coord_flip() +
+  theme(axis.text.y = element_markdown()) 
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -545,13 +171,13 @@ Did you say color??
 
 
 ~~~r
-> pg_df %>% 
-+   mutate(species = glue("{common}<br><i style='color:#009E73'>({latin})</i>")) %>%
-+   ggplot(aes(x = species, y = delta_13_c_ooo)) +
-+   geom_boxplot() + coord_flip() +
-+   theme(axis.text.y = element_markdown())
+pg_df %>% 
+  mutate(species = glue("{common}<br><i style='color:#009E73'>({latin})</i>")) %>%
+  ggplot(aes(x = species, y = delta_13_c_ooo)) +
+  geom_boxplot() + coord_flip() +
+  theme(axis.text.y = element_markdown())
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -568,32 +194,9 @@ Explore color codes using the `scales` package, which underlies many other funct
 
 
 ~~~r
-> library(scales)
+library(scales)
 ~~~
-{:title="Console" .input}
-
-
-~~~
-
-Attaching package: 'scales'
-~~~
-{:.output}
-
-
-~~~
-The following object is masked from 'package:purrr':
-
-    discard
-~~~
-{:.output}
-
-
-~~~
-The following object is masked from 'package:readr':
-
-    col_factor
-~~~
-{:.output}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 
@@ -601,13 +204,15 @@ The following object is masked from 'package:readr':
 > show_col(viridis_pal()(3))
 ~~~
 {:title="Console" .input}
-![ ](images/ggtext/unnamed-chunk-12-1.png)
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-12-1.png" %})
+{:.captioned}
+
 
 ~~~r
 > show_col((brewer_pal(type = "qual", palette = "Dark2"))(3))
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-12-2.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-13-1.png" %})
 {:.captioned}
 
 ===
@@ -628,12 +233,12 @@ Add in the colors from the Dark2 palette
 
 
 ~~~r
-> pg_df <- pg_df %>%
-+   mutate(color = case_when(common == "Gentoo penguin" ~ "#1B9E77",
-+                            common == "Chinstrap penguin" ~ "#D95F02",
-+                            common == "Adelie Penguin" ~ "#7570B3"))
+pg_df <- pg_df %>%
+  mutate(color = case_when(common == "Gentoo penguin" ~ "#1B9E77",
+                           common == "Chinstrap penguin" ~ "#D95F02",
+                           common == "Adelie Penguin" ~ "#7570B3"))
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ===
@@ -643,23 +248,23 @@ Then use glue to include the value from the `color` column in the species label.
 
 
 ~~~r
-> pg_df %>% 
-+   mutate(species = glue("{common}<br><i style='color:{color}'>({latin})</i>")) %>%
-+   ggplot(aes(x = species, y = delta_13_c_ooo)) +
-+   geom_boxplot() + coord_flip() +
-+   theme(axis.text.y = element_markdown())
+pg_df %>% 
+  mutate(species = glue("{common}<br><i style='color:{color}'>({latin})</i>")) %>%
+  ggplot(aes(x = species, y = delta_13_c_ooo)) +
+  geom_boxplot() + coord_flip() +
+  theme(axis.text.y = element_markdown())
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
 Warning: Removed 13 rows containing non-finite values (stat_boxplot).
 ~~~
 {:.output}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-14-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-15-1.png" %})
 {:.captioned}
 
-## Exericse 3
+### Exericse 3
 
 Also use the different colors for each species within the plot geometry layer. 
 
@@ -668,7 +273,7 @@ Hint: You will need a `scale_` function
 [View solution](#solution-3)
 {:.notes}
 
-## Exercise 4
+### Exercise 4
 
 *Bonus fun!* 
 
