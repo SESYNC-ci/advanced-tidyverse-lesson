@@ -51,6 +51,8 @@ We will use functions in the core tidyverse `stringr` package to manipulate the 
 
 Replaces spaces with underscore characters ("_") either with exact pattern or [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html). Test out function on one column name:
 
+replace vs replace all
+
 
 
 ~~~r
@@ -73,6 +75,8 @@ Similarly, can remove all punctuation using the regex pattern `[:punct:]`
 
 
 Combine both transformations and add a new one (convert to lower case) in one fell swoop:
+
+point out function syntax again
 
 
 
@@ -140,7 +144,7 @@ Every file name is the same besides the date, so we can remove those exact chara
 
 ~~~r
 egg_dates <- str_remove_all(string = pg_df$filename, 
-    pattern =  "(data/penguins_nesting-)|(.csv)")
+    pattern =  "(data/penguins/penguins_nesting-)|(.csv)")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
@@ -175,6 +179,8 @@ mdy(egg_dates)
 
 The POSIX date standard specifies codes for various components of dates and times, which can be used for the `format` argument in `as_date`
 
+table with posix common things
+
 
 
 ~~~r
@@ -193,7 +199,7 @@ Combine the string manipulation and date conversion:
 ~~~r
 pg_df <- pg_df %>%
   mutate(egg_date = str_remove_all(filename,
-          "(data/penguins_nesting-)|(.csv)")) %>%
+          "(data/penguins/penguins_nesting-)|(.csv)")) %>%
   mutate(egg_date = mdy(egg_date))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}

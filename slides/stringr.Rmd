@@ -36,6 +36,8 @@ We will use functions in the core tidyverse `stringr` package to manipulate the 
 
 Replaces spaces with underscore characters ("_") either with exact pattern or [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html). Test out function on one column name:
 
+replace vs replace all
+
 ```{r, eval=FALSE}
 str_replace_all("Body Mass (g)", pattern = " ", replacement = "_")
 str_replace_all("Body Mass (g)", pattern = "[:space:]", replacement = "_")
@@ -50,6 +52,8 @@ str_replace_all("Delta 15 N (o/oo)", pattern = "[:punct:]", replacement = "")
 ```
 
 Combine both transformations and add a new one (convert to lower case) in one fell swoop:
+
+point out function syntax again
 
 ```{r, handout = 0}
 pg_df <- pg_df %>%
@@ -82,7 +86,7 @@ Every file name is the same besides the date, so we can remove those exact chara
 
 ```{r, handout = 0}
 egg_dates <- str_remove_all(string = pg_df$filename, 
-    pattern =  "(data/penguins_nesting-)|(.csv)")
+    pattern =  "(data/penguins/penguins_nesting-)|(.csv)")
 ```
 
 ===
@@ -107,6 +111,8 @@ mdy(egg_dates)
 
 The POSIX date standard specifies codes for various components of dates and times, which can be used for the `format` argument in `as_date`
 
+table with posix common things
+
 ```{r, results='hide'}
 guess_formats("December-1-2009", orders = "mdy")
 as_date(egg_dates, format = "%B-%d-%Y")
@@ -119,7 +125,7 @@ Combine the string manipulation and date conversion:
 ```{r, handout = 0}
 pg_df <- pg_df %>%
   mutate(egg_date = str_remove_all(filename,
-          "(data/penguins_nesting-)|(.csv)")) %>%
+          "(data/penguins/penguins_nesting-)|(.csv)")) %>%
   mutate(egg_date = mdy(egg_date))
 ```
 

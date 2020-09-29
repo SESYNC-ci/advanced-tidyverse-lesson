@@ -1,9 +1,9 @@
 ---
 ---
 
-## Penguin Data
+## Read in data
 
-We'll be using the data modified from the [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/index.html) package. 
+We'll be using the data modified from the [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/index.html) package, which provides a dataset about 3 different species of penguins collected at [Palmer Station Antarctica LTER](https://pal.lternet.edu/). 
 
 ![]({% include asset.html path="images/lter_penguins.png" %}){: width="50%"}  
 *Credit: [Artwork by @allison_horst](https://www.allisonhorst.com/)*
@@ -12,7 +12,9 @@ We'll be using the data modified from the [palmerpenguins](https://allisonhorst.
 
 ===
 
-There are separate CSV files for each sampling date with the same format and file naming convention. Our goal is to have the data from all 50 files into the same data frame, and add the date metadata from the filename into the table (which it is not currently).
+For this lesson, the data has been split up into separate files - one for each study date when nests were observed. The sampling date is included in the file name but not in the data itself. 
+
+Our goal is to read in all 50 files into one data frame, and include the date from each file name in the table. The files are in a folder called **penguins** within the data folder. 
 
 
 
@@ -91,9 +93,25 @@ penguin_files <- dir_ls('data/penguins')
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
+
+
+~~~r
+> class(penguin_files)
+~~~
+{:title="Console" .input}
+
+
+~~~
+[1] "fs_path"   "character"
+~~~
+{:.output}
+
+
 ===
 
 `fs` path objects are character vectors but a little smarter. Check out some specialized functions can extract or retrieve parts of path.  
+
+any other arguments?
 
 
 
@@ -162,23 +180,15 @@ The arguments to map are:
 
 Read all `penguin_files` into a list using:
 
-
-
-~~~r
-> map(.x = penguin_files, .f = read_csv)
-~~~
-{:title="Console" .input}
-
+```
+map(.x = penguin_files, .f = read_csv)
+```
 
 Or use `~` to specify the function and arguments:
 
-
-
-~~~r
->  map(.x = penguin_files, ~read_csv(.x))
-~~~
-{:title="Console" .input}
-
+```
+ map(.x = penguin_files, ~read_csv(.x))
+```
 
 ===
 
@@ -248,7 +258,7 @@ pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 
 ## Combine with pipes
 
-![pipe]({% include asset.html path="images/pipe.jpg" %}){: width="50%"}
+![pipe]({% include asset.html path="images/pipe.jpeg" %}){: width="50%"}
 
 Remember the `%>%` ? 
 

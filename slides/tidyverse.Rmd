@@ -6,9 +6,13 @@
 The [tidyverse](https://www.tidyverse.org/) is an "opinonated collected of R packages designed for data science." There are multiple packages designed to tackle each stage of the data science workflow (importing, transforming, visualizing, modeling, etc.). All of the packages are unified by common design philosophies and data structures. 
 {:.notes}
 
-set of packages that share a high-level design philosophy and low-level grammar and data structures, so that learning one package makes it easier to learn the next
+![]({% include asset.html path="images/tidy-packages.png" %}){: width="75%"}  
+*How tidyverse packages fit into a canonical data science workflow.  [source](https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/)*
+{:.captioned}
 
-alternatives: base R, which prioritizes stability, and data.table which prioritizes concision and performance
+It is set of packages that share a high-level design philosophy and low-level grammar and data structures, so that learning one package makes it easier to learn the next.
+
+Not strictly alternatives but you might compare it to: base R, which prioritizes reliability, and [data.table](https://rdatatable.gitlab.io/data.table/) which prioritizes speed and concise syntax. 
 
 ===
 
@@ -37,27 +41,18 @@ These are the 8 packages now loaded into your environment:
 
 ## Expanded tidyverse
 
-What took so long to install then? `install.packages("tidyverse")` also installs these 15 other packages:
+`install.packages("tidyverse")` also installs a number of other packages with more specialized uses, as well as many package dependencies such as `fs` and `scales`.
 
-| Package    | Purpose                       |
+| Purpose    | Packages                       |
 |------------+-------------------------------|
-| `broom`     |                |
-| `dbplyr`    |                      |
-| `haven`     |                      |
-| `hms`       |                  |
-| `httr`      |      |
-| `jsonlite`  |        |
-| `lubridate` |       |
-| `magrittr`  |         |
-| `modelr`    | |
-| `pillar`    | |
-| `readxl`    | |
-| `reprex`    | |
-| `rlang`     | |
-| `rvest`     | |
-| `xml2`      | |
+| Importing data | `DBI`, `dbplyr`, `haven`, `httr`, `readxl`, `rvest`, `jsonlite`, `xml2` |
+| Wrangling specific types of data | `lubridate`, `hms`, `blob` | 
+| General programming | `magrittr`, `glue`, `reprex`, `rlang` |
+| Modeling | `broom`, `modelr` |
+| Under the hood | `pillar`, `rlang`, `cli`, `crayon` |
 
-and their 66 dependencies including `fs`, `glue`, and `scales` which we will use in this lesson.
+
+Ways to keep up with new developments are via the tidyverse [blog](https://www.tidyverse.org/blog/), videos from the [RStudio conferences](https://rstudio.com/resources/rstudioconf-2020/), or by following the developers on Twitter. 
 
 ===
 

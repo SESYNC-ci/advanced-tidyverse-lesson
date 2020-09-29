@@ -1,9 +1,13 @@
 ---
 ---
 
-## Glue
+Now we'll move into some visualization...
+what we want is..
+we'll accomplish that by first making a new column
 
-Our data contain both the common and Latin names for the 3 penguin species, in separate column. We want to combine them into one column to use for labeling in a plot. 
+## Combine strings
+
+Our data contain both the common and Latin names for the 3 penguin species, in separate column. We want to combine them into one column to use for labeling in a plot. These species names are:
 
 
 
@@ -22,7 +26,6 @@ Our data contain both the common and Latin names for the 3 penguin species, in s
 3 Adelie Penguin    Pygoscelis adeliae   
 ~~~
 {:.output}
-
 
 
 ===
@@ -75,6 +78,8 @@ pg_df %>%
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-5-1.png" %})
 {:.captioned}
+
+show axis.title.x = element_text(face = "italic")
 
 ===
 
@@ -211,7 +216,7 @@ pg_df <- pg_df %>%
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-If there were rows with other or NA values for the common name, we could designate what goes in the color column for those rows by adding another conditional such as `TRUE ~ "#000000`.
+If there were rows with other or NA values for the common name, we could designate what goes in the color column for those rows by adding another conditional such as `TRUE ~ "#000000"`.
 {:.notes}
 
 ===

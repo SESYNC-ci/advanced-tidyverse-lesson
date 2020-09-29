@@ -84,7 +84,7 @@ Forcats `as_factor` uses the order in which the levels appear in your data
 {:.output}
 
 
-Use this to make common into a factor. Does this change the barplot?
+Use this to make common into a factor. Notice the ordering of the bars now.
 
 
 

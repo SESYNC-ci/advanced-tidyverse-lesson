@@ -39,7 +39,7 @@ Forcats `as_factor` uses the order in which the levels appear in your data
 as_factor(pg_df$common) %>% levels()
 ```
 
-Use this to make common into a factor. Does this change the barplot?
+Use this to make common into a factor. Notice the ordering of the bars now.
 
 ```{r}
 pg_df <- pg_df %>% 
