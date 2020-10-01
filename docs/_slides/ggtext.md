@@ -40,6 +40,21 @@ library(glue)
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
+~~~
+
+Attaching package: 'glue'
+~~~
+{:.output}
+
+
+~~~
+The following object is masked from 'package:dplyr':
+
+    collapse
+~~~
+{:.output}
+
+
 
 
 

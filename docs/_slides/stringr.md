@@ -127,11 +127,11 @@ Now let's work on putting the date information from the filenames into a properl
 
 
 ~~~
-[1] "data/penguins/penguins_nesting-November-23-2009.csv"
-[2] "data/penguins/penguins_nesting-November-15-2009.csv"
-[3] "data/penguins/penguins_nesting-November-8-2008.csv" 
-[4] "data/penguins/penguins_nesting-November-15-2009.csv"
-[5] "data/penguins/penguins_nesting-November-28-2007.csv"
+[1] "data/penguins/penguins_nesting-November-25-2009.csv"
+[2] "data/penguins/penguins_nesting-November-27-2009.csv"
+[3] "data/penguins/penguins_nesting-November-3-2008.csv" 
+[4] "data/penguins/penguins_nesting-November-14-2008.csv"
+[5] "data/penguins/penguins_nesting-November-16-2007.csv"
 ~~~
 {:.output}
 
@@ -170,6 +170,26 @@ Lubridate can make some smart guesses about date formats with a little bit of he
 
 ~~~r
 library(lubridate)
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+
+Attaching package: 'lubridate'
+~~~
+{:.output}
+
+
+~~~
+The following objects are masked from 'package:base':
+
+    date, intersect, setdiff, union
+~~~
+{:.output}
+
+
+~~~r
 mdy(egg_dates)
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}

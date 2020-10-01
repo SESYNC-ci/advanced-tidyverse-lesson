@@ -149,7 +149,7 @@ If there were rows with other or NA values for the common name, we could designa
 
 Then use glue to include the value from the `color` column in the species label.
 
-```{r, message = FALSE, handout=0, warning=FALSE, fig.height = 3, dpi=100}
+```{r, message = FALSE, handout=0, warning=FALSE, fig.height=3, dpi=100}
 pg_df %>% 
   mutate(species = glue("{common}<br><i style='color:{color}'>({latin})</i>")) %>%
   ggplot(aes(x = species, y = delta_13_c_ooo)) +
