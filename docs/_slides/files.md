@@ -14,75 +14,13 @@ We'll be using the data modified from the [palmerpenguins](https://allisonhorst.
 
 For this lesson, the data has been split up into separate files - one for each study date when nests were observed. The sampling date is included in the file name but not in the data itself. 
 
-Our goal is to read in all 50 files into one data frame, and include the date from each file name in the table. The files are in a folder called **penguins** within the data folder. 
-
-
-
-~~~r
-> list.files('data/penguins')
-~~~
-{:title="Console" .input}
-
-
-~~~
- [1] "penguins_nesting-December-1-2009.csv" 
- [2] "penguins_nesting-December-3-2007.csv" 
- [3] "penguins_nesting-November-10-2007.csv"
- [4] "penguins_nesting-November-10-2008.csv"
- [5] "penguins_nesting-November-10-2009.csv"
- [6] "penguins_nesting-November-11-2007.csv"
- [7] "penguins_nesting-November-11-2008.csv"
- [8] "penguins_nesting-November-12-2007.csv"
- [9] "penguins_nesting-November-12-2009.csv"
-[10] "penguins_nesting-November-13-2007.csv"
-[11] "penguins_nesting-November-13-2008.csv"
-[12] "penguins_nesting-November-13-2009.csv"
-[13] "penguins_nesting-November-14-2008.csv"
-[14] "penguins_nesting-November-14-2009.csv"
-[15] "penguins_nesting-November-15-2007.csv"
-[16] "penguins_nesting-November-15-2008.csv"
-[17] "penguins_nesting-November-15-2009.csv"
-[18] "penguins_nesting-November-16-2007.csv"
-[19] "penguins_nesting-November-16-2009.csv"
-[20] "penguins_nesting-November-17-2008.csv"
-[21] "penguins_nesting-November-17-2009.csv"
-[22] "penguins_nesting-November-18-2007.csv"
-[23] "penguins_nesting-November-18-2009.csv"
-[24] "penguins_nesting-November-19-2007.csv"
-[25] "penguins_nesting-November-19-2009.csv"
-[26] "penguins_nesting-November-20-2009.csv"
-[27] "penguins_nesting-November-21-2007.csv"
-[28] "penguins_nesting-November-21-2009.csv"
-[29] "penguins_nesting-November-2-2008.csv" 
-[30] "penguins_nesting-November-22-2007.csv"
-[31] "penguins_nesting-November-22-2009.csv"
-[32] "penguins_nesting-November-23-2009.csv"
-[33] "penguins_nesting-November-24-2008.csv"
-[34] "penguins_nesting-November-25-2008.csv"
-[35] "penguins_nesting-November-25-2009.csv"
-[36] "penguins_nesting-November-26-2007.csv"
-[37] "penguins_nesting-November-27-2007.csv"
-[38] "penguins_nesting-November-27-2009.csv"
-[39] "penguins_nesting-November-28-2007.csv"
-[40] "penguins_nesting-November-29-2007.csv"
-[41] "penguins_nesting-November-30-2007.csv"
-[42] "penguins_nesting-November-3-2008.csv" 
-[43] "penguins_nesting-November-4-2008.csv" 
-[44] "penguins_nesting-November-5-2008.csv" 
-[45] "penguins_nesting-November-6-2008.csv" 
-[46] "penguins_nesting-November-7-2008.csv" 
-[47] "penguins_nesting-November-8-2008.csv" 
-[48] "penguins_nesting-November-9-2007.csv" 
-[49] "penguins_nesting-November-9-2008.csv" 
-[50] "penguins_nesting-November-9-2009.csv" 
-~~~
-{:.output}
-
-
+Our goal is to read in all 50 files from the **penguins** folder into one data frame, and include the date from each file name in the table. 
 
 ===
 
-Load the `fs` package (non-core tidyverse) to work with the file system. Create a vector of filepaths with `dir_ls()`
+Load the `fs` package, which contains functions to work with files, filepaths, and directories. Most functions are named based on [their unix equivalent](https://fs.r-lib.org/articles/function-comparisons.html), with the corresponding prefix `file_`, `path_`, or `dir_`. 
+
+Use `dir_ls` to create a vector of filepaths. 
 
 
 
@@ -93,19 +31,11 @@ penguin_files <- dir_ls('data/penguins')
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
+If we were interested in only a subset of files in that directory, we could filter them by supplying a pattern to the argument `glob` or `regexp`, such as "only files with the word `penguin` in the name ending in `.csv`. 
 
-
-~~~r
-> class(penguin_files)
-~~~
-{:title="Console" .input}
-
-
-~~~
-[1] "fs_path"   "character"
-~~~
-{:.output}
-
+```
+dir_ls('data/penguins', glob = "*penguins*.csv")
+```
 
 ===
 
@@ -151,55 +81,11 @@ data/penguins/penguins_nesting-December-1-2009
 {:.output}
 
 
-See [here](https://fs.r-lib.org/articles/function-comparisons.html) for comparisons of fs, base, UNIX
+
 
 ===
 
-We want to read in each file using the `read_csv` function in the `readr` package. 
-
-Readr is the tidyverse package for reading in rectangular data like CSV or TSV into tidy formats. There are other tidyverse packages specifically for reading in data from Excel files (`readxl`), Google Drive files (`googledrive` and `googlesheets4`), databases (`DBI`), SPSS/Stata/SAS data (`haven`), and various web data formats (`httr`, `xml2`, `jsonlite`).
-{:.notes}
-
-===
-
-## Map functions
-
-The approach to iteration in the tidyverse is by using `map` functions in the `purrr` package. 
-
-Compared to the apply family of functions, map functions offer 
-
-* predictable structure of return objects, and
-* consistent syntax for piped workflows.
-
-The arguments to map are: 
-
-* `.x` - the object to iterate over
-* `.f` - the thing to do for each item in `.x`
-
-===
-
-Read all `penguin_files` into a list using:
-
-```
-map(.x = penguin_files, .f = read_csv)
-```
-
-Or use `~` to specify the function and arguments:
-
-```
- map(.x = penguin_files, ~read_csv(.x))
-```
-
-===
-
-Whereas `map` always returns a list, there are `map_*` functions for returning specific types of vectors (e.g. `map_chr` or `map_int`). Use `map_df` for returning *one* dataframe:
-
-
-
-~~~r
-pg_df <- map_df(penguin_files, ~read_csv(.x))
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+We'll use the `read_csv` function in the `readr` package. 
 
 
 ===
@@ -244,6 +130,49 @@ pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
 
 ===
 
+## Map functions
+
+The approach to iteration in the tidyverse is by using `map` functions in the `purrr` package. 
+
+Compared to the apply family of functions, map functions offer 
+
+* predictable structure of return objects, and
+* consistent syntax for piped workflows.
+
+The arguments to map are: 
+
+* `.x` - the object to iterate over
+* `.f` - the thing to do for each item in `.x`
+
+===
+
+Read all `penguin_files` into a list using:
+
+```
+map(.x = penguin_files, .f = read_csv)
+```
+
+Or use `~` to specify the function and arguments:
+
+```
+ map(.x = penguin_files, ~read_csv(.x))
+```
+
+===
+
+Whereas `map` always returns a list, there are `map_*` functions for returning specific types of vectors (e.g. `map_chr` or `map_int`). Use `map_df` for returning *one* dataframe:
+
+
+
+~~~r
+pg_df <- map_df(penguin_files, ~read_csv(.x))
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+
+===
+
 Another handy argument for `map_df` is `.id` for putting the names of each item of `.x` into a column. 
 
 
@@ -256,7 +185,8 @@ pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 
 ===
 
-## Combine with pipes
+## Combine operations with pipes
+
 
 ![pipe]({% include asset.html path="images/pipe.jpeg" %}){: width="50%"}
 

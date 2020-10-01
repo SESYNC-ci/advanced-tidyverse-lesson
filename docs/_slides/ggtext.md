@@ -64,7 +64,7 @@ pg_df <- pg_df %>%
 
 ===
 
-Make a sideways boxplot comparing δ^13^C ‰ carbon isotope values by species. Rotate the graph to better display the labels
+Make a sideways boxplot comparing δ<sup>13</sup>C (‰) across species. Rotate the graph to better display the labels
 
 
 

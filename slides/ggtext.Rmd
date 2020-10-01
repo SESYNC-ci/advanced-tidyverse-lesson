@@ -37,10 +37,10 @@ pg_df <- pg_df %>%
 
 ===
 
-Make a sideways boxplot comparing δ^13^C ‰ carbon isotope values by species. Rotate the graph to better display the labels
+Make a sideways boxplot comparing δ<sup>13</sup>C (‰) across species. Rotate the graph to better display the labels
 
 
-```{r, handout = 0, message=FALSE, warning=FALSE}
+```{r, handout = 0, message=FALSE, warning=FALSE, fig.height = 3, dpi=100}
 pg_df %>% 
   ggplot(aes(x = species, y = delta_13_c_ooo)) +
   geom_boxplot() +
@@ -62,7 +62,7 @@ library(ggtext)
 
 Remember markdown syntax? 
 
-```{r, handout = 0, message=FALSE, warning=FALSE}
+```{r, handout = 0, message=FALSE, warning=FALSE, fig.height = 3, dpi=100}
 pg_df %>% 
   mutate(species = glue("{common} (*{latin}*)")) %>%
   ggplot(aes(x = species, y = delta_13_c_ooo)) +
@@ -74,7 +74,7 @@ pg_df %>%
 
 We will also need to specify that this theme element should be interpreted as markdown. Recall that we flipped the X and Y axes! 
 
-```{r, handout = 0, message=FALSE, warning=FALSE}
+```{r, handout = 0, message=FALSE, warning=FALSE, fig.height = 3, dpi=100}
 pg_df %>% 
   mutate(species = glue("{common} (*{latin}*)")) %>%
   ggplot(aes(x = species, y = delta_13_c_ooo)) +
@@ -86,7 +86,7 @@ pg_df %>%
 
 The other tags and formatting that can be interpreted are: line break, italics, bold, colors, fonts, super/subscript, and images.
 
-```{r, handout = 0, message=FALSE, warning=FALSE}
+```{r, handout = 0, message=FALSE, warning=FALSE, fig.height = 3, dpi=100}
 pg_df %>% 
   mutate(species = glue("{common}<br>(*{latin}*)")) %>%
   ggplot(aes(x = species, y = delta_13_c_ooo)) +
@@ -98,7 +98,7 @@ pg_df %>%
 
 Did you say color??
 
-```{r, handout = 0, message=FALSE, warning=FALSE}
+```{r, handout = 0, message=FALSE, warning=FALSE, fig.height = 3, dpi=100}
 pg_df %>% 
   mutate(species = glue("{common}<br><i style='color:#009E73'>({latin})</i>")) %>%
   ggplot(aes(x = species, y = delta_13_c_ooo)) +
@@ -149,7 +149,7 @@ If there were rows with other or NA values for the common name, we could designa
 
 Then use glue to include the value from the `color` column in the species label.
 
-```{r, message = FALSE, handout=0, warning=FALSE}
+```{r, message = FALSE, handout=0, warning=FALSE, fig.height = 3, dpi=100}
 pg_df %>% 
   mutate(species = glue("{common}<br><i style='color:{color}'>({latin})</i>")) %>%
   ggplot(aes(x = species, y = delta_13_c_ooo)) +

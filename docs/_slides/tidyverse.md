@@ -3,16 +3,17 @@
 
 ## What is the tidyverse? 
 
-The [tidyverse](https://www.tidyverse.org/) is an "opinonated collected of R packages designed for data science." There are multiple packages designed to tackle each stage of the data science workflow (importing, transforming, visualizing, modeling, etc.). All of the packages are unified by common design philosophies and data structures. 
-{:.notes}
+The [tidyverse](https://www.tidyverse.org/) is *an opinionated collected of R packages designed for data science*. There are multiple packages designed to tackle each stage of the data science workflow (depicted below), unified by common design philosophies and data structures. 
 
 ![]({% include asset.html path="images/tidy-packages.png" %}){: width="75%"}  
 *How tidyverse packages fit into a canonical data science workflow.  [source](https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/)*
 {:.captioned}
 
-It is set of packages that share a high-level design philosophy and low-level grammar and data structures, so that learning one package makes it easier to learn the next.
+Because packages share a high-level design philosophy and low-level grammar and data structures, learning one package makes it easier to learn the next.
 
-Not strictly alternatives but you might compare it to: base R, which prioritizes reliability, and [data.table](https://rdatatable.gitlab.io/data.table/) which prioritizes speed and concise syntax. 
+Not strictly alternatives but you might compare it to: only using base R, which prioritizes stability (i.e. doesn't change as quickly), and [data.table](https://rdatatable.gitlab.io/data.table/) which prioritizes speed and concise syntax. 
+
+If you want to up with new developments in the tidyverse, check out their [blog](https://www.tidyverse.org/blog/), videos from the [RStudio conferences](https://rstudio.com/resources/rstudioconf-2020/), or follow the developers on Twitter. 
 
 ===
 
@@ -34,18 +35,18 @@ These are the 8 packages now loaded into your environment:
 |------------+-------------------------------+----------------------|
 | `readr`    |  read flat files              | `read_csv`, `write_csv` |
 | `tidyr`    |  reshaping                    | `pivot_longer`, `pivot_wider` |
-| `dplyr`    |  wrangling                    | `filter`, `select`, `summarise` |
+| `dplyr`    |  wrangling                    | `filter`, `select`, `summarize` |
 | `ggplot2`  |  visualization                | `ggplot`, `aes` |
 | `stringr`  |  control character vectors    | `str_sub`, `str_pad` |
 | `tibble`   |  opinionated data frames      | `glimpse`, `rownames_to_column`|
-| `forcats`  |  control categorical data     | `fct_relevel`, `fct_anon` |
-| `purrr`    |  functional programming       | `map`, `walk`, `pmap` |
+| `forcats`  |  categorical data     | `fct_relevel`, `fct_anon` |
+| `purrr`    |  iteration       | `map`, `walk`, `pmap` |
 
 ===
 
 ## Expanded tidyverse
 
-`install.packages("tidyverse")` also installs a number of other packages with more specialized uses, as well as many package dependencies such as `fs` and `scales`.
+Running `install.packages("tidyverse")` also installs a number of other packages with more specialized uses, as well as many package dependencies such as `fs` and `scales`.  
 
 | Purpose    | Packages                       |
 |------------+-------------------------------|
@@ -55,8 +56,7 @@ These are the 8 packages now loaded into your environment:
 | Modeling | `broom`, `modelr` |
 | Under the hood | `pillar`, `rlang`, `cli`, `crayon` |
 
-
-Ways to keep up with new developments are via the tidyverse [blog](https://www.tidyverse.org/blog/), videos from the [RStudio conferences](https://rstudio.com/resources/rstudioconf-2020/), or by following the developers on Twitter. 
+Use `tidyverse_deps(recursive = TRUE)` to see a list of all tidyverse packages and dependencies. 
 
 ===
 

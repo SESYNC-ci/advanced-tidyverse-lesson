@@ -14,24 +14,23 @@ We'll be using the data modified from the [palmerpenguins](https://allisonhorst.
 
 For this lesson, the data has been split up into separate files - one for each study date when nests were observed. The sampling date is included in the file name but not in the data itself. 
 
-Our goal is to read in all 50 files into one data frame, and include the date from each file name in the table. The files are in a folder called **penguins** within the data folder. 
-
-```{r}
-list.files('data/penguins')
-```
-
+Our goal is to read in all 50 files from the **penguins** folder into one data frame, and include the date from each file name in the table. 
 
 ===
 
-Load the `fs` package (non-core tidyverse) to work with the file system. Create a vector of filepaths with `dir_ls()`
+Load the `fs` package, which contains functions to work with files, filepaths, and directories. Most functions are named based on [their unix equivalent](https://fs.r-lib.org/articles/function-comparisons.html), with the corresponding prefix `file_`, `path_`, or `dir_`. 
+
+Use `dir_ls` to create a vector of filepaths. 
 
 ```{r, handout = 0}
 library(fs)
 penguin_files <- dir_ls('data/penguins')
 ```
 
-```{r}
-class(penguin_files)
+If we were interested in only a subset of files in that directory, we could filter them by supplying a pattern to the argument `glob` or `regexp`, such as "only files with the word `penguin` in the name ending in `.csv`. 
+
+```
+dir_ls('data/penguins', glob = "*penguins*.csv")
 ```
 
 ===
@@ -46,14 +45,44 @@ penguin_files[1] %>% path_ext_remove()
 penguin_files[1] %>% path_ext()
 ```
 
-See [here](https://fs.r-lib.org/articles/function-comparisons.html) for comparisons of fs, base, UNIX
+
 
 ===
 
-We want to read in each file using the `read_csv` function in the `readr` package. 
+We'll use the `read_csv` function in the `readr` package. 
 
-Readr is the tidyverse package for reading in rectangular data like CSV or TSV into tidy formats. There are other tidyverse packages specifically for reading in data from Excel files (`readxl`), Google Drive files (`googledrive` and `googlesheets4`), databases (`DBI`), SPSS/Stata/SAS data (`haven`), and various web data formats (`httr`, `xml2`, `jsonlite`).
-{:.notes}
+
+===
+
+Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using these codes:
+
+| character   | data type       |
+|-------------+------------------|
+| `c`    |  character/string    |
+| `i`    |  integer             |
+| `n`    |  numeric             |
+| `d`    |  double              |
+| `l`    | logical              |
+| `f`    | factor/categorical   |
+| `D`    | date             |
+| `T`    | date time        |
+| `t`    | time       |
+| `?`    | guess      |
+| `_` or `-` | skip this column |
+
+```{r, handout = 0}
+pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = "cdcccccddddcddccc"))
+```
+
+
+===
+
+Or use `spec_csv` to generate a column specification from the first file that can be passed to the col_types argument. 
+
+```{r, handout = 0, message=FALSE}
+my_col_types <- spec_csv(penguin_files[1])
+pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
+```
 
 ===
 
@@ -93,37 +122,6 @@ Whereas `map` always returns a list, there are `map_*` functions for returning s
 pg_df <- map_df(penguin_files, ~read_csv(.x))
 ```
 
-===
-
-Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using these codes:
-
-| character   | data type       |
-|-------------+------------------|
-| `c`    |  character/string    |
-| `i`    |  integer             |
-| `n`    |  numeric             |
-| `d`    |  double              |
-| `l`    | logical              |
-| `f`    | factor/categorical   |
-| `D`    | date             |
-| `T`    | date time        |
-| `t`    | time       |
-| `?`    | guess      |
-| `_` or `-` | skip this column |
-
-```{r, handout = 0}
-pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = "cdcccccddddcddccc"))
-```
-
-
-===
-
-Or use `spec_csv` to generate a column specification from the first file that can be passed to the col_types argument. 
-
-```{r, handout = 0, message=FALSE}
-my_col_types <- spec_csv(penguin_files[1])
-pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
-```
 
 ===
 
@@ -135,7 +133,8 @@ pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
 
 ===
 
-## Combine with pipes
+## Combine operations with pipes
+
 
 ![pipe]({% include asset.html path="images/pipe.jpeg" %}){: width="50%"}
 
