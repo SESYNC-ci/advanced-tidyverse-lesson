@@ -1,5 +1,6 @@
 ---
-
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Exercises
@@ -19,7 +20,9 @@ Hint: Check out the base `split` or (experimental) dplyr `group_split` function 
 
 ### Exericse 2
 
-Remove `"data/penguins"` and  `".csv"` from the filename strings using only functions in the fs package.
+Check out some specialized functions in `fs` for extracting or retrieve parts of [filepaths](https://fs.r-lib.org/articles/function-comparisons.html#path-functions.  
+
+Remove `"data/penguins/"` and  `".csv"` from the filename strings using only functions in the fs package.
 
 [View solution](#solution-2)
 {:.notes}
@@ -101,7 +104,7 @@ Use different images (such as from [phylopic.org](http://phylopic.org/)) to incl
 
 ~~~r
 > pg_df$filename %>% 
-+   fs::as_fs_path() %>%
++   head(1) %>%
 +   fs::path_ext_remove() %>%
 +   fs::path_file()
 ~~~

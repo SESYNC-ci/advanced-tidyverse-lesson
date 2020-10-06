@@ -1,4 +1,6 @@
 ---
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Tidy evaluation
@@ -138,7 +140,7 @@ Now let's work on putting the date information from the filenames into a properl
 
 ===
 
-Every file name is the same besides the date, so we can remove those exact characters. Save to a vector. 
+Every file name is the same besides the date. We can remove the patterns that match "data/penguins/penguins_nesting-" or (`|`) ".csv" using `str_remove_all`. Save a new vector so we can focus on the date conversion. 
 
 
 
@@ -151,76 +153,93 @@ egg_dates <- str_remove_all(string = pg_df$filename,
 
 ===
 
-Can these be automatically converted to date format?
-
-
-
-~~~r
-> as.Date(egg_dates)
-~~~
-{:title="Console" .no-eval .input}
-
-
-
-===
-
-Lubridate can make some smart guesses about date formats with a little bit of help: the order **m**onth, **d**ay, **y**ear. 
+`lubridate` is a tidyverse package to facilitate working with date formats. Can `as_date` automatically interpret "December-1-2009" as a date?
 
 
 
 ~~~r
 library(lubridate)
+egg_dates[1] %>% as_date()
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .no-eval .text-document}
+
+
+
+===
+
+As with the base `as.Date` function, unless dates are already specified using the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-DD representation, date conversion with `lubridate::as_date` requires a character string defining the date using codes from the POSIX standard:
+
+| code    | meaning          |
+|---------+------------------|
+| `%b`    |  Abbreviated month name in current locale   |
+| `%B`    |  Full month name in current locale          |
+| `%d`    |  Day of month as decimal number (01-31)     |
+| `%j`    |  Day of year as decimal number (001-366)    |
+| `%y`    |  Year without century (00-99)               |
+| `%Y`    |  Year with century                          |
+
+Note that interpretation of many POSIX codes depend on settings of your operating system, such as month or weekday names in different languages, whether weeks start on Sunday or Monday, or the default century for `%y`. Read more about format specification in the **Details** section of the base `strptime` function. 
+
+
+
+~~~r
+> ?strptime
+~~~
+{:title="Console" .no-eval .input}
+
+
+===
+
+Supply the pattern of the date format as a character string using the appropriate codes:
+
+
+
+~~~r
+egg_dates[1] %>% as_date(format = "%B-%d-%Y")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
-
-Attaching package: 'lubridate'
+[1] "2009-12-01"
 ~~~
 {:.output}
 
 
-~~~
-The following objects are masked from 'package:base':
+As long as the components of a date are in a consistent order, the `guess_formats` function can help determine the appropriate pattern, by supplying the order of **m**onth, **d**ay, and **y**ear. 
 
-    date, intersect, setdiff, union
-~~~
-{:.output}
 
 
 ~~~r
-mdy(egg_dates)
+egg_dates[1] %>% guess_formats(orders = "mdy")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ===
 
-The POSIX date standard specifies codes for various components of dates and times, which can be used for the `format` argument in `as_date`
-
-table with posix common things
+Just by knowing the order that months, days, and years appear, we can actually circumvent all of those previous steps to find and convert the date information right from the full filename using the function `mdy` 
 
 
 
 ~~~r
-> guess_formats("December-1-2009", orders = "mdy")
-> as_date(egg_dates, format = "%B-%d-%Y")
+> pg_df$filename[1] %>% mdy()
 ~~~
 {:title="Console" .input}
 
 
-===
+~~~
+[1] "2009-12-01"
+~~~
+{:.output}
 
-Combine the string manipulation and date conversion: 
+
+Use this function to create a new column with sampling dates.
 
 
 
 ~~~r
-pg_df <- pg_df %>%
-  mutate(egg_date = str_remove_all(filename,
-          "(data/penguins/penguins_nesting-)|(.csv)")) %>%
-  mutate(egg_date = mdy(egg_date))
+pg_df <- pg_df %>% mutate(date = mdy(filename))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 

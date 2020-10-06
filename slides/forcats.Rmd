@@ -64,12 +64,12 @@ pg_df %>%
 
 ===
 
-Or more generally, `fct_reorder` to use a different variable. In this case let's order **common** by each level's median `flipper_length_mm`.
+Or more generally, `fct_reorder` to use a function(`.fun`) of a different variable (`.x`). In this case let's order **common** by each level's median `flipper_length_mm`. Additional arguments to the specified function can also be included. 
 
 ```{r, warning=FALSE}
 pg_df %>% 
   mutate(common = fct_reorder(common, 
-    flipper_length_mm, median, na.rm = TRUE)) %>%
+    .x = flipper_length_mm, .fun = median, na.rm = TRUE)) %>%
   ggplot(aes(x = common, y = flipper_length_mm)) +
   geom_boxplot()
 ```

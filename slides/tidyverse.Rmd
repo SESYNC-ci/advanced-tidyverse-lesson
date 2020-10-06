@@ -9,9 +9,9 @@ The [tidyverse](https://www.tidyverse.org/) is *an opinionated collected of R pa
 *How tidyverse packages fit into a canonical data science workflow.  [source](https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/)*
 {:.captioned}
 
-Because packages share a high-level design philosophy and low-level grammar and data structures, learning one package makes it easier to learn the next.
+Because packages share a high-level design philosophy and low-level grammar and data structures, learning one package makes it easier to learn the next. Tidyverse packages are designed around [tidy](https://r4ds.had.co.nz/tidy-data.html) data frames, and emphasize **readability**, **consistency**, and **modularity**.
 
-Not strictly alternatives but you might compare it to: only using base R, which prioritizes stability (i.e. doesn't change as quickly), and [data.table](https://rdatatable.gitlab.io/data.table/) which prioritizes speed and concise syntax. 
+These are not strictly alternatives but you might compare it to using: only using base R, which prioritizes stability (i.e. doesn't change as quickly), or [data.table](https://rdatatable.gitlab.io/data.table/), which prioritizes speed and concise syntax. 
 
 If you want to up with new developments in the tidyverse, check out their [blog](https://www.tidyverse.org/blog/), videos from the [RStudio conferences](https://rstudio.com/resources/rstudioconf-2020/), or follow the developers on Twitter. 
 

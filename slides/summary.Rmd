@@ -3,7 +3,7 @@
 
 ## Summary
 
-There should be some kind of summary slide. First, here are some core principles of the tidyverse
+As you have seen, some core principles of the tidyverse
 
 * Packages are united by common design structures so they work together (e.g. tidy evaluation)
 * Functions emphasize *modularity* so you can break complex problems into small parts
@@ -29,9 +29,9 @@ These are some of the cool functions we learned about
 
 Some other topics about the tidyverse that are worth looking into but we didn't cover here:
 
-* **list columns** for nesting and unnesting things within data frames
 * **tidymodels** especially the broom package
-* Interval and duration objects in lubridate
+* rlang - add link to resources about using these functions within functions 
+* **list columns** for nesting and unnesting things within data frames
 * Functions for modifying lists and parts of lists in purrr
-* rlang - link to resources about using these functions within functions 
+* Interval, period, and duration objects in lubridate
 

@@ -12,15 +12,14 @@ We'll be using the data modified from the [palmerpenguins](https://allisonhorst.
 
 ===
 
-For this lesson, the data has been split up into separate files - one for each study date when nests were observed. The sampling date is included in the file name but not in the data itself. 
+For this lesson, the data has been split up into separate files -- one for each study date when nests were observed. The sampling date is included in the file name but not in the data itself. 
 
-Our goal is to read in all 50 files from the **penguins** folder into one data frame, and include the date from each file name in the table. 
+Our goal is to read in all 50 files from the **penguins** folder into one data frame, and include the sampling date from each file name in the data. We will do this using `map` functions in the `purrr` package. The inputs we will need are (1) a list of objects to iterate over, and (2) the function to apply to each one. Before seeing `map` in action, we will explore the inputs. 
 
 ===
 
-Load the `fs` package, which contains functions to work with files, filepaths, and directories. Most functions are named based on [their unix equivalent](https://fs.r-lib.org/articles/function-comparisons.html), with the corresponding prefix `file_`, `path_`, or `dir_`. 
+The list of objects to iterate over is a vector file names in the **penguins** folder, which can be created using `dir_ls` in the `fs` package. `fs` contains functions to work with files, filepaths, and directories. Most functions are named based on their [unix equivalent](https://fs.r-lib.org/articles/function-comparisons.html), with the corresponding prefix `file_`, `path_`, or `dir_`. 
 
-Use `dir_ls` to create a vector of filepaths. 
 
 
 
@@ -31,15 +30,21 @@ penguin_files <- dir_ls('data/penguins')
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-If we were interested in only a subset of files in that directory, we could filter them by supplying a pattern to the argument `glob` or `regexp`, such as "only files with the word `penguin` in the name ending in `.csv`. 
+===
 
-```
-dir_ls('data/penguins', glob = "*penguins*.csv")
-```
+If we were interested in only a subset of files in that directory, we could filter them by supplying a pattern to the argument `glob` or `regexp`, such as "only files with the word `penguin` in the name ending in `.csv`". 
+
+
+
+~~~r
+> dir_ls('data/penguins', glob = "*penguins*.csv")
+~~~
+{:title="Console" .no-eval .input}
+
 
 ===
 
-`fs` path objects are character vectors but a little smarter. Check out some specialized functions can extract or retrieve parts of path.  
+Check out some specialized functions can extract or retrieve parts of path.  
 
 any other arguments?
 
@@ -85,12 +90,10 @@ data/penguins/penguins_nesting-December-1-2009
 
 ===
 
-We'll use the `read_csv` function in the `readr` package. 
+The function we want to apply to each of the file names is read_csv in the `readr` package. 
 
 
-===
-
-Use the `col_types` argument in `read_csv` to ensure consistency across files. One way to specify col types is a character vector using these codes:
+By default, the data type for each column is determined by [parsing](https://readr.tidyverse.org/articles/readr.html#vector-parsers) the first 1,000 rows of the table. The `col_types` argument in `read_csv` offers more control, which can help ensure consistency across files. One way to specify column types is a character vector using these codes:
 
 | character   | data type       |
 |-------------+------------------|
@@ -109,10 +112,9 @@ Use the `col_types` argument in `read_csv` to ensure consistency across files. O
 
 
 ~~~r
-pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = "cdcccccddddcddccc"))
+pg_df1 <- read_csv(penguin_files[1], col_types = "cdcccccddddcddccc")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
 
 
 ===
@@ -134,15 +136,14 @@ pg_df <- map_df(penguin_files, ~read_csv(.x, col_types = my_col_types))
 
 The approach to iteration in the tidyverse is by using `map` functions in the `purrr` package. 
 
-Compared to the apply family of functions, map functions offer 
-
-* predictable structure of return objects, and
-* consistent syntax for piped workflows.
+Compared to the apply functions, map functions offer **predictable return objects** and **consistent syntax**. 
 
 The arguments to map are: 
 
-* `.x` - the object to iterate over
-* `.f` - the thing to do for each item in `.x`
+* `.x` - a list of things to iterate over
+* `.f` - what to do for each item in `.x`
+
+`.f` can be either the name of an existing function, or an unnamed "anonymous" function created from a formula. 
 
 ===
 
@@ -160,25 +161,26 @@ Or use `~` to specify the function and arguments:
 
 ===
 
-Whereas `map` always returns a list, there are `map_*` functions for returning specific types of vectors (e.g. `map_chr` or `map_int`). Use `map_df` for returning *one* dataframe:
+Whereas `map` always returns a list, there are `map_*` functions for returning specific types of vectors (e.g. `map_chr` or `map_int`). Use `map_dfr` for returning *one* dataframe:
 
 
 
 ~~~r
-pg_df <- map_df(penguin_files, ~read_csv(.x))
+pg_df <- map_dfr(penguin_files, ~read_csv(.x))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 
+
 ===
 
-Another handy argument for `map_df` is `.id` for putting the names of each item of `.x` into a column. 
+Another handy argument for `map_dfr` is `.id` for putting the names of each item of `.x` into a column. 
 
 
 
 ~~~r
-pg_df <- map_df(penguin_files, ~read_csv(.x), .id = "filename")
+pg_df <- map_dfr(penguin_files, ~read_csv(.x), .id = "filename")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
@@ -203,10 +205,12 @@ Let's combine our previous steps together without creating intermediate objects:
 
 ~~~r
 pg_df <- dir_ls("data/penguins") %>%
-  map_df(~read_csv(.x), .id = "filename")
+  map_dfr(~read_csv(.x), .id = "filename")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
+
+This code creates a vector of file names with `dir_ls()`, and then "maps" the `read_csv()` function over each file. The output of each `read_csv()` function is combined together into one dataframe called `pg_df`, along with an additional column with the file name each row of data came from. 
 
 ===
 
