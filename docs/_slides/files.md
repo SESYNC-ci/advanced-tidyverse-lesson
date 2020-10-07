@@ -12,7 +12,7 @@ This lesson uses data modified from the [palmerpenguins](https://allisonhorst.gi
 
 ===
 
-For this lesson, the data has been split up into separate files -- one for each study date when nests were observed. The sampling date is included in the file name but not in the data itself. 
+For this lesson, the data has been split up into separate files -- one for each study date when nests were observed. The sampling date is included in the file name but not in the data itself. Each row contains data on characteristics and measurements associated with one observation of a study nest. 
 
 Our goal is to read in all 50 of those files from the **penguins** folder into one data frame, and add the sampling date from each file name in the data. We will do this using `map` functions in [purrr](){:.rlib}, the tidyverse workhorse for iteration. The inputs we will need are:
 

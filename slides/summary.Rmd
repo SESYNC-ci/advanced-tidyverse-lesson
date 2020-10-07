@@ -29,9 +29,8 @@ These are some of the cool functions we learned about
 
 Some other topics about the tidyverse that are worth looking into but we didn't cover here:
 
-* **tidymodels** especially the broom package
-* **rlang** - To learn more about using tidy evaluation in functions, refer to this [dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html#one-or-more-user-supplied-expressions), the documentation and cheatsheet for [rlang](https://rlang.r-lib.org/), or one [of](https://www.youtube.com/watch?v=nERXS3ssntw) [these](https://www.youtube.com/watch?v=2-gknoyjL3A) [videos](https://www.youtube.com/watch?v=2BXPLnLMTYo) from a tidyverse developer. 
-* **list columns** for nesting and unnesting things within data frames
-* Functions for modifying lists and parts of lists in purrr
-* Interval, period, and duration objects in lubridate
+* **tidymodels** - A framework for modeling and machine learning using tidy principles, including a [website](https://www.tidymodels.org/) extensive resources to learn about creating and tuning models. [broom](){:.rlib} installs with tidyverse and is helpful for tidying up output from commonly used models such as `lm` or `cor.test`
+* Deeper into **rlang** - To learn more about using tidy evaluation in functions, refer to this [dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html#one-or-more-user-supplied-expressions), the documentation and cheatsheet for [rlang](https://rlang.r-lib.org/), or [one](https://www.youtube.com/watch?v=nERXS3ssntw) of [these](https://www.youtube.com/watch?v=2-gknoyjL3A) [videos](https://www.youtube.com/watch?v=2BXPLnLMTYo) from the tidyverse developers. 
+* Functions in [purrr](){:.rlib} to manipulate lists, and [list columns](https://r4ds.had.co.nz/many-models.html#list-columns-1) in [tibble](){:.rlib} data frames that can be nested and unnested
+* Interval, period, and duration objects in [lubridate](){:.rlib}
 

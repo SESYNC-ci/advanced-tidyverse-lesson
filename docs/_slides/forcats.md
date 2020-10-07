@@ -3,6 +3,8 @@
 
 ## Categorical data
 
+R has a special data type for handling categorial data called factors. Because they had a reputation for causing trouble... 
+
 
 
 ~~~r
@@ -19,27 +21,27 @@
 
 😲 this setting is new in R version 4 !!
 
-We used read_csv so it was that way anyway, but there are situations where you may want to use factors, especially for MODELING and PLOTS. essentially when you want character vectors to not be alphabetical. The `forcats` package is intended to make this easier.
+Although `read_csv` had always defaulted strings to character data, there are situations where you may want to use factors, especially for modeling and plots -- essentially whenever you want character vectors to not be alphabetical. [forcats](){:.rlib} is intended to make this easier.
 
 ===
 
-The column with the species common names is a character vector
+Species common names are in a character vector. 
 
 
 
 ~~~r
-> str(pg_df$common)
+> class(pg_df$common)
 ~~~
 {:title="Console" .input}
 
 
 ~~~
- chr [1:344] "Gentoo penguin" "Gentoo penguin" "Gentoo penguin" ...
+[1] "character"
 ~~~
 {:.output}
 
 
-Plots will be sorted alphabetically, like the default ordering for factor levels in base R.
+Controlling the order in which the 3 species appear in a plot is done with factors. If the data are kept as characters, plots will be sorted alphabetically (i.e. the default ordering for factor levels in base R).
 
 
 
@@ -58,17 +60,17 @@ Plots will be sorted alphabetically, like the default ordering for factor levels
 
 
 ~~~r
-> pg_df %>% 
-+   ggplot(aes(x = common)) +
-+   geom_bar()
+pg_df %>% 
+  ggplot(aes(x = common)) +
+  geom_bar()
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 ![ ]({% include asset.html path="images/forcats/unnamed-chunk-4-1.png" %})
 {:.captioned}
 
 ===
 
-Forcats `as_factor` uses the order in which the levels appear in your data
+`forcats::as_factor` uses instead the order in which the levels appear in your data:
 
 
 
@@ -84,53 +86,53 @@ Forcats `as_factor` uses the order in which the levels appear in your data
 {:.output}
 
 
-Use this to make common into a factor. Notice the ordering of the bars now.
+Convert `common` into a factor and remake the same bar plot. Notice the ordering of the bars compared to the previous graph. 
 
 
 
 ~~~r
-> pg_df <- pg_df %>% 
-+   mutate(common = as_factor(common))
-> 
-> pg_df %>% 
-+   ggplot(aes(x = common)) +
-+   geom_bar()
+pg_df <- pg_df %>% 
+  mutate(common = as_factor(common))
+
+pg_df %>% 
+  ggplot(aes(x = common)) +
+  geom_bar()
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 ![ ]({% include asset.html path="images/forcats/unnamed-chunk-6-1.png" %})
 {:.captioned}
 
 
 ===
 
-Use `fct_infreq` to instead order the levels by how frequently they appear in the dataset.
+Use `fct_infreq` to order the levels by how frequently they appear in the dataset.
 
 
 
 ~~~r
-> pg_df %>% 
-+   mutate(common = fct_infreq(common)) %>%
-+   ggplot(aes(x = common)) +
-+   geom_bar()
+pg_df %>% 
+  mutate(common = fct_infreq(common)) %>%
+  ggplot(aes(x = common)) +
+  geom_bar()
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 ![ ]({% include asset.html path="images/forcats/unnamed-chunk-7-1.png" %})
 {:.captioned}
 
 ===
 
-Or more generally, `fct_reorder` to use a function(`.fun`) of a different variable (`.x`). In this case let's order **common** by each level's median `flipper_length_mm`. Additional arguments to the specified function can also be included. 
+Or more generally, `fct_reorder` to use a function(`.fun`) of a different variable (`.x`). Order **common** by each level's median `flipper_length_mm`:
 
 
 
 ~~~r
-> pg_df %>% 
-+   mutate(common = fct_reorder(common, 
-+     .x = flipper_length_mm, .fun = median, na.rm = TRUE)) %>%
-+   ggplot(aes(x = common, y = flipper_length_mm)) +
-+   geom_boxplot()
+pg_df %>% 
+  mutate(common = fct_reorder(common, 
+    .x = flipper_length_mm, .fun = median, na.rm = TRUE)) %>%
+  ggplot(aes(x = common, y = flipper_length_mm)) +
+  geom_boxplot()
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 ![ ]({% include asset.html path="images/forcats/unnamed-chunk-8-1.png" %})
 {:.captioned}
 

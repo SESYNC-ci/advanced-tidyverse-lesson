@@ -9,20 +9,20 @@ editor_options:
 
 ### Exercise 1
 
-Use purrr's `walk2` function to save a separate csv file for penguins from each island using a list of data frames and a vector of filenames. 
+Instead of returning an output of a specific type, the `walk` functions in purrr carry out a side effect (like displaying or saving a plot) without returning an object to your environment. Read about [map variants](https://purrr.tidyverse.org/reference/map2.html) that take multiple inputs, then use an appropriate function to save separate csv files for data about penguins from each of the studied islands using a list of data frames and a vector of filenames. 
 
-Hint: Check out the base `split` or (experimental) dplyr `group_split` function for creating the list. 
+Hint: Check out the base `split` or dplyr `group_split` function for creating a list of data frames. 
 
 [View solution](#solution-1)
 {:.notes}
 
 ===
 
-### Exericse 2
+### Exercise 2
 
-Check out some specialized functions in `fs` for extracting or retrieve parts of [filepaths](https://fs.r-lib.org/articles/function-comparisons.html#path-functions.  
+Check out some specialized functions in [fs](){:.rlib} for extracting parts of [filepaths](https://fs.r-lib.org/articles/function-comparisons.html#path-functions.
 
-Remove `"data/penguins/"` and  `".csv"` from the filename strings using only functions in the fs package.
+Remove `"data/penguins/"` and  `".csv"` from the filename strings using only functions in fs.
 
 [View solution](#solution-2)
 {:.notes}
@@ -31,9 +31,19 @@ Remove `"data/penguins/"` and  `".csv"` from the filename strings using only fun
 
 ### Exercise 3
 
-stringr::str_split vector on "to" for separating beginning and end of durations. variable truncation on dates. return list of date pairs
+The following vector `dates` represents 3 periods of time. Convert it into a list of 3 separate date vectors each split into the start and end dates of each period. 
 
-then test out ymd with different truncation levels eg ymd(c("2009-10-10", "2009-10", "2009"), truncated = 0|1|2)
+
+
+~~~r
+> dates <- c("2007-12-03 to 2009-12-01", 
++            "2007 November 30 to 2009 October",
++            "1999 to 2010")
+~~~
+{:title="Console" .input}
+
+
+Hint: check out the `truncation` argument in `ymd`. 
 
 [View solution](#solution-3)
 {:.notes}
@@ -102,7 +112,6 @@ Use different images (such as from [phylopic.org](http://phylopic.org/)) to incl
 
 ~~~r
 > pg_df$filename %>% 
-+   head(1) %>%
 +   fs::path_ext_remove() %>%
 +   fs::path_file()
 ~~~
@@ -117,7 +126,10 @@ Use different images (such as from [phylopic.org](http://phylopic.org/)) to incl
 
 
 ~~~r
-> ### stringr and ymd
+> dates %>% 
++   str_split("to", n = 2, ) %>% 
++   map(~str_trim(.x)) %>% 
++   map(~ymd(.x, truncated = 2))
 ~~~
 {:title="Console" .no-eval .input}
 

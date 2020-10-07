@@ -3,7 +3,7 @@
 
 ## Combining strings
 
-The next goal is to visualize data by the 3 different penguin species. In order to use the format "Common name (*Latin name*)" in axis labels, the first task will be to make a new column that combines the common and Latin names
+The next goal is to compare data about the 3 different penguin species using boxplots, using the format "Common name (*Latin name*)" in axis labels. The first task will be to make a new column that combines the common and Latin names from those respective columns:
 
 
 
@@ -26,26 +26,26 @@ The next goal is to visualize data by the 3 different penguin species. In order 
 
 ===
 
-[glue](){:.rlib} is for pasting data and strings together. Expressions in `{ }` are evaluated as R code. 
+[glue](){:.rlib} is the tidyverse equivalent of `paste`/`paste0` for putting data and strings together. Expressions in `{ }` are evaluated as R code, such as:
 
 
 
 ~~~r
 library(glue)
-glue("The largest penguin in this dataset measured {max(pg_df$body_mass_g, na.rm = TRUE)} grams.")
+glue("The biggest penguin measured {max(pg_df$body_mass_g, na.rm = TRUE)} grams.")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
-The largest penguin in this dataset measured 6300 grams.
+The biggest penguin measured 6300 grams.
 ~~~
 {:.output}
 
 
 ===
 
-Make species a new column in the data frame using `mutate`
+Combine the common and (latin) names into a new column called species. 
 
 
 
@@ -56,10 +56,27 @@ pg_df <- pg_df %>%
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
+
+~~~r
+> head(pg_df$species)
+~~~
+{:title="Console" .input}
+
+
+~~~
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+~~~
+{:.output}
+
+
 ===
 
-Make a sideways boxplot comparing δ<sup>13</sup>C (‰) across species. Rotate the graph to better display the labels
-
+Make a sideways boxplot comparing δ<sup>13</sup>C (‰) across species. Rotate the graph to better display the labels:
 
 
 
@@ -70,14 +87,29 @@ pg_df %>%
   coord_flip()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-4-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-5-1.png" %})
 {:.captioned}
 
-show axis.title.x = element_text(face = "italic")
+Formatting the entire label is possible by modifying a theme element: 
+
+
+
+~~~r
+pg_df %>% 
+  ggplot(aes(x = species, y = delta_13_c_ooo)) +
+  geom_boxplot() +
+  coord_flip() +
+  theme(axis.text.y = element_text(face = "italic"))
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-6-1.png" %})
+{:.captioned}
+
+However, until recently, italicizing *only* the Latin name was [much less straightforward](https://stackoverflow.com/a/39282593).
 
 ===
 
-We will now use markdown syntax within the plot labels to italicize *only* the Latin name part of the label. This functionality will soon be in `ggplot2` but for now install/load from the ggtext package.
+ggtext allows for using (limited) markdown syntax within the plot labels. This functionality will soon be in `ggplot2` but for now install and load ggtext.
 
 
 
@@ -102,12 +134,12 @@ pg_df %>%
   coord_flip()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-6-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-8-1.png" %})
 {:.captioned}
 
 ===
 
-We will also need to specify that this theme element should be interpreted as markdown. Recall that we flipped the X and Y axes! 
+In order to apply the formatting, specify that this theme element should be interpreted as markdown. Recall that the X and Y axes are flipped! 
 
 
 
@@ -119,12 +151,12 @@ pg_df %>%
   theme(axis.text.y = element_markdown()) 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-7-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-9-1.png" %})
 {:.captioned}
 
 ===
 
-The other tags and formatting that can be interpreted are: line break, italics, bold, colors, fonts, super/subscript, and images.
+The other html/markdown styles that can be interpreted are: line break, italics, bold, colors, fonts, super/subscript, and images.
 
 
 
@@ -136,29 +168,29 @@ pg_df %>%
   theme(axis.text.y = element_markdown()) 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-8-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-10-1.png" %})
 {:.captioned}
 
 ===
 
-Did you say color??
+Because there is no markdown syntax for font color, html syntax is required to change font color:
 
 
 
 ~~~r
 pg_df %>% 
-  mutate(species = glue("{common}<br><i style='color:#009E73'>({latin})</i>")) %>%
+  mutate(species = glue("<span style='color:#009E73'>{common}</span><br>(*{latin}*)")) %>%
   ggplot(aes(x = species, y = delta_13_c_ooo)) +
   geom_boxplot() + coord_flip() +
   theme(axis.text.y = element_markdown())
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-9-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-11-1.png" %})
 {:.captioned}
 
 ===
 
-Explore color codes using the `scales` package, which underlies many other functions you may be using in ggplot figures already. 
+Explore color codes using the [scales](){:.rlib} package, which underlies many other functions you may be using in ggplot figures already. 
 
 
 
@@ -173,7 +205,7 @@ library(scales)
 > show_col(viridis_pal()(3))
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-11-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-13-1.png" %})
 {:.captioned}
 
 
@@ -181,23 +213,38 @@ library(scales)
 > show_col((brewer_pal(type = "qual", palette = "Dark2"))(3))
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-12-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-14-1.png" %})
 {:.captioned}
 
 ===
 
 In order to use a different color for each penguin species, we will add a new column to the data frame with the color hex code for each using a series of conditional statements with `dplyr`'s `case_when` function. 
 
-```
-case_when(LHS ~ RHS, ...)
-```
 
-This will create a new vector of Right Hand Side values based on whether cases evaluate to TRUE with the Left Hand Side. Extra cases will either be NA, or add a TRUE ~ "default" as last else. 
-{:.notes}
+
+~~~r
+> case_when(LHS ~ RHS, ...)
+~~~
+{:title="Console" .no-eval .input}
+
+
+This will create a new vector of Right Hand Side (RHS) values based on whether cases evaluate to TRUE with the Left Hand Side (LHS). It can be handy for the purpose of labeling different classes of a continuous variable such as:
+
+
+
+~~~r
+> case_when(
++   x < 10 ~ "small",
++   x >= 10 & x < 20 ~ "medium",
++   x >= 20 ~ "large")
+~~~
+{:title="Console" .no-eval .input}
+
+
 
 ===
 
-Add in the colors we identified from the Dark2 palette in a new column called color. The LHS is the conditional statement to filer rows and the RHS is the replacement value, in this case the color hex code.
+Add in the colors we identified from the Dark2 palette in a new column called color, using conditional statements to filter rows for each penguin species. Use color hex codes as the replacement value.
 
 
 
@@ -210,12 +257,12 @@ pg_df <- pg_df %>%
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-If there were rows with other or NA values for the common name, we could designate what goes in the color column for those rows by adding another conditional such as `TRUE ~ "#000000"`.
+The arguments to `case_when` are evaluated in order, so it is advised to list them from most specific to most general. If there were rows with other or NA values for the common name, we could designate what goes in the color column for those rows by adding a last conditional such as `TRUE ~ "#000000"`.  
 {:.notes}
 
 ===
 
-Then use glue to include the value from the `color` column in the species label.
+Then use glue to include the species-specific color value in the axis label.
 
 
 
@@ -227,7 +274,7 @@ pg_df %>%
   theme(axis.text.y = element_markdown())
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-14-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-18-1.png" %})
 {:.captioned}
 
 

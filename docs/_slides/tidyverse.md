@@ -3,7 +3,7 @@
 
 ## What is the tidyverse? 
 
-The [tidyverse](https://www.tidyverse.org/) is *an opinionated collected of R packages designed for data science*. There are multiple packages designed to tackle each stage of the data science workflow (depicted below), unified by common design philosophies and data structures. 
+The [tidyverse](https://www.tidyverse.org/) is *an opinionated collection of R packages designed for data science*. There are multiple packages designed to tackle each stage of the data science workflow (depicted below), unified by common design philosophies and data structures. 
 
 ![]({% include asset.html path="images/tidy-packages.png" %}){: width="75%"}  
 *How tidyverse packages fit into a canonical data science workflow.  [source](https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/)*
