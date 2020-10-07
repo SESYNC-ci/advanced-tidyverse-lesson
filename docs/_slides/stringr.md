@@ -3,19 +3,19 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Tidy evaluation
+## Manipulate strings and dates
 
-Another core tenet of the tidyverse is *tidy evaluation* via data masking, which facilitates:
+Another core tenet of the tidyverse is [tidy evaluation](https://adv-r.hadley.nz/evaluation.html), which facilitates:
 
-- using variable/column names without having to refer to data frame name
-- identifying variables based on their position, name, or type
+- using names of data variables as if they were variables in your environment (referred to as *data masking*)
+- identifying variables based on their position, name, or type (referred to as *tidy selection*)
 
-In base R there is similar functionality using `attach(pg_df)` or `data = pg_df` arguments in functions like `lm`. Tidyverse functions take those ideas and make them consistent and operational in a reliable manner beyond usage in interactive programming.
+In base R there is similar functionality using `attach(pg_df)` or `data = pg_df` arguments in functions like `lm`. Tidyverse functions take those ideas and make them consistent and operational in a reliable manner beyond usage in interactive programming. 
 {:.notes}
 
 ===
 
-We will rename the columns of our data frame to remove spaces and punctuation.
+Given this focus on variable names, let's make it easier to use them without special syntax by renaming the columns of `pg_df` to remove spaces and punctuation. 
 
 
 
@@ -39,46 +39,77 @@ We will rename the columns of our data frame to remove spaces and punctuation.
 
 ===
 
-We could rename each individually using `dplyr`'s `rename`, but `rename_with` is a handy shortcut if you want to do the same thing to every column name:
-
-```
-rename_with(.data = pg_df, .fn = ...)
-```
-
-We will use functions in the core tidyverse `stringr` package to manipulate the column name strings. 
-
-===
-
-## Pattern replacement 
-
-Replaces spaces with underscore characters ("_") either with exact pattern or [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html). Test out function on one column name:
-
-replace vs replace all
+Within [dplyr](){:.rlib} functions like `rename` where the data frame is always the first argument, tidy eval means you don't need to re-specify the data frame name when you refer to a specific column. For example, rename the column "studyName" to "study_name"
 
 
 
 ~~~r
-> str_replace_all("Body Mass (g)", pattern = " ", replacement = "_")
-> str_replace_all("Body Mass (g)", pattern = "[:space:]", replacement = "_")
+pg_df <- rename(pg_df, study_name = studyName)
 ~~~
-{:title="Console" .no-eval .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ===
 
-Similarly, can remove all punctuation using the regex pattern `[:punct:]`
+Instead of changing each colujn individually, `rename_with` is a handy shortcut to do the same modification to all (or a collection of) column names. The arguments are: 
+
+* a data frame
+* a function to apply to each column name 
+* a selection of column to rename (by default all columns)
+
+===
+
+## Manipulating strings
+
+Before changing the names, we will test out functions in [stringr](){:.rlib} for manipulating character strings. Common tasks often involve pattern matching, which can be accomplished by specifying either an exact match, or via  [regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html).
+
+For example, replace all of the spaces in a character string using either:
 
 
 
 ~~~r
-> str_replace_all("Delta 15 N (o/oo)", pattern = "[:punct:]", replacement = "")
+str_replace_all("Body Mass (g)", pattern = " ", replacement = "_")
 ~~~
-{:title="Console" .no-eval .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-Combine both transformations and add a new one (convert to lower case) in one fell swoop:
+~~~
+[1] "Body_Mass_(g)"
+~~~
+{:.output}
 
-point out function syntax again
+
+~~~r
+str_replace_all("Body Mass (g)", pattern = "[:space:]", replacement = "_")
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+[1] "Body_Mass_(g)"
+~~~
+{:.output}
+
+
+===
+
+The regex pattern `[:punct:]` is a concise way to match all punctuation symbols at once.
+
+
+
+~~~r
+str_replace_all("Delta 15 N (o/oo)", pattern = "[:punct:]", replacement = "")
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+[1] "Delta 15 N ooo"
+~~~
+{:.output}
+
+
+Use these functions as arguments to a piped sequence of `rename_with` functions to combine both transformations and convert to lower case in one fell swoop:
 
 
 
@@ -91,7 +122,6 @@ pg_df <- pg_df %>%
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-Check out the new column names:
 
 
 
@@ -112,7 +142,7 @@ Check out the new column names:
 {:.output}
 
 
-Much improved!!
+Much improved!! Note that a more robust method of creating [syntactic names](https://principles.tidyverse.org/names-attribute.html#syntactic-names) can be accomplished using the `.name_repair` argument in `tibble::tibble` or `readxl::read_excel`.
 
 ===
 
@@ -140,20 +170,20 @@ Now let's work on putting the date information from the filenames into a properl
 
 ===
 
-Every file name is the same besides the date. We can remove the patterns that match "data/penguins/penguins_nesting-" or (`|`) ".csv" using `str_remove_all`. Save a new vector so we can focus on the date conversion. 
+We can use pattern matching to identify and remove "data/penguins/penguins_nesting-" or (`|`) ".csv" using `str_remove_all`. Save a new vector to use for testing out date conversions. 
 
 
 
 ~~~r
 egg_dates <- str_remove_all(string = pg_df$filename, 
-    pattern =  "(data/penguins/penguins_nesting-)|(.csv)")
+    pattern = "(data/penguins/penguins_nesting-)|(.csv)")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ===
 
-`lubridate` is a tidyverse package to facilitate working with date formats. Can `as_date` automatically interpret "December-1-2009" as a date?
+[lubridate](){:.rlib} facilitates working with date formats. Can `as_date` automatically interpret "December-1-2009" as a date?
 
 
 
@@ -190,7 +220,7 @@ Note that interpretation of many POSIX codes depend on settings of your operatin
 
 ===
 
-Supply the pattern of the date format as a character string using the appropriate codes:
+Supply the pattern of the date format as a character string using the appropriate pattern:
 
 
 
@@ -218,7 +248,7 @@ egg_dates[1] %>% guess_formats(orders = "mdy")
 
 ===
 
-Just by knowing the order that months, days, and years appear, we can actually circumvent all of those previous steps to find and convert the date information right from the full filename using the function `mdy` 
+Just by knowing the order that months, days, and years appear, we can actually circumvent all of those previous steps to find and convert the date information right from the full filename using the function `mdy`.
 
 
 
@@ -234,12 +264,12 @@ Just by knowing the order that months, days, and years appear, we can actually c
 {:.output}
 
 
-Use this function to create a new column with sampling dates.
+Use `mdy` to create a new column with sampling dates and then drop the filename column, using functions that take advantage of tidy eval data masking.
 
 
 
 ~~~r
-pg_df <- pg_df %>% mutate(date = mdy(filename))
+pg_df <- pg_df %>% mutate(date = mdy(filename)) %>% select(-filename)
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 

@@ -30,7 +30,7 @@ These are some of the cool functions we learned about
 Some other topics about the tidyverse that are worth looking into but we didn't cover here:
 
 * **tidymodels** especially the broom package
-* rlang - add link to resources about using these functions within functions 
+* **rlang** - To learn more about using tidy evaluation in functions, refer to this [dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html#one-or-more-user-supplied-expressions), the documentation and cheatsheet for [rlang](https://rlang.r-lib.org/), or one [of](https://www.youtube.com/watch?v=nERXS3ssntw) [these](https://www.youtube.com/watch?v=2-gknoyjL3A) [videos](https://www.youtube.com/watch?v=2BXPLnLMTYo) from a tidyverse developer. 
 * **list columns** for nesting and unnesting things within data frames
 * Functions for modifying lists and parts of lists in purrr
 * Interval, period, and duration objects in lubridate

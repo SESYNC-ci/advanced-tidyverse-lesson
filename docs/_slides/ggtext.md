@@ -1,13 +1,9 @@
 ---
 ---
 
-Now we'll move into some visualization...
-what we want is..
-we'll accomplish that by first making a new column
+## Combining strings
 
-## Combine strings
-
-Our data contain both the common and Latin names for the 3 penguin species, in separate column. We want to combine them into one column to use for labeling in a plot. These species names are:
+The next goal is to visualize data by the 3 different penguin species. In order to use the format "Common name (*Latin name*)" in axis labels, the first task will be to make a new column that combines the common and Latin names
 
 
 
@@ -30,38 +26,21 @@ Our data contain both the common and Latin names for the 3 penguin species, in s
 
 ===
 
-**glue** is the tidyverse package for pasting data and strings together. Expressions in `{ }` are evaluated as R code. 
+[glue](){:.rlib} is for pasting data and strings together. Expressions in `{ }` are evaluated as R code. 
 
 
 
 ~~~r
 library(glue)
+glue("The largest penguin in this dataset measured {max(pg_df$body_mass_g, na.rm = TRUE)} grams.")
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
-
-Attaching package: 'glue'
+The largest penguin in this dataset measured 6300 grams.
 ~~~
 {:.output}
-
-
-~~~
-The following object is masked from 'package:dplyr':
-
-    collapse
-~~~
-{:.output}
-
-
-
-
-
-~~~r
-> glue("{pg_df$common} ({pg_df$latin})")
-~~~
-{:title="Console" .input}
 
 
 ===
@@ -91,7 +70,7 @@ pg_df %>%
   coord_flip()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-5-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-4-1.png" %})
 {:.captioned}
 
 show axis.title.x = element_text(face = "italic")
@@ -123,7 +102,7 @@ pg_df %>%
   coord_flip()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-7-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-6-1.png" %})
 {:.captioned}
 
 ===
@@ -140,7 +119,7 @@ pg_df %>%
   theme(axis.text.y = element_markdown()) 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-8-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-7-1.png" %})
 {:.captioned}
 
 ===
@@ -157,7 +136,7 @@ pg_df %>%
   theme(axis.text.y = element_markdown()) 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-9-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-8-1.png" %})
 {:.captioned}
 
 ===
@@ -174,7 +153,7 @@ pg_df %>%
   theme(axis.text.y = element_markdown())
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-10-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-9-1.png" %})
 {:.captioned}
 
 ===
@@ -194,7 +173,7 @@ library(scales)
 > show_col(viridis_pal()(3))
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-12-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-11-1.png" %})
 {:.captioned}
 
 
@@ -202,7 +181,7 @@ library(scales)
 > show_col((brewer_pal(type = "qual", palette = "Dark2"))(3))
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-13-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-12-1.png" %})
 {:.captioned}
 
 ===
@@ -248,7 +227,7 @@ pg_df %>%
   theme(axis.text.y = element_markdown())
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-15-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-14-1.png" %})
 {:.captioned}
 
 

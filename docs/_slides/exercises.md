@@ -29,22 +29,20 @@ Remove `"data/penguins/"` and  `".csv"` from the filename strings using only fun
 
 ===
 
-### Exericse 3
+### Exercise 3
 
-Also use the different colors for each species within the plot geometry layer. 
+stringr::str_split vector on "to" for separating beginning and end of durations. variable truncation on dates. return list of date pairs
 
-Hint: You will need a `scale_` function
+then test out ymd with different truncation levels eg ymd(c("2009-10-10", "2009-10", "2009"), truncated = 0|1|2)
 
 [View solution](#solution-3)
 {:.notes}
 
-=== 
-
 ### Exercise 4
 
-*Bonus fun!* 
+Also use the different colors for each species within the plot geometry layer. 
 
-Use the proper notation for the isotope ratio in the X axis label. 
+Hint: You will need a `scale_` function
 
 [View solution](#solution-4)
 {:.notes}
@@ -119,13 +117,7 @@ Use different images (such as from [phylopic.org](http://phylopic.org/)) to incl
 
 
 ~~~r
-> pg_df %>%
-+   mutate(species = glue("{common}<br><i style='color:{color}'>({latin})</i>")) %>%
-+   ggplot(aes(x = species, y = delta_13_c_ooo)) +
-+   geom_boxplot(aes(fill = color), alpha = 0.75) + 
-+   scale_fill_identity() + # tricky! 
-+   coord_flip() +
-+   theme(axis.text.y = element_markdown())
+> ### stringr and ymd
 ~~~
 {:title="Console" .no-eval .input}
 
@@ -138,17 +130,20 @@ Use different images (such as from [phylopic.org](http://phylopic.org/)) to incl
 
 
 ~~~r
-> pg_df %>% 
-+   ggplot(aes(x = common, y = delta_13_c_ooo)) +
-+   geom_boxplot() + coord_flip() +
-+   theme(axis.text.y = element_markdown()) +
-+   ylab(expression(paste(delta^13, "C (\u2030)")))
+> pg_df %>%
++   mutate(species = glue("{common}<br><i style='color:{color}'>({latin})</i>")) %>%
++   ggplot(aes(x = species, y = delta_13_c_ooo)) +
++   geom_boxplot(aes(fill = color), alpha = 0.75) + 
++   scale_fill_identity() + # tricky! 
++   coord_flip() +
++   theme(axis.text.y = element_markdown())
 ~~~
 {:title="Console" .no-eval .input}
 
 
 [Return](#exercise-4)
 {:.notes}
+
 
 ### Solution 5
 

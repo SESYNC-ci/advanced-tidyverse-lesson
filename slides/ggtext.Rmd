@@ -1,13 +1,9 @@
 ---
 ---
 
-Now we'll move into some visualization...
-what we want is..
-we'll accomplish that by first making a new column
+## Combining strings
 
-## Combine strings
-
-Our data contain both the common and Latin names for the 3 penguin species, in separate column. We want to combine them into one column to use for labeling in a plot. These species names are:
+The next goal is to visualize data by the 3 different penguin species. In order to use the format "Common name (*Latin name*)" in axis labels, the first task will be to make a new column that combines the common and Latin names
 
 ```{r}
 pg_df %>% select(common, latin) %>% distinct()
@@ -15,15 +11,11 @@ pg_df %>% select(common, latin) %>% distinct()
 
 ===
 
-**glue** is the tidyverse package for pasting data and strings together. Expressions in `{ }` are evaluated as R code. 
+[glue](){:.rlib} is for pasting data and strings together. Expressions in `{ }` are evaluated as R code. 
 
-```{r, results='hide', handout=0}
+```{r, handout=0, message=FALSE}
 library(glue)
-```
-
-
-```{r, results='hide'}
-glue("{pg_df$common} ({pg_df$latin})")
+glue("The largest penguin in this dataset measured {max(pg_df$body_mass_g, na.rm = TRUE)} grams.")
 ```
 
 ===
@@ -113,10 +105,10 @@ Explore color codes using the `scales` package, which underlies many other funct
 ```{r, handout = 0, message=FALSE}
 library(scales)
 ```
-```{r}
+```{r, fig.height = 3, dpi=100}
 show_col(viridis_pal()(3))
 ```
-```{r}
+```{r, fig.height = 3, dpi=100}
 show_col((brewer_pal(type = "qual", palette = "Dark2"))(3))
 ```
 

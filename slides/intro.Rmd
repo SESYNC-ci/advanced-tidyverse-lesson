@@ -13,8 +13,8 @@
 
 - Read a folder of tabular files into one data frame
 - Efficiently manipulate string and date vectors
-- Format parts of text in ggplot labels
-- Rearrange factor levels
+- Format ggplot labels with markdown syntax
+- Rearrange and find all combinations of factor levels
 
 ===
 
@@ -22,8 +22,8 @@
 
 You should have already be familiar with these topics: 
 
-- Tidy data and piped workflows using `tidyr`, `dplyr`, and `%>%`
-- The grammar of graphics used by `ggplot2`
+- Tidy data and piped workflows using [tidyr](){:.rlib}, [dplyr](){:.rlib}, and `%>%`
+- The grammar of graphics used by [ggplot2](){:.rlib}
 
 
 
