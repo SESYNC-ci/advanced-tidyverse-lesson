@@ -48,11 +48,21 @@ pg_df <- pg_df %>%
 # remove non-date characters
 egg_dates <- str_remove_all(string = pg_df$filename, 
                             pattern = ...)
+
+# load package for dates
+library(...)
+
 # test date conversion
-egg_dates[1] %>% as_date(format = "%B-%d-%Y")
+egg_dates[1] %>% as_date()
+
+# specify pattern of date
+egg_dates[1] %>% as_date(... = ...)
 
 # help with date conversion
 egg_dates[1] %>% ...(orders = ...)
+
+# convert date from entire filename string
+pg_df$...[1] %>% ...()
 
 # convert dates
 pg_df <- pg_df %>% ...(date = ...(filename)) %>% select(-filename)
