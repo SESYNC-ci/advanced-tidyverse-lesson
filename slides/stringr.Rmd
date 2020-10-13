@@ -32,7 +32,7 @@ pg_df <- rename(pg_df, study_name = studyName)
 
 ===
 
-Instead of changing each colujn individually, `rename_with` is a handy shortcut to do the same modification to all (or a collection of) column names. The arguments are: 
+Instead of changing each column individually, `rename_with` is a handy shortcut to do the same modification to all (or a collection of) column names. The arguments are: 
 
 * a data frame
 * a function to apply to each column name 
@@ -98,7 +98,7 @@ egg_dates <- str_remove_all(string = pg_df$filename,
 
 [lubridate](){:.rlib} facilitates working with date formats. Can `as_date` automatically interpret "December-1-2009" as a date?
 
-```{r, eval=FALSE, results='hide', handout = 0}
+```{r, handout = 0}
 library(lubridate)
 egg_dates[1] %>% as_date()
 ```
@@ -141,7 +141,7 @@ egg_dates[1] %>% guess_formats(orders = "mdy")
 
 Just by knowing the order that months, days, and years appear, we can actually circumvent all of those previous steps to find and convert the date information right from the full filename using the function `mdy`.
 
-```{r}
+```{r, handout = 0}
 pg_df$filename[1] %>% mdy()
 ```
 

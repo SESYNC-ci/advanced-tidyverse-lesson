@@ -29,8 +29,8 @@ These are some of the cool functions we learned about
 
 Some other topics about the tidyverse that are worth looking into but we didn't cover here:
 
-* **tidymodels** - A framework for modeling and machine learning using tidy principles, including a [website](https://www.tidymodels.org/) extensive resources to learn about creating and tuning models. [broom](){:.rlib} installs with tidyverse and is helpful for tidying up output from commonly used models such as `lm` or `cor.test`
+* **tidymodels** - A framework for modeling and machine learning using tidy principles, including a [website](https://www.tidymodels.org/) with extensive resources to learn about creating and tuning models. [broom](){:.rlib} installs with tidyverse and is helpful for tidying up output from commonly used models such as `lm` or `cor.test`
 * Deeper into **rlang** - To learn more about using tidy evaluation in functions, refer to this [dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html#one-or-more-user-supplied-expressions), the documentation and cheatsheet for [rlang](https://rlang.r-lib.org/), or [one](https://www.youtube.com/watch?v=nERXS3ssntw) of [these](https://www.youtube.com/watch?v=2-gknoyjL3A) [videos](https://www.youtube.com/watch?v=2BXPLnLMTYo) from the tidyverse developers. 
 * Functions in [purrr](){:.rlib} to manipulate lists, and [list columns](https://r4ds.had.co.nz/many-models.html#list-columns-1) in [tibble](){:.rlib} data frames that can be nested and unnested
-* Interval, period, and duration objects in [lubridate](){:.rlib}
+* [Interval](https://lubridate.tidyverse.org/articles/lubridate.html#time-intervals), [period and duration](https://lubridate.tidyverse.org/articles/lubridate.html#arithmetic-with-date-times) classes in [lubridate](){:.rlib}, for working with specific time spans. See the [cheatsheet](https://rawgit.com/rstudio/cheatsheets/master/lubridate.pdf) for examples of irregularities and inconsistencies that can complicate analyses with dates and times (e.g. leap years, daylight savings time, etc.). 
 

@@ -51,7 +51,7 @@ pg_df <- rename(pg_df, study_name = studyName)
 
 ===
 
-Instead of changing each colujn individually, `rename_with` is a handy shortcut to do the same modification to all (or a collection of) column names. The arguments are: 
+Instead of changing each column individually, `rename_with` is a handy shortcut to do the same modification to all (or a collection of) column names. The arguments are: 
 
 * a data frame
 * a function to apply to each column name 
@@ -191,7 +191,19 @@ egg_dates <- str_remove_all(string = pg_df$filename,
 library(lubridate)
 egg_dates[1] %>% as_date()
 ~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .no-eval .text-document}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+Warning: All formats failed to parse. No formats found.
+~~~
+{:.output}
+
+
+~~~
+[1] NA
+~~~
+{:.output}
 
 
 
@@ -253,9 +265,9 @@ Just by knowing the order that months, days, and years appear, we can actually c
 
 
 ~~~r
-> pg_df$filename[1] %>% mdy()
+pg_df$filename[1] %>% mdy()
 ~~~
-{:title="Console" .input}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~

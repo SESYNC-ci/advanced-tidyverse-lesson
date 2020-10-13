@@ -20,7 +20,7 @@ Hint: Check out the base `split` or dplyr `group_split` function for creating a 
 
 ### Exercise 2
 
-Check out some specialized functions in [fs](){:.rlib} for extracting parts of [filepaths](https://fs.r-lib.org/articles/function-comparisons.html#path-functions.
+Check out some specialized functions in [fs](){:.rlib} for extracting parts of [filepaths](https://fs.r-lib.org/articles/function-comparisons.html#path-functions).
 
 Remove `"data/penguins/"` and  `".csv"` from the filename strings using only functions in fs.
 
@@ -127,8 +127,8 @@ Use different images (such as from [phylopic.org](http://phylopic.org/)) to incl
 
 ~~~r
 > dates %>% 
-+   str_split("to", n = 2, ) %>% 
-+   map(~str_trim(.x)) %>% 
++   str_split("to", n = 2) %>% 
++   map(~str_trim(.x)) %>% # or split on " to " for trimming whitespace
 +   map(~ymd(.x, truncated = 2))
 ~~~
 {:title="Console" .no-eval .input}
