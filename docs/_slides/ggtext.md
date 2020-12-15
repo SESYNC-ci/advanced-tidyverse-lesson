@@ -109,7 +109,7 @@ However, until recently, italicizing *only* the Latin name was [much less straig
 
 ===
 
-ggtext allows for using (limited) markdown syntax within the plot labels. This functionality will soon be in `ggplot2` but for now install and load ggtext.
+[ggtext](https://wilkelab.org/ggtext/) allows for using (limited) markdown syntax within the plot labels. This functionality will soon be in `ggplot2` but for now install and load ggtext.
 
 
 
@@ -210,7 +210,7 @@ library(scales)
 
 
 ~~~r
-> show_col((brewer_pal(type = "qual", palette = "Dark2"))(3))
+> show_col(brewer_pal(type = "qual", palette = "Dark2")(3))
 ~~~
 {:title="Console" .input}
 ![ ]({% include asset.html path="images/ggtext/unnamed-chunk-14-1.png" %})
@@ -220,26 +220,18 @@ library(scales)
 
 In order to use a different color for each penguin species, we will add a new column to the data frame with the color hex code for each using a series of conditional statements with `dplyr`'s `case_when` function. 
 
-
-
-~~~r
-> case_when(LHS ~ RHS, ...)
-~~~
-{:title="Console" .no-eval .input}
-
+```
+case_when(LHS ~ RHS, ...)
+```
 
 This will create a new vector of Right Hand Side (RHS) values based on whether cases evaluate to TRUE with the Left Hand Side (LHS). It can be handy for the purpose of labeling different classes of a continuous variable such as:
 
-
-
-~~~r
-> case_when(
-+   x < 10 ~ "small",
-+   x >= 10 & x < 20 ~ "medium",
-+   x >= 20 ~ "large")
-~~~
-{:title="Console" .no-eval .input}
-
+```
+case_when(
+  x < 10 ~ "small",
+  x >= 10 & x < 20 ~ "medium",
+  x >= 20 ~ "large")
+```
 
 
 ===
@@ -274,7 +266,7 @@ pg_df %>%
   theme(axis.text.y = element_markdown())
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/ggtext/unnamed-chunk-18-1.png" %})
+![ ]({% include asset.html path="images/ggtext/unnamed-chunk-16-1.png" %})
 {:.captioned}
 
 
