@@ -13,7 +13,7 @@ Because packages share a high-level design philosophy and low-level grammar and 
 
 These are not strictly alternatives but you might compare it to using either: only using base R, which prioritizes stability (i.e. doesn't change as quickly), or [data.table](https://rdatatable.gitlab.io/data.table/), which prioritizes speed and concise syntax. 
 
-If you want to up with new developments in the tidyverse, check out their [blog](https://www.tidyverse.org/blog/), videos from the [RStudio conferences](https://rstudio.com/resources/rstudioconf-2020/), or follow the developers on Twitter. 
+If you want to up with new developments in the tidyverse, check out the [blog](https://www.tidyverse.org/blog/), videos from the [RStudio conferences](https://rstudio.com/resources/rstudioconf-2020/), or follow the developers on Twitter. 
 
 ===
 
@@ -30,22 +30,22 @@ library(tidyverse)
 
 
 ~~~
-── Attaching packages ──────────── tidyverse 1.3.0 ──
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
 ~~~
 {:.output}
 
 
 ~~~
 ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-✓ tibble  3.0.3     ✓ dplyr   1.0.2
-✓ tidyr   1.1.2     ✓ forcats 0.5.0
-✓ readr   1.3.1     
+✓ tibble  3.0.4     ✓ dplyr   1.0.2
+✓ tidyr   1.1.2     ✓ stringr 1.4.0
+✓ readr   1.4.0     ✓ forcats 0.5.0
 ~~~
 {:.output}
 
 
 ~~~
-── Conflicts ─────────────── tidyverse_conflicts() ──
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()
 ~~~
