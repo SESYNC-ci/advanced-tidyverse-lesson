@@ -1,3 +1,5 @@
+[![lifecycle](https://img.shields.io/badge/lifecycle-beta-blue.svg)](https://github.com/SESYNC-ci/sesync-ci.github.io/blob/master/lesson/lesson-lifecycle.md#beta)
+
 ## Advanced Tidyverse
 
 This lesson covers selected functions from the core tidyverse as well as fs, glue, lubridate, scales, and others. 
