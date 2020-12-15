@@ -1,0 +1,1203 @@
+---
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advanced Tidyverse</title>
+<meta name="description" content="">
+<link rel="canonical"
+      href="https://SESYNC-ci.github.io/advanced-tidyverse-lesson/2020/07/21/index.html">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SESYNC-ci/lesson-style@3.0/docs/assets/css/default.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SESYNC-ci/lesson-style@3.0/docs/assets/css/syntax.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SESYNC-ci/lesson-style@3.0/docs/assets/css/static.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      rel="stylesheet"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous">
+
+    
+  </head>
+  <body>
+    <div class="page-content">
+      <div class="wrapper">
+        
+
+<h1 style="text-transform: none;" id="advanced-tidyverse">Advanced Tidyverse</h1>
+
+<p>Lesson 9999 with <em>Kelly Hondula</em></p>
+
+<nav id="ToC">
+
+  <ul>
+    <li><a href="#/slides/intro">Lesson Objectives</a></li>
+    <li><a href="#/slides/tidyverse">What is the tidyverse?</a></li>
+    <li><a href="#/slides/files">Loading data</a></li>
+    <li><a href="#/slides/stringr">Manipulate strings and dates</a></li>
+    <li><a href="#/slides/ggtext">Combining strings</a></li>
+    <li><a href="#/slides/forcats">Categorical data</a></li>
+    <li><a href="#/slides/summary">Summary</a></li>
+    <li><a href="#/slides/exercises">Exercises</a></li>
+  </ul>
+</nav>
+
+<hr />
+<p><a name="/slides/intro"></a></p>
+
+<h2 id="lesson-objectives">Lesson Objectives</h2>
+
+<ul>
+  <li>Meet the core tidyverse</li>
+  <li>Learn functions that ease data cleaning</li>
+  <li>Level up in exploratory data viz</li>
+</ul>
+
+<h2 id="specific-achievements">Specific Achievements</h2>
+
+<ul>
+  <li>Read a folder of tabular files into one data frame</li>
+  <li>Efficiently manipulate string and date vectors</li>
+  <li>Format ggplot labels with markdown syntax</li>
+  <li>Rearrange and find all combinations of factor levels</li>
+</ul>
+
+<h2 id="review-and-pre-requisites">Review and Pre-Requisites</h2>
+
+<p>You should have already be familiar with these topics:</p>
+
+<ul>
+  <li>Tidy data and piped workflows using <a href="" class="rlib">tidyr</a>, <a href="" class="rlib">dplyr</a>, and <code class="language-plaintext highlighter-rouge">%&gt;%</code></li>
+  <li>The grammar of graphics used by <a href="" class="rlib">ggplot2</a></li>
+</ul>
+
+<p class="ToS"><a href="#/slides/intro">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/tidyverse"></a></p>
+
+<h2 id="what-is-the-tidyverse">What is the tidyverse?</h2>
+
+<p>The <a href="https://www.tidyverse.org/">tidyverse</a> is <em>an <a href="https://design.tidyverse.org/unifying-principles.html">opinionated</a> collection of R packages designed for data science</em>. There are multiple packages designed to tackle each stage of the data science workflow (depicted below), unified by common design philosophies and data structures.</p>
+
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/tidy-packages.png" alt="" width="75%" /><br />
+<em>How tidyverse packages fit into a canonical data science workflow.  <a href="https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/">source</a></em></p>
+
+<p>Because packages share a high-level design philosophy and low-level grammar and data structures, learning one package should make it easier to learn the next. Tidyverse packages are designed to work best with <a href="https://r4ds.had.co.nz/tidy-data.html">tidy</a> data frames, and emphasize <strong>readability</strong>, <strong>consistency</strong>, and <strong>modularity</strong>.</p>
+
+<p>These are not strictly alternatives but you might compare it to using either: only using base R, which prioritizes stability (i.e. doesn’t change as quickly), or <a href="https://rdatatable.gitlab.io/data.table/">data.table</a>, which prioritizes speed and concise syntax.</p>
+
+<p>If you want to up with new developments in the tidyverse, check out the <a href="https://www.tidyverse.org/blog/">blog</a>, videos from the <a href="https://rstudio.com/resources/rstudioconf-2020/">RStudio conferences</a>, or follow the developers on Twitter.</p>
+
+<h2 id="core-tidyverse">Core Tidyverse</h2>
+
+<p>Load the tidyverse meta-package using:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+</code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+✓ tibble  3.0.4     ✓ dplyr   1.0.2
+✓ tidyr   1.1.2     ✓ stringr 1.4.0
+✓ readr   1.4.0     ✓ forcats 0.5.0
+</code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+</code></pre></div></div>
+
+<p>This loads the 8 “core” tidyverse packages into your environment:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Package</th>
+      <th>Purpose</th>
+      <th>Prominent functions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">readr</code></td>
+      <td>read flat files</td>
+      <td><code class="language-plaintext highlighter-rouge">read_csv</code>, <code class="language-plaintext highlighter-rouge">write_csv</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">tidyr</code></td>
+      <td>reshaping</td>
+      <td><code class="language-plaintext highlighter-rouge">pivot_longer</code>, <code class="language-plaintext highlighter-rouge">pivot_wider</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">dplyr</code></td>
+      <td>wrangling</td>
+      <td><code class="language-plaintext highlighter-rouge">filter</code>, <code class="language-plaintext highlighter-rouge">select</code>, <code class="language-plaintext highlighter-rouge">summarize</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ggplot2</code></td>
+      <td>visualization</td>
+      <td><code class="language-plaintext highlighter-rouge">ggplot</code>, <code class="language-plaintext highlighter-rouge">aes</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stringr</code></td>
+      <td>control character vectors</td>
+      <td><code class="language-plaintext highlighter-rouge">str_sub</code>, <code class="language-plaintext highlighter-rouge">str_pad</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">tibble</code></td>
+      <td>opinionated data frames</td>
+      <td><code class="language-plaintext highlighter-rouge">glimpse</code>, <code class="language-plaintext highlighter-rouge">rownames_to_column</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">forcats</code></td>
+      <td>categorical data</td>
+      <td><code class="language-plaintext highlighter-rouge">fct_relevel</code>, <code class="language-plaintext highlighter-rouge">fct_anon</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">purrr</code></td>
+      <td>iteration</td>
+      <td><code class="language-plaintext highlighter-rouge">map</code>, <code class="language-plaintext highlighter-rouge">walk</code>, <code class="language-plaintext highlighter-rouge">pmap</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="expanded-tidyverse">Expanded tidyverse</h2>
+
+<p>When you run <code class="language-plaintext highlighter-rouge">install.packages("tidyverse")</code> it also installs a number of other packages with more specialized uses, as well as many package dependencies such as <a href="" class="rlib">fs</a> and <a href="" class="rlib">scales</a>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Purpose</th>
+      <th>Packages</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Importing data</td>
+      <td><code class="language-plaintext highlighter-rouge">DBI</code>, <code class="language-plaintext highlighter-rouge">dbplyr</code>, <code class="language-plaintext highlighter-rouge">haven</code>, <code class="language-plaintext highlighter-rouge">httr</code>, <code class="language-plaintext highlighter-rouge">readxl</code>, <code class="language-plaintext highlighter-rouge">rvest</code>, <code class="language-plaintext highlighter-rouge">jsonlite</code>, <code class="language-plaintext highlighter-rouge">xml2</code></td>
+    </tr>
+    <tr>
+      <td>Wrangling specific types of data</td>
+      <td><code class="language-plaintext highlighter-rouge">lubridate</code>, <code class="language-plaintext highlighter-rouge">hms</code>, <code class="language-plaintext highlighter-rouge">blob</code></td>
+    </tr>
+    <tr>
+      <td>General programming</td>
+      <td><code class="language-plaintext highlighter-rouge">magrittr</code>, <code class="language-plaintext highlighter-rouge">glue</code>, <code class="language-plaintext highlighter-rouge">reprex</code>, <code class="language-plaintext highlighter-rouge">rlang</code></td>
+    </tr>
+    <tr>
+      <td>Modeling</td>
+      <td><code class="language-plaintext highlighter-rouge">broom</code>, <code class="language-plaintext highlighter-rouge">modelr</code></td>
+    </tr>
+    <tr>
+      <td>Under the hood</td>
+      <td><code class="language-plaintext highlighter-rouge">pillar</code>, <code class="language-plaintext highlighter-rouge">rlang</code>, <code class="language-plaintext highlighter-rouge">cli</code>, <code class="language-plaintext highlighter-rouge">crayon</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Use <code class="language-plaintext highlighter-rouge">tidyverse_deps(recursive = TRUE)</code> to see a list of all 89 tidyverse packages and dependencies.</p>
+
+<p class="ToS"><a href="#/slides/tidyverse">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/files"></a></p>
+
+<h2 id="loading-data">Loading data</h2>
+
+<p>This lesson uses data modified from the <a href="https://allisonhorst.github.io/palmerpenguins/index.html">palmerpenguins</a> package, which provides a dataset about 3 penguin species collected at <a href="https://pal.lternet.edu/">Palmer Station Antarctica LTER</a>.</p>
+
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/lter_penguins.png" alt="" width="75%" /><br />
+<em>Credit: <a href="https://www.allisonhorst.com/">Artwork by @allison_horst</a></em></p>
+
+<p>For this lesson, the data has been split up into separate files – one for each study date when nests were observed. The sampling date is included in the file name but not in the data itself. Each row contains data on characteristics and measurements associated with one observation of a study nest.</p>
+
+<p>Our goal is to read in all 50 of those files from the <strong>penguins</strong> folder into one data frame, and add the sampling date from each file name in the data. We will do this using <code class="language-plaintext highlighter-rouge">map</code> functions in <a href="" class="rlib">purrr</a>, the tidyverse workhorse for iteration. The inputs we will need are:</p>
+
+<ul>
+  <li>(1) a list of objects to iterate over, and</li>
+  <li>(2) the function to apply to each one.</li>
+</ul>
+
+<p>Before seeing <code class="language-plaintext highlighter-rouge">purrr::map</code> in action, we will explore the inputs.</p>
+
+<p>The list of objects to iterate over is a vector of file names, which can be created using <code class="language-plaintext highlighter-rouge">dir_ls</code> in <a href="" class="rlib">fs</a>. This package contains functions to work with files, filepaths, and directories. Most functions are named based on their <a href="https://fs.r-lib.org/articles/function-comparisons.html">unix equivalent</a>, with the corresponding prefix <code class="language-plaintext highlighter-rouge">file_</code>, <code class="language-plaintext highlighter-rouge">path_</code>, or <code class="language-plaintext highlighter-rouge">dir_</code>.</p>
+
+<p>Create a vector with all of the file names in the data/penguins folder:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span><span class="w">
+</span><span class="n">penguin_files</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dir_ls</span><span class="p">(</span><span class="s1">'data/penguins'</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If we were interested in only a subset of files in that directory, we could filter them by supplying a pattern to the argument <code class="language-plaintext highlighter-rouge">glob</code> or <code class="language-plaintext highlighter-rouge">regexp</code>, such as “only files with the word <code class="language-plaintext highlighter-rouge">penguin</code> in the name ending in <code class="language-plaintext highlighter-rouge">.csv</code>”.</p>
+
+<div class="language-r no-eval input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">dir_ls</span><span class="p">(</span><span class="s1">'data/penguins'</span><span class="p">,</span><span class="w"> </span><span class="n">glob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"*penguins*.csv"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The function to apply to each of the file names is <code class="language-plaintext highlighter-rouge">read_csv</code> in <a href="" class="rlib">readr</a>, such as</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">penguin_files</span><span class="p">[</span><span class="m">1</span><span class="p">])</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Parsed with column specification:
+cols(
+  studyName = col_character(),
+  `Sample Number` = col_double(),
+  Region = col_character(),
+  Island = col_character(),
+  Stage = col_character(),
+  `Individual ID` = col_character(),
+  `Clutch Completion` = col_character(),
+  `Culmen Length (mm)` = col_double(),
+  `Culmen Depth (mm)` = col_double(),
+  `Flipper Length (mm)` = col_double(),
+  `Body Mass (g)` = col_double(),
+  Sex = col_character(),
+  `Delta 15 N (o/oo)` = col_double(),
+  `Delta 13 C (o/oo)` = col_double(),
+  Comments = col_character(),
+  common = col_character(),
+  latin = col_character()
+)
+</code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code># A tibble: 8 x 17
+  studyName `Sample Number` Region Island Stage `Individual ID` `Clutch Complet…
+  &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;           &lt;chr&gt;           
+1 PAL0910                93 Anvers Biscoe Adul… N18A1           Yes             
+2 PAL0910                94 Anvers Biscoe Adul… N18A2           Yes             
+3 PAL0910               105 Anvers Biscoe Adul… N24A1           Yes             
+4 PAL0910               106 Anvers Biscoe Adul… N24A2           Yes             
+5 PAL0910               117 Anvers Biscoe Adul… N36A1           Yes             
+6 PAL0910               118 Anvers Biscoe Adul… N36A2           Yes             
+7 PAL0910               119 Anvers Biscoe Adul… N38A1           No              
+8 PAL0910               120 Anvers Biscoe Adul… N38A2           No              
+# … with 10 more variables: `Culmen Length (mm)` &lt;dbl&gt;, `Culmen Depth
+#   (mm)` &lt;dbl&gt;, `Flipper Length (mm)` &lt;dbl&gt;, `Body Mass (g)` &lt;dbl&gt;, Sex &lt;chr&gt;,
+#   `Delta 15 N (o/oo)` &lt;dbl&gt;, `Delta 13 C (o/oo)` &lt;dbl&gt;, Comments &lt;chr&gt;,
+#   common &lt;chr&gt;, latin &lt;chr&gt;
+</code></pre></div></div>
+
+<p>Note in the output message that the object created is a <a href="https://r4ds.had.co.nz/tibbles.html">tibble</a>, which is <a href="https://blog.rstudio.com/2016/03/24/tibble-1-0-0/">slightly different</a> than a typical data frame. For example, the displayed portion in the console is easier to read and contains the data type in each column.</p>
+
+<p>As also suggested by the output message, the data type for each column is determined automatically. The default <a href="https://readr.tidyverse.org/articles/readr.html#vector-parsers">parses</a> the first 1,000 rows of the table, but the <code class="language-plaintext highlighter-rouge">col_types</code> argument offers more control. One way to specify column types is a character string the same length as the number of columns:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>character</th>
+      <th>data type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">c</code></td>
+      <td>character/string</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">i</code></td>
+      <td>integer</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n</code></td>
+      <td>numeric</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">d</code></td>
+      <td>double</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">l</code></td>
+      <td>logical</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">f</code></td>
+      <td>factor/categorical</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">D</code></td>
+      <td>date</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">T</code></td>
+      <td>date time</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">t</code></td>
+      <td>time</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">?</code></td>
+      <td>guess</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_</code> or <code class="language-plaintext highlighter-rouge">-</code></td>
+      <td>skip this column</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read_csv</span><span class="p">(</span><span class="n">penguin_files</span><span class="p">[</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">col_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"cdcccccddddcddccc"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Or use <code class="language-plaintext highlighter-rouge">spec_csv</code> to generate a column specification object that can be passed to the col_types argument.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">my_col_types</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spec_csv</span><span class="p">(</span><span class="n">penguin_files</span><span class="p">[</span><span class="m">1</span><span class="p">])</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">my_col_types</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cols(
+  studyName = col_character(),
+  `Sample Number` = col_double(),
+  Region = col_character(),
+  Island = col_character(),
+  Stage = col_character(),
+  `Individual ID` = col_character(),
+  `Clutch Completion` = col_character(),
+  `Culmen Length (mm)` = col_double(),
+  `Culmen Depth (mm)` = col_double(),
+  `Flipper Length (mm)` = col_double(),
+  `Body Mass (g)` = col_double(),
+  Sex = col_character(),
+  `Delta 15 N (o/oo)` = col_double(),
+  `Delta 13 C (o/oo)` = col_double(),
+  Comments = col_character(),
+  common = col_character(),
+  latin = col_character()
+)
+</code></pre></div></div>
+
+<h2 id="map-functions">Map functions</h2>
+
+<p>The approach to iteration in the tidyverse is <code class="language-plaintext highlighter-rouge">map</code> functions in <a href="" class="rlib">purrr</a>. Compared to <code class="language-plaintext highlighter-rouge">*apply</code> functions, these offer <strong>predictable return objects</strong> and <strong>consistent syntax</strong>.</p>
+
+<p>The arguments to <code class="language-plaintext highlighter-rouge">map</code> are:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">.x</code> - a list of things to iterate over</li>
+  <li><code class="language-plaintext highlighter-rouge">.f</code> - what to do for each item in <code class="language-plaintext highlighter-rouge">.x</code></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">.f</code> can be either the name of an existing function, or an “anonymous” function created from a formula.</p>
+
+<p>Read each of the <code class="language-plaintext highlighter-rouge">penguin_files</code> into a list using <code class="language-plaintext highlighter-rouge">~</code> formula syntax:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_list</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="n">.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">penguin_files</span><span class="p">,</span><span class="w"> </span><span class="n">.f</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="o">~</span><span class="w"> </span><span class="n">read_csv</span><span class="p">(</span><span class="n">.x</span><span class="p">,</span><span class="w"> </span><span class="n">col_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_col_types</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Whereas <code class="language-plaintext highlighter-rouge">map</code> always returns a list, <code class="language-plaintext highlighter-rouge">map_*</code> functions return specific types of vectors such as <code class="language-plaintext highlighter-rouge">map_chr</code> for character vectors or <code class="language-plaintext highlighter-rouge">map_int</code>for integer vectors. Use <code class="language-plaintext highlighter-rouge">map_dfr</code> for returning <em>one</em> dataframe:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">map_dfr</span><span class="p">(</span><span class="n">penguin_files</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="n">read_csv</span><span class="p">(</span><span class="n">.x</span><span class="p">,</span><span class="w"> </span><span class="n">col_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_col_types</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Another handy argument for <code class="language-plaintext highlighter-rouge">map_dfr</code> is <code class="language-plaintext highlighter-rouge">.id</code>, which adds a column with the names of each item in <code class="language-plaintext highlighter-rouge">.x</code>.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">map_dfr</span><span class="p">(</span><span class="n">penguin_files</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="n">read_csv</span><span class="p">(</span><span class="n">.x</span><span class="p">),</span><span class="w"> </span><span class="n">.id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"filename"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="combine-operations-with-pipes">Combine operations with pipes</h2>
+
+<p><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/pipe.jpeg" alt="pipe" width="50%" /></p>
+
+<p>Remember the <code class="language-plaintext highlighter-rouge">%&gt;%</code> ?</p>
+
+<p class="notes">Readability is one of the core tenets of the tidyverse and this is accomplished with piped workflows. The functions are designed to work together based on the first argument and the type of output returned.</p>
+
+<p>Let’s combine our previous steps together without creating intermediate objects:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dir_ls</span><span class="p">(</span><span class="s2">"data/penguins"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">map_dfr</span><span class="p">(</span><span class="o">~</span><span class="n">read_csv</span><span class="p">(</span><span class="n">.x</span><span class="p">),</span><span class="w"> </span><span class="n">.id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"filename"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This code creates a vector of file names with <code class="language-plaintext highlighter-rouge">dir_ls()</code>, and then “maps” the <code class="language-plaintext highlighter-rouge">read_csv()</code> function over each file. The output of each <code class="language-plaintext highlighter-rouge">read_csv()</code> function is row-binded (i.e. combined) together into one dataframe called <code class="language-plaintext highlighter-rouge">pg_df</code>, with an additional column containing the filename that each row of data came from.</p>
+
+<p class="ToS"><a href="#/slides/files">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/stringr"></a></p>
+
+<h2 id="manipulate-strings-and-dates">Manipulate strings and dates</h2>
+
+<p>Another core tenet of the tidyverse is <a href="https://adv-r.hadley.nz/evaluation.html">tidy evaluation</a>, which facilitates:</p>
+
+<ul>
+  <li>using names of data variables as if they were variables in your environment (referred to as <em>data masking</em>)</li>
+  <li>identifying variables based on their position, name, or type (referred to as <em>tidy selection</em>)</li>
+</ul>
+
+<p class="notes">In base R there is similar functionality using <code class="language-plaintext highlighter-rouge">attach(pg_df)</code> or <code class="language-plaintext highlighter-rouge">data = pg_df</code> arguments in functions like <code class="language-plaintext highlighter-rouge">lm</code>. Tidyverse functions take those ideas and make them consistent and operational in a reliable manner beyond usage in interactive programming.</p>
+
+<p>Given this focus on variable names, let’s make it easier to use them without special syntax by renaming the columns of <code class="language-plaintext highlighter-rouge">pg_df</code> to remove spaces and punctuation.</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">pg_df</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [1] "filename"            "studyName"           "Sample Number"      
+ [4] "Region"              "Island"              "Stage"              
+ [7] "Individual ID"       "Clutch Completion"   "Culmen Length (mm)" 
+[10] "Culmen Depth (mm)"   "Flipper Length (mm)" "Body Mass (g)"      
+[13] "Sex"                 "Delta 15 N (o/oo)"   "Delta 13 C (o/oo)"  
+[16] "Comments"            "common"              "latin"              
+</code></pre></div></div>
+
+<p>Within <a href="" class="rlib">dplyr</a> functions like <code class="language-plaintext highlighter-rouge">rename</code> where the data frame is always the first argument, tidy eval means you don’t need to re-specify the data frame name when you refer to a specific column. For example, rename the column “studyName” to “study_name”</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rename</span><span class="p">(</span><span class="n">pg_df</span><span class="p">,</span><span class="w"> </span><span class="n">study_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">studyName</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Instead of changing each column individually, <code class="language-plaintext highlighter-rouge">rename_with</code> is a handy shortcut to do the same modification to all (or a collection of) column names. The arguments are:</p>
+
+<ul>
+  <li>a data frame</li>
+  <li>a function to apply to each column name</li>
+  <li>a selection of column to rename (by default all columns)</li>
+</ul>
+
+<h2 id="manipulating-strings">Manipulating strings</h2>
+
+<p>Before changing the names, we will test out functions in <a href="" class="rlib">stringr</a> for manipulating character strings. Common tasks often involve pattern matching, which can be accomplished by specifying either an exact match, or via  <a href="https://stringr.tidyverse.org/articles/regular-expressions.html">regular expressions</a>.</p>
+
+<p>For example, replace all of the spaces in a character string using either:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">str_replace_all</span><span class="p">(</span><span class="s2">"Body Mass (g)"</span><span class="p">,</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">" "</span><span class="p">,</span><span class="w"> </span><span class="n">replacement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"_"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "Body_Mass_(g)"
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">str_replace_all</span><span class="p">(</span><span class="s2">"Body Mass (g)"</span><span class="p">,</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"[:space:]"</span><span class="p">,</span><span class="w"> </span><span class="n">replacement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"_"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "Body_Mass_(g)"
+</code></pre></div></div>
+
+<p>The regex pattern <code class="language-plaintext highlighter-rouge">[:punct:]</code> is a concise way to match all punctuation symbols at once.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">str_replace_all</span><span class="p">(</span><span class="s2">"Delta 15 N (o/oo)"</span><span class="p">,</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"[:punct:]"</span><span class="p">,</span><span class="w"> </span><span class="n">replacement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "Delta 15 N ooo"
+</code></pre></div></div>
+
+<p>Use these functions as arguments to a piped sequence of <code class="language-plaintext highlighter-rouge">rename_with</code> functions to combine both transformations and convert to lower case in one fell swoop:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">rename_with</span><span class="p">(</span><span class="o">~</span><span class="n">str_replace_all</span><span class="p">(</span><span class="n">.x</span><span class="p">,</span><span class="w"> </span><span class="s2">"[:punct:]"</span><span class="p">,</span><span class="w"> </span><span class="s2">""</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">rename_with</span><span class="p">(</span><span class="o">~</span><span class="n">str_replace_all</span><span class="p">(</span><span class="n">.x</span><span class="p">,</span><span class="w"> </span><span class="s2">"[:space:]"</span><span class="p">,</span><span class="w"> </span><span class="s2">"_"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">rename_with</span><span class="p">(</span><span class="o">~</span><span class="n">str_to_lower</span><span class="p">(</span><span class="n">.x</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">pg_df</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [1] "filename"          "studyname"         "sample_number"    
+ [4] "region"            "island"            "stage"            
+ [7] "individual_id"     "clutch_completion" "culmen_length_mm" 
+[10] "culmen_depth_mm"   "flipper_length_mm" "body_mass_g"      
+[13] "sex"               "delta_15_n_ooo"    "delta_13_c_ooo"   
+[16] "comments"          "common"            "latin"            
+</code></pre></div></div>
+
+<p>Much improved!! Note that a more robust method of creating <a href="https://principles.tidyverse.org/names-attribute.html#syntactic-names">syntactic names</a> can be accomplished using the <code class="language-plaintext highlighter-rouge">.name_repair</code> argument in <code class="language-plaintext highlighter-rouge">tibble::tibble</code> or <code class="language-plaintext highlighter-rouge">readxl::read_excel</code>.</p>
+
+<h2 id="format-dates">Format dates</h2>
+
+<p>Now let’s work on putting the date information from the filenames into a properly formatted column of dates. Look at a sample of the data to evaluate: Is there a systematic way to extract the necessary information?</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="n">pg_df</span><span class="o">$</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "data/penguins/penguins_nesting-November-25-2009.csv"
+[2] "data/penguins/penguins_nesting-November-27-2009.csv"
+[3] "data/penguins/penguins_nesting-November-3-2008.csv" 
+[4] "data/penguins/penguins_nesting-November-14-2008.csv"
+[5] "data/penguins/penguins_nesting-November-16-2007.csv"
+</code></pre></div></div>
+
+<p>We can use pattern matching to identify and remove “data/penguins/penguins_nesting-“ or (<code class="language-plaintext highlighter-rouge">|</code>) “.csv” using <code class="language-plaintext highlighter-rouge">str_remove_all</code>. Save a new vector to use for testing out date conversions.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">egg_dates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">str_remove_all</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pg_df</span><span class="o">$</span><span class="n">filename</span><span class="p">,</span><span class="w"> 
+    </span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"(data/penguins/penguins_nesting-)|(.csv)"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><a href="" class="rlib">lubridate</a> facilitates working with date formats. Can <code class="language-plaintext highlighter-rouge">as_date</code> automatically interpret “December-1-2009” as a date?</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">lubridate</span><span class="p">)</span><span class="w">
+</span><span class="n">egg_dates</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">as_date</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: All formats failed to parse. No formats found.
+</code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] NA
+</code></pre></div></div>
+
+<p>As with the base <code class="language-plaintext highlighter-rouge">as.Date</code> function, unless dates are already specified using the <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> YYYY-MM-DD representation, date conversion with <code class="language-plaintext highlighter-rouge">lubridate::as_date</code> requires a character string defining the date using codes from the POSIX standard:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>code</th>
+      <th>meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">%b</code></td>
+      <td>Abbreviated month name in current locale</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">%B</code></td>
+      <td>Full month name in current locale</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">%d</code></td>
+      <td>Day of month as decimal number (01-31)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">%j</code></td>
+      <td>Day of year as decimal number (001-366)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">%y</code></td>
+      <td>Year without century (00-99)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">%Y</code></td>
+      <td>Year with century</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note that interpretation of many POSIX codes depend on settings of your operating system, such as month or weekday names in different languages, whether weeks start on Sunday or Monday, or the default century for <code class="language-plaintext highlighter-rouge">%y</code>. Read more about format specification in the <strong>Details</strong> section of the base <code class="language-plaintext highlighter-rouge">strptime</code> function.</p>
+
+<div class="language-r no-eval input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="o">?</span><span class="n">strptime</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Supply the pattern of the date format as a character string using the appropriate pattern:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">egg_dates</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">as_date</span><span class="p">(</span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"%B-%d-%Y"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "2009-12-01"
+</code></pre></div></div>
+
+<p>As long as the components of a date are in a consistent order, the <code class="language-plaintext highlighter-rouge">guess_formats</code> function can help determine the appropriate pattern, by supplying the order of <strong>m</strong>onth, <strong>d</strong>ay, and <strong>y</strong>ear.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">egg_dates</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">guess_formats</span><span class="p">(</span><span class="n">orders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mdy"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Just by knowing the order that months, days, and years appear, we can actually circumvent all of those previous steps to find and convert the date information right from the full filename using the function <code class="language-plaintext highlighter-rouge">mdy</code>.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="o">$</span><span class="n">filename</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mdy</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "2009-12-01"
+</code></pre></div></div>
+
+<p>Use <code class="language-plaintext highlighter-rouge">mdy</code> to create a new column with sampling dates and then drop the filename column, using functions that take advantage of tidy eval data masking.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mdy</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">filename</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="ToS"><a href="#/slides/stringr">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/ggtext"></a></p>
+
+<h2 id="combining-strings">Combining strings</h2>
+
+<p>The next goal is to compare data about the 3 different penguin species using boxplots, using the format “Common name (<em>Latin name</em>)” in axis labels. The first task will be to make a new column that combines the common and Latin names from those respective columns:</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">select</span><span class="p">(</span><span class="n">common</span><span class="p">,</span><span class="w"> </span><span class="n">latin</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">distinct</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code># A tibble: 3 x 2
+  common            latin                
+  &lt;chr&gt;             &lt;chr&gt;                
+1 Gentoo penguin    Pygoscelis papua     
+2 Chinstrap penguin Pygoscelis antarctica
+3 Adelie Penguin    Pygoscelis adeliae   
+</code></pre></div></div>
+
+<p><a href="" class="rlib">glue</a> is the tidyverse equivalent of <code class="language-plaintext highlighter-rouge">paste</code>/<code class="language-plaintext highlighter-rouge">paste0</code> for putting data and strings together. Expressions in <code class="language-plaintext highlighter-rouge">{ }</code> are evaluated as R code, such as:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">glue</span><span class="p">)</span><span class="w">
+</span><span class="n">glue</span><span class="p">(</span><span class="s2">"The biggest penguin measured {max(pg_df$body_mass_g, na.rm = TRUE)} grams."</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The biggest penguin measured 6300 grams.
+</code></pre></div></div>
+
+<p>Combine the common and (latin) names into a new column called species.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="s2">"{common} ({latin})"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">head</span><span class="p">(</span><span class="n">pg_df</span><span class="o">$</span><span class="n">species</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+Gentoo penguin (Pygoscelis papua)
+</code></pre></div></div>
+
+<p>Make a sideways boxplot comparing δ<sup>13</sup>C (‰) across species. Rotate the graph to better display the labels:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">delta_13_c_ooo</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">coord_flip</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-5-1.png" alt=" " /></p>
+
+<p>Formatting the entire label is possible by modifying a theme element:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">delta_13_c_ooo</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">coord_flip</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"italic"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-6-1.png" alt=" " /></p>
+
+<p>However, until recently, italicizing <em>only</em> the Latin name was <a href="https://stackoverflow.com/a/39282593">much less straightforward</a>.</p>
+
+<p><a href="https://wilkelab.org/ggtext/">ggtext</a> allows for using (limited) markdown syntax within the plot labels. This functionality will soon be in <code class="language-plaintext highlighter-rouge">ggplot2</code> but for now install and load ggtext.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="c1"># devtools::install_github("wilkelab/ggtext")</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">ggtext</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Remember markdown syntax?</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="s2">"{common} (*{latin}*)"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">delta_13_c_ooo</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">coord_flip</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-8-1.png" alt=" " /></p>
+
+<p>In order to apply the formatting, specify that this theme element should be interpreted as markdown. Recall that the X and Y axes are flipped!</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="s2">"{common} (*{latin}*)"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">delta_13_c_ooo</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">coord_flip</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_markdown</span><span class="p">())</span><span class="w"> 
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-9-1.png" alt=" " /></p>
+
+<p>The other html/markdown styles that can be interpreted are: line break, italics, bold, colors, fonts, super/subscript, and images.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="s2">"{common}&lt;br&gt;(*{latin}*)"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">delta_13_c_ooo</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">coord_flip</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_markdown</span><span class="p">())</span><span class="w"> 
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-10-1.png" alt=" " /></p>
+
+<p>Because there is no markdown syntax for font color, html syntax is required to change font color:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="s2">"&lt;span style='color:#009E73'&gt;{common}&lt;/span&gt;&lt;br&gt;(*{latin}*)"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">delta_13_c_ooo</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">coord_flip</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_markdown</span><span class="p">())</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-11-1.png" alt=" " /></p>
+
+<p>Explore color codes using the <a href="" class="rlib">scales</a> package, which underlies many other functions you may be using in ggplot figures already.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">scales</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">show_col</span><span class="p">(</span><span class="n">viridis_pal</span><span class="p">()(</span><span class="m">3</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-13-1.png" alt=" " /></p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">show_col</span><span class="p">(</span><span class="n">brewer_pal</span><span class="p">(</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"qual"</span><span class="p">,</span><span class="w"> </span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Dark2"</span><span class="p">)(</span><span class="m">3</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-14-1.png" alt=" " /></p>
+
+<p>In order to use a different color for each penguin species, we will add a new column to the data frame with the color hex code for each using a series of conditional statements with <code class="language-plaintext highlighter-rouge">dplyr</code>’s <code class="language-plaintext highlighter-rouge">case_when</code> function.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>case_when(LHS ~ RHS, ...)
+</code></pre></div></div>
+
+<p>This will create a new vector of Right Hand Side (RHS) values based on whether cases evaluate to TRUE with the Left Hand Side (LHS). It can be handy for the purpose of labeling different classes of a continuous variable such as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>case_when(
+  x &lt; 10 ~ "small",
+  x &gt;= 10 &amp; x &lt; 20 ~ "medium",
+  x &gt;= 20 ~ "large")
+</code></pre></div></div>
+
+<p>Add in the colors we identified from the Dark2 palette in a new column called color, using conditional statements to filter rows for each penguin species. Use color hex codes as the replacement value.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">case_when</span><span class="p">(</span><span class="n">common</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Gentoo penguin"</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s2">"#1B9E77"</span><span class="p">,</span><span class="w">
+                           </span><span class="n">common</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Chinstrap penguin"</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s2">"#D95F02"</span><span class="p">,</span><span class="w">
+                           </span><span class="n">common</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Adelie Penguin"</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s2">"#7570B3"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes">The arguments to <code class="language-plaintext highlighter-rouge">case_when</code> are evaluated in order, so it is advised to list them from most specific to most general. If there were rows with other or NA values for the common name, we could designate what goes in the color column for those rows by adding a last conditional such as <code class="language-plaintext highlighter-rouge">TRUE ~ "#000000"</code>.</p>
+
+<p>Then use glue to include the species-specific color value in the axis label.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="s2">"{common}&lt;br&gt;&lt;i style='color:{color}'&gt;({latin})&lt;/i&gt;"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">delta_13_c_ooo</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">coord_flip</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_markdown</span><span class="p">())</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/ggtext/unnamed-chunk-16-1.png" alt=" " /></p>
+
+<p class="ToS"><a href="#/slides/ggtext">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/forcats"></a></p>
+
+<h2 id="categorical-data">Categorical data</h2>
+
+<p>R has a special data type for handling categorial data called factors. Because they had a reputation for causing trouble…</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">default.stringsAsFactors</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] FALSE
+</code></pre></div></div>
+
+<p>😲 this setting is new in R version 4 !!</p>
+
+<p>Although <code class="language-plaintext highlighter-rouge">read_csv</code> had always defaulted strings to character data, there are situations where you may want to use factors, especially for modeling and plots – essentially whenever you want character vectors to not be alphabetical. <a href="" class="rlib">forcats</a> is intended to make this easier.</p>
+
+<p>Species common names are in a character vector.</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="nf">class</span><span class="p">(</span><span class="n">pg_df</span><span class="o">$</span><span class="n">common</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "character"
+</code></pre></div></div>
+
+<p>Controlling the order in which the 3 species appear in a plot is done with factors. If the data are kept as characters, plots will be sorted alphabetically (i.e. the default ordering for factor levels in base R).</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">as.factor</span><span class="p">(</span><span class="n">pg_df</span><span class="o">$</span><span class="n">common</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">levels</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "Adelie Penguin"    "Chinstrap penguin" "Gentoo penguin"   
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">common</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_bar</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/forcats/unnamed-chunk-4-1.png" alt=" " /></p>
+
+<p><code class="language-plaintext highlighter-rouge">forcats::as_factor</code> uses instead the order in which the levels appear in your data:</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">as_factor</span><span class="p">(</span><span class="n">pg_df</span><span class="o">$</span><span class="n">common</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">levels</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "Gentoo penguin"    "Chinstrap penguin" "Adelie Penguin"   
+</code></pre></div></div>
+
+<p>Convert <code class="language-plaintext highlighter-rouge">common</code> into a factor and remake the same bar plot. Notice the ordering of the bars compared to the previous graph.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">common</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as_factor</span><span class="p">(</span><span class="n">common</span><span class="p">))</span><span class="w">
+
+</span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">common</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_bar</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/forcats/unnamed-chunk-6-1.png" alt=" " /></p>
+
+<p>Use <code class="language-plaintext highlighter-rouge">fct_infreq</code> to order the levels by how frequently they appear in the dataset.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">common</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fct_infreq</span><span class="p">(</span><span class="n">common</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">common</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_bar</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/forcats/unnamed-chunk-7-1.png" alt=" " /></p>
+
+<p>Or more generally, <code class="language-plaintext highlighter-rouge">fct_reorder</code> to use a function(<code class="language-plaintext highlighter-rouge">.fun</code>) of a different variable (<code class="language-plaintext highlighter-rouge">.x</code>). Order <strong>common</strong> by each level’s median <code class="language-plaintext highlighter-rouge">flipper_length_mm</code>:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">common</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fct_reorder</span><span class="p">(</span><span class="n">common</span><span class="p">,</span><span class="w"> 
+    </span><span class="n">.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flipper_length_mm</span><span class="p">,</span><span class="w"> </span><span class="n">.fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">median</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">common</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flipper_length_mm</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/advanced-tidyverse-lesson@v0.1/docs/assets/images/forcats/unnamed-chunk-8-1.png" alt=" " /></p>
+
+<h2 id="all-combinations-of-variables">All combinations of variables</h2>
+
+<p>To create a table with combinations of variables, use <code class="language-plaintext highlighter-rouge">expand</code> from the tidyr package. For example:</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">expand</span><span class="p">(</span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="p">,</span><span class="w"> </span><span class="n">common</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code># A tibble: 27 x 3
+   island sex    common           
+   &lt;chr&gt;  &lt;chr&gt;  &lt;fct&gt;            
+ 1 Biscoe FEMALE Gentoo penguin   
+ 2 Biscoe FEMALE Chinstrap penguin
+ 3 Biscoe FEMALE Adelie Penguin   
+ 4 Biscoe MALE   Gentoo penguin   
+ 5 Biscoe MALE   Chinstrap penguin
+ 6 Biscoe MALE   Adelie Penguin   
+ 7 Biscoe &lt;NA&gt;   Gentoo penguin   
+ 8 Biscoe &lt;NA&gt;   Chinstrap penguin
+ 9 Biscoe &lt;NA&gt;   Adelie Penguin   
+10 Dream  FEMALE Gentoo penguin   
+# … with 17 more rows
+</code></pre></div></div>
+
+<p>To only include the combinations of variables that do appear in your data, put the column names inside of the <code class="language-plaintext highlighter-rouge">nesting</code> helper function.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-9999.R"><div class="highlight"><pre class="highlight"><code><span class="n">pars</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">expand</span><span class="p">(</span><span class="n">nesting</span><span class="p">(</span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="p">,</span><span class="w"> </span><span class="n">common</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">pars</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tibble [13 × 3] (S3: tbl_df/tbl/data.frame)
+ $ island: chr [1:13] "Biscoe" "Biscoe" "Biscoe" "Biscoe" ...
+ $ sex   : chr [1:13] "FEMALE" "FEMALE" "MALE" "MALE" ...
+ $ common: Factor w/ 3 levels "Gentoo penguin",..: 1 3 1 3 1 2 3 2 3 3 ...
+</code></pre></div></div>
+
+<p class="ToS"><a href="#/slides/forcats">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/summary"></a></p>
+
+<h2 id="summary">Summary</h2>
+
+<p>As you have seen, some core principles of the tidyverse</p>
+
+<ul>
+  <li>Packages are united by common design structures so they work together (e.g. tidy evaluation)</li>
+  <li>Functions emphasize <em>modularity</em> so you can break complex problems into small parts</li>
+  <li>Functions emphasize <em>consistency</em> so you can easily expect what they will return</li>
+  <li>Designed to write code that is <strong>easy to read</strong> and interpret</li>
+</ul>
+
+<p>These are some of the cool functions we learned about</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Package</th>
+      <th>Usage</th>
+      <th>Base R version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">map</code> &amp; friends</td>
+      <td>purrr</td>
+      <td>iterate over objects</td>
+      <td>sapply, lapply</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">glue</code></td>
+      <td>glue</td>
+      <td>combining strings</td>
+      <td>paste0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">case_when</code></td>
+      <td>dplyr</td>
+      <td>if else</td>
+      <td>if else</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">dir_ls</code></td>
+      <td>fs</td>
+      <td>list files in a directory</td>
+      <td>list.files</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">spec_csv</code></td>
+      <td>readr</td>
+      <td>column specification</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">rename_with</code></td>
+      <td>dplyr</td>
+      <td>use a function to rename columns</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mdy</code> &amp; friends</td>
+      <td>lubridate</td>
+      <td>smart date guessing</td>
+      <td>as.Date</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">element_markdown()</code></td>
+      <td>ggplot2</td>
+      <td>plot text formatting</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">show_col</code></td>
+      <td>scales</td>
+      <td>display colors</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fct_reorder</code></td>
+      <td>forcats</td>
+      <td>reorder factors</td>
+      <td>levels, reorder</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">expand</code> &amp; friends</td>
+      <td>tidyr</td>
+      <td>generate variable combinations</td>
+      <td>expand.grid</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Some other topics about the tidyverse that are worth looking into but we didn’t cover here:</p>
+
+<ul>
+  <li><strong>tidymodels</strong> - A framework for modeling and machine learning using tidy principles, including a <a href="https://www.tidymodels.org/">website</a> with extensive resources to learn about creating and tuning models. <a href="" class="rlib">broom</a> installs with tidyverse and is helpful for tidying up output from commonly used models such as <code class="language-plaintext highlighter-rouge">lm</code> or <code class="language-plaintext highlighter-rouge">cor.test</code></li>
+  <li>Deeper into <strong>rlang</strong> - To learn more about using tidy evaluation in functions, refer to this <a href="https://dplyr.tidyverse.org/articles/programming.html#one-or-more-user-supplied-expressions">dplyr vignette</a>, the documentation and cheatsheet for <a href="https://rlang.r-lib.org/">rlang</a>, or <a href="https://www.youtube.com/watch?v=nERXS3ssntw">one</a> of <a href="https://www.youtube.com/watch?v=2-gknoyjL3A">these</a> <a href="https://www.youtube.com/watch?v=2BXPLnLMTYo">videos</a> from the tidyverse developers.</li>
+  <li>Functions in <a href="" class="rlib">purrr</a> to manipulate lists, and <a href="https://r4ds.had.co.nz/many-models.html#list-columns-1">list columns</a> in <a href="" class="rlib">tibble</a> data frames that can be nested and unnested</li>
+  <li><a href="https://lubridate.tidyverse.org/articles/lubridate.html#time-intervals">Interval</a>, <a href="https://lubridate.tidyverse.org/articles/lubridate.html#arithmetic-with-date-times">period and duration</a> classes in <a href="" class="rlib">lubridate</a>, for working with specific time spans. See the <a href="https://rawgit.com/rstudio/cheatsheets/master/lubridate.pdf">cheatsheet</a> for examples of irregularities and inconsistencies that can complicate analyses with dates and times (e.g. leap years, daylight savings time, etc.).</li>
+</ul>
+
+<p class="ToS"><a href="#/slides/summary">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/exercises"></a></p>
+
+<h2 id="exercises">Exercises</h2>
+
+<h3 id="exercise-1">Exercise 1</h3>
+
+<p>Instead of returning an output of a specific type, the <code class="language-plaintext highlighter-rouge">walk</code> functions in purrr carry out a side effect (like displaying or saving a plot) without returning an object to your environment. Read about <a href="https://purrr.tidyverse.org/reference/map2.html">map variants</a> that take multiple inputs, then use an appropriate function to save separate csv files for data about penguins from each of the studied islands using a list of data frames and a vector of filenames.</p>
+
+<p>Hint: Check out the base <code class="language-plaintext highlighter-rouge">split</code> or dplyr <code class="language-plaintext highlighter-rouge">group_split</code> function for creating a list of data frames.</p>
+
+<p class="notes"><a href="#solution-1">View solution</a></p>
+
+<h3 id="exercise-2">Exercise 2</h3>
+
+<p>Check out some specialized functions in <a href="" class="rlib">fs</a> for extracting parts of <a href="https://fs.r-lib.org/articles/function-comparisons.html#path-functions">filepaths</a>.</p>
+
+<p>Remove <code class="language-plaintext highlighter-rouge">"data/penguins/"</code> and  <code class="language-plaintext highlighter-rouge">".csv"</code> from the filename strings using only functions in fs.</p>
+
+<p class="notes"><a href="#solution-2">View solution</a></p>
+
+<h3 id="exercise-3">Exercise 3</h3>
+
+<p>The following vector <code class="language-plaintext highlighter-rouge">dates</code> represents 3 periods of time. Convert it into a list of 3 separate date vectors each split into the start and end dates of each period.</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">dates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"2007-12-03 to 2009-12-01"</span><span class="p">,</span><span class="w"> 
+</span><span class="o">+</span><span class="w">            </span><span class="s2">"2007 November 30 to 2009 October"</span><span class="p">,</span><span class="w">
+</span><span class="o">+</span><span class="w">            </span><span class="s2">"1999 to 2010"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Hint: check out the <code class="language-plaintext highlighter-rouge">truncation</code> argument in <code class="language-plaintext highlighter-rouge">ymd</code>.</p>
+
+<p class="notes"><a href="#solution-3">View solution</a></p>
+
+<h3 id="exercise-4">Exercise 4</h3>
+
+<p>Also use the different colors for each species within the plot geometry layer.</p>
+
+<p>Hint: You will need a <code class="language-plaintext highlighter-rouge">scale_</code> function</p>
+
+<p class="notes"><a href="#solution-4">View solution</a></p>
+
+<h3 id="exercise-5">Exercise 5</h3>
+
+<p>Convert all character columns except for “comment” to factors using one mutate function.</p>
+
+<p>Hint: Check out the <a href="https://dplyr.tidyverse.org/articles/programming.html">across</a> function</p>
+
+<p class="notes"><a href="#solution-5">View solution</a></p>
+
+<h3 id="exericse-6">Exericse 6</h3>
+
+<p>Expand the <code class="language-plaintext highlighter-rouge">pars</code> data frame with a column of 10 model names for each of the unique combinations of island, sex, and species that appear in the data set. (should result in a 4 x 130 data frame)</p>
+
+<p class="notes"><a href="#solution-6">View solution</a></p>
+
+<h3 id="bonus-challenge">Bonus Challenge</h3>
+
+<p>Use different images (such as from <a href="http://phylopic.org/">phylopic.org</a>) to include in the labels representing each penguin species.</p>
+
+<p class="notes"><a href="#solution-7">View solution</a></p>
+
+<h2 id="solutions">Solutions</h2>
+
+<h3 id="solution-1">Solution 1</h3>
+
+<div class="language-r no-eval input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">filenames</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">glue</span><span class="o">::</span><span class="n">glue</span><span class="p">(</span><span class="s2">"{unique(pg_df$island)}.csv"</span><span class="p">)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+</span><span class="o">+</span><span class="w">   </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_split</span><span class="p">(</span><span class="n">island</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+</span><span class="o">+</span><span class="w">   </span><span class="n">walk2</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="n">write_csv</span><span class="p">(</span><span class="n">.x</span><span class="p">,</span><span class="w"> </span><span class="n">.y</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes"><a href="#exercise-1">Return</a></p>
+
+<h3 id="solution-2">Solution 2</h3>
+
+<div class="language-r no-eval input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">pg_df</span><span class="o">$</span><span class="n">filename</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+</span><span class="o">+</span><span class="w">   </span><span class="n">fs</span><span class="o">::</span><span class="n">path_ext_remove</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+</span><span class="o">+</span><span class="w">   </span><span class="n">fs</span><span class="o">::</span><span class="n">path_file</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes"><a href="#exercise-2">Return</a></p>
+
+<h3 id="solution-3">Solution 3</h3>
+
+<div class="language-r no-eval input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">dates</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+</span><span class="o">+</span><span class="w">   </span><span class="n">str_split</span><span class="p">(</span><span class="s2">"to"</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+</span><span class="o">+</span><span class="w">   </span><span class="n">map</span><span class="p">(</span><span class="o">~</span><span class="n">str_trim</span><span class="p">(</span><span class="n">.x</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="c1"># or split on " to " for trimming whitespace</span><span class="w">
+</span><span class="o">+</span><span class="w">   </span><span class="n">map</span><span class="p">(</span><span class="o">~</span><span class="n">ymd</span><span class="p">(</span><span class="n">.x</span><span class="p">,</span><span class="w"> </span><span class="n">truncated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes"><a href="#exercise-3">Return</a></p>
+
+<h3 id="solution-4">Solution 4</h3>
+
+<div class="language-r no-eval input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+</span><span class="o">+</span><span class="w">   </span><span class="n">mutate</span><span class="p">(</span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="s2">"{common}&lt;br&gt;&lt;i style='color:{color}'&gt;({latin})&lt;/i&gt;"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+</span><span class="o">+</span><span class="w">   </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">delta_13_c_ooo</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span><span class="o">+</span><span class="w">   </span><span class="n">geom_boxplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">),</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+</span><span class="o">+</span><span class="w">   </span><span class="n">scale_fill_identity</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="c1"># tricky! </span><span class="w">
+</span><span class="o">+</span><span class="w">   </span><span class="n">coord_flip</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span><span class="o">+</span><span class="w">   </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_markdown</span><span class="p">())</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes"><a href="#exercise-4">Return</a></p>
+
+<h3 id="solution-5">Solution 5</h3>
+
+<div class="language-r no-eval input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">pg_df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+</span><span class="o">+</span><span class="w">   </span><span class="n">mutate</span><span class="p">(</span><span class="n">across</span><span class="p">(</span><span class="n">where</span><span class="p">(</span><span class="n">is.character</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">contains</span><span class="p">(</span><span class="s2">"comment"</span><span class="p">),</span><span class="w"> </span><span class="n">as_factor</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes"><a href="#exercise-4">Return</a></p>
+
+<h3 id="solution-6">Solution 6</h3>
+
+<div class="language-r no-eval input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">library</span><span class="p">(</span><span class="n">magrittr</span><span class="p">)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">model_names</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="s2">"model_{letters[1:10]}"</span><span class="p">)</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pars</span><span class="w"> </span><span class="o">%&lt;&gt;%</span><span class="w"> </span><span class="n">crossing</span><span class="p">(</span><span class="n">model_names</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes"><a href="#exercise-6">Return</a></p>
+
+<h3 id="solution-7">Solution 7</h3>
+
+<p>You’re on your own so far!</p>
+
+<p class="notes"><a href="#bonus-challenge">Return</a></p>
+
+<p class="ToS"><a href="#/slides/exercises">Top of Section</a></p>
+
+
+
+        <hr>
+
+<p>If you need to catch-up before a section of code will work, just squish it's
+🍅 to copy code above it into your clipboard. Then paste into your interpreter's
+console, run, and you'll be ready to start in on that section. Code copied by
+both 🍅 and 📋 will also appear below, where you can edit first, and then copy,
+paste, and run again.</p>
+
+<div class="output">
+  <pre id="ketchup" contenteditable="true"><code># Nothing here yet!</code></pre>
+</div>
+
+<script>
+$(document).ready(function(){
+  
+  // Add code help icons to code blocks
+  $('.input, .text-document').append('<ul class="code-help">');
+  $('.code-help')
+    .append('<li class="clipboard">📋</li>');
+  $('.text-document:not(.no-eval) .code-help')
+    .append('<li class="ketchup">🍅</li>');
+
+  // Bind copy actions to mouse clicks on icons
+  var $ketchup = $('#ketchup');
+  var rng = document.createRange();
+  var sel = window.getSelection();
+  $('.ketchup').click(function(){
+    var $prev = $(this)
+      .parents('.text-document')
+      .prevAll('.text-document:has(.ketchup)');
+    $ketchup.find('code').text($prev.find('pre').text());
+    rng.selectNodeContents($ketchup[0]);
+    sel.removeAllRanges();
+    sel.addRange(rng);
+    document.execCommand("copy");
+    sel.removeAllRanges();
+  });
+  $('.text-document .clipboard').click(function(){
+    var pre = $(this).parents('.text-document').find('pre').text();
+    $ketchup.find('code').text(pre);
+    rng.selectNodeContents($ketchup[0]);
+    sel.removeAllRanges();
+    sel.addRange(rng);
+    document.execCommand("copy");
+    sel.removeAllRanges();
+  });
+  $('.input .clipboard').click(function(){
+    var pre = $(this).parents('.input').find('pre').text();
+    pre = pre.replace(/(^|\n)[>+] /g, '$1');
+    $ketchup.find('code').text(pre);
+    rng.selectNodeContents($ketchup[0]);
+    sel.removeAllRanges();
+    sel.addRange(rng);
+    document.execCommand("copy");
+    sel.removeAllRanges();
+  });
+});
+</script>
+      </div>
+    </div>
+    <script>
+$(document).ready(function(){
+  // Add links to R and Python package repositories
+  $('a.rlib').map(function(){
+    this.href = 'https://cran.r-project.org/package=' + this.innerText;
+  });
+  $('a.pylib').map(function(){
+    this.href = 'https://pypi.python.org/pypi/' + this.innerText;
+  });
+});
+</script>
+
+  </body>
+</html>
