@@ -159,11 +159,11 @@ Now let's work on putting the date information from the filenames into a properl
 
 
 ~~~
-[1] "data/penguins/penguins_nesting-November-25-2009.csv"
-[2] "data/penguins/penguins_nesting-November-27-2009.csv"
-[3] "data/penguins/penguins_nesting-November-3-2008.csv" 
-[4] "data/penguins/penguins_nesting-November-14-2008.csv"
-[5] "data/penguins/penguins_nesting-November-16-2007.csv"
+[1] "data/penguins/penguins_nesting-November-21-2007.csv"
+[2] "data/penguins/penguins_nesting-November-22-2009.csv"
+[3] "data/penguins/penguins_nesting-November-14-2008.csv"
+[4] "data/penguins/penguins_nesting-November-19-2009.csv"
+[5] "data/penguins/penguins_nesting-November-27-2007.csv"
 ~~~
 {:.output}
 
@@ -189,6 +189,26 @@ egg_dates <- str_remove_all(string = pg_df$filename,
 
 ~~~r
 library(lubridate)
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+
+Attaching package: 'lubridate'
+~~~
+{:.output}
+
+
+~~~
+The following objects are masked from 'package:base':
+
+    date, intersect, setdiff, union
+~~~
+{:.output}
+
+
+~~~r
 egg_dates[1] %>% as_date()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}

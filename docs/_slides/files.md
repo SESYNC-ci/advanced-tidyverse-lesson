@@ -62,7 +62,8 @@ The function to apply to each of the file names is `read_csv` in [readr](){:.rli
 
 
 ~~~
-Parsed with column specification:
+
+── Column specification ────────────────────────────────────────────────────────
 cols(
   studyName = col_character(),
   `Sample Number` = col_double(),
