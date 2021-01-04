@@ -2,11 +2,12 @@
 
 ## Advanced Tidyverse
 
-This lesson covers selected functions from the core tidyverse as well as fs, glue, lubridate, scales, and others. 
+Use piped workflows for efficient data cleaning and visualization.
 
 ## Instructor Notes
 
-This lesson builds on material from the data wrangling and ggplot lesson.
+This lesson builds on material from the data wrangling and ggplot lesson. It covers selected functions from the core tidyverse as well as fs, glue, lubridate, scales, and others. 
+
 
 ## Cyberhelp @SESYNC
 
