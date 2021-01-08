@@ -5,7 +5,7 @@ handouts:
 tag: v0.2
 lesson: 9999
 lifecycle: beta # status for lifecycle badge 
-badgecolor: orange # color for lifecycle badge
+badgecolor: blue # color for lifecycle badge
 warning: true    # whether to include note about lifecycle status
 instructor: Kelly Hondula
 authors:
