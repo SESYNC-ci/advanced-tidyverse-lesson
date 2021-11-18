@@ -33,7 +33,7 @@ Remove `"data/penguins/"` and  `".csv"` from the filename strings using only fun
 
 The following vector `dates` represents 3 periods of time. Convert it into a list of 3 separate date vectors each split into the start and end dates of each period. 
 
-```{r}
+```{r, eval = FALSE}
 dates <- c("2007-12-03 to 2009-12-01", 
            "2007 November 30 to 2009 October",
            "1999 to 2010")
