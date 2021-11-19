@@ -62,33 +62,30 @@ The function to apply to each of the file names is `read_csv` in [readr](){:.rli
 
 
 ~~~
-
-── Column specification ────────────────────────────────────────────────────────
-cols(
-  studyName = col_character(),
-  `Sample Number` = col_double(),
-  Region = col_character(),
-  Island = col_character(),
-  Stage = col_character(),
-  `Individual ID` = col_character(),
-  `Clutch Completion` = col_character(),
-  `Culmen Length (mm)` = col_double(),
-  `Culmen Depth (mm)` = col_double(),
-  `Flipper Length (mm)` = col_double(),
-  `Body Mass (g)` = col_double(),
-  Sex = col_character(),
-  `Delta 15 N (o/oo)` = col_double(),
-  `Delta 13 C (o/oo)` = col_double(),
-  Comments = col_character(),
-  common = col_character(),
-  latin = col_character()
-)
+Rows: 8 Columns: 17
 ~~~
 {:.output}
 
 
 ~~~
-# A tibble: 8 x 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (10): studyName, Region, Island, Stage, Individual ID, Clutch Completion...
+dbl  (7): Sample Number, Culmen Length (mm), Culmen Depth (mm), Flipper Leng...
+~~~
+{:.output}
+
+
+~~~
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+~~~
+{:.output}
+
+
+~~~
+# A tibble: 8 × 17
   studyName `Sample Number` Region Island Stage `Individual ID` `Clutch Complet…
   <chr>               <dbl> <chr>  <chr>  <chr> <chr>           <chr>           
 1 PAL0910                93 Anvers Biscoe Adul… N18A1           Yes             
@@ -99,9 +96,9 @@ cols(
 6 PAL0910               118 Anvers Biscoe Adul… N36A2           Yes             
 7 PAL0910               119 Anvers Biscoe Adul… N38A1           No              
 8 PAL0910               120 Anvers Biscoe Adul… N38A2           No              
-# … with 10 more variables: `Culmen Length (mm)` <dbl>, `Culmen Depth
-#   (mm)` <dbl>, `Flipper Length (mm)` <dbl>, `Body Mass (g)` <dbl>, Sex <chr>,
-#   `Delta 15 N (o/oo)` <dbl>, `Delta 13 C (o/oo)` <dbl>, Comments <chr>,
+# … with 10 more variables: Culmen Length (mm) <dbl>, Culmen Depth (mm) <dbl>,
+#   Flipper Length (mm) <dbl>, Body Mass (g) <dbl>, Sex <chr>,
+#   Delta 15 N (o/oo) <dbl>, Delta 13 C (o/oo) <dbl>, Comments <chr>,
 #   common <chr>, latin <chr>
 ~~~
 {:.output}

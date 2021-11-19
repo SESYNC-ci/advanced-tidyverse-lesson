@@ -14,7 +14,7 @@ The next goal is to compare data about the 3 different penguin species using box
 
 
 ~~~
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   common            latin                
   <chr>             <chr>                
 1 Gentoo penguin    Pygoscelis papua     

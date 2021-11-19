@@ -40,7 +40,7 @@ The following vector `dates` represents 3 periods of time. Convert it into a lis
 +            "2007 November 30 to 2009 October",
 +            "1999 to 2010")
 ~~~
-{:title="Console" .input}
+{:title="Console" .no-eval .input}
 
 
 Hint: check out the `truncation` argument in `ymd`. 

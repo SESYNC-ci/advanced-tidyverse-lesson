@@ -151,7 +151,7 @@ To create a table with combinations of variables, use `expand` from the tidyr pa
 
 
 ~~~
-# A tibble: 27 x 3
+# A tibble: 27 × 3
    island sex    common           
    <chr>  <chr>  <fct>            
  1 Biscoe FEMALE Gentoo penguin   

@@ -159,11 +159,11 @@ Now let's work on putting the date information from the filenames into a properl
 
 
 ~~~
-[1] "data/penguins/penguins_nesting-November-21-2007.csv"
-[2] "data/penguins/penguins_nesting-November-22-2009.csv"
-[3] "data/penguins/penguins_nesting-November-14-2008.csv"
-[4] "data/penguins/penguins_nesting-November-19-2009.csv"
-[5] "data/penguins/penguins_nesting-November-27-2007.csv"
+[1] "data/penguins/penguins_nesting-December-3-2007.csv" 
+[2] "data/penguins/penguins_nesting-November-16-2009.csv"
+[3] "data/penguins/penguins_nesting-December-3-2007.csv" 
+[4] "data/penguins/penguins_nesting-November-28-2007.csv"
+[5] "data/penguins/penguins_nesting-November-15-2009.csv"
 ~~~
 {:.output}
 
